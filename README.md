@@ -1,9 +1,8 @@
 CSE110
 ======
 1. Project Manager: group 14
-  Colby H.
-  Jeremy B.
 
+  Colby H. and Jeremy B.
 2. Subject Matter Expert: Researches wine and is involved with how the business rules are integrated into the project.
 3. Senior System Analyst: Coordinator of Use Cases, User Story, Requirements.
 4. Software Architect: Coordinates design, selector of technologies.
