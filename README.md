@@ -1,14 +1,16 @@
 CSE110
 ======
 Group 14   
-1. Project Manager          : Colby H.  
-   Deputy Manager           : Jeremy B.  
-2. Subject Matter Expert    : Nick A. 
-3. Senior System Analyst    : Jonathan T.
-4. Software Architect       : Jeremy B.
-5. Software Development Lead: Christian C.
-6. Algorithm Specialist     : Joe K.
-7. Database Specialist      : Cole S.
-8. Quality Assurance Lead   : Yutang L.
-9. UI Specialist            : Richard Y.
-10. Supporter               : James L.
+<ol>
+<li>Project Manager          : Colby H. 
+    Deputy Manager           : Jeremy B.  </li>  
+<li>Subject Matter Expert    : Nick A. 
+<li>Senior System Analyst    : Jonathan T.
+<li>Software Architect       : Jeremy B.
+<li>Software Development Lead: Christian C.
+<li>Algorithm Specialist     : Joe K.
+<li>Database Specialist      : Cole S.
+<li>Quality Assurance Lead   : Yutang L.
+<li>UI Specialist            : Richard Y.
+<li>Supporter               : James L.
+</ol>
