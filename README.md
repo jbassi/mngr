@@ -1,8 +1,10 @@
 CSE110
 ======
 Group 14
-1. Project Manager          : Colby H.
-   Deputy Manager           : Jeremy B.
+1. Project Manager          : Colby H.  
+
+   Deputy Manager           : Jeremy B.  
+
 2. Subject Matter Expert    : Nick A. 
 3. Senior System Analyst    : Jonathan T.
 4. Software Architect       : Jeremy B.
