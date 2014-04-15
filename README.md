@@ -7,10 +7,10 @@ Group 14 - BRAAHS
 <li>Subject Matter Expert    : Nick A. 
 <li>Senior System Analyst    : Jonathan T.
 <li>Software Architect       : Jeremy B.
+<li>Software Architect       : James L.
 <li>Software Development Lead: Christian C.
 <li>Algorithm Specialist     : Joe K.
 <li>Database Specialist      : Cole S.
 <li>Quality Assurance Lead   : Yutang L.
 <li>UI Specialist            : Richard Y.
-<li>Supporter               : James L.
 </ol>
