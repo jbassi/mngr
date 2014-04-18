@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  script(src='/socket.io/socket.io.js')
+  script(src='javascripts/client.js')
+
+  form#signup-form
+    h3 Please tell us a little about yourself.
+    form
+      label Name
+      input#signup-name(type='text')
+      div.clear
+      label Email
+      input#signup-email(type='text')
+      div.clear
+      label Username
+      input#signup-user(type='text')
+      div.clear
+      label Password
+      input#signup-password(type='password')
+      div.clear
+      br
+      input#signup-button.button(type='button', style='margin: -20px 0 0 287px;', value='Submit')

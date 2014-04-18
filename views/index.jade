@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	script(src='/socket.io/socket.io.js')
+	script(src='javascripts/client.js')
+
+	form#login-form
+		h1 Login To BRAAHS
+		form
+			legend Sign Guest Book
+			label Username
+			input#login-user(type='text')
+			div.clear
+			label Password
+			input#login-password(type='password')
+			div.clear
+			br
+			input#login-button.button(type='button', style='margin: -20px 0 0 287px;', value='Submit')
