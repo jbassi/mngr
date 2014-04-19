@@ -15,9 +15,9 @@ socket.on('login-verified', function(data) {
 })
 
 socket.on('user-created', function(data) {
-  console.log('(+) User: ' + data.username + ' successfully connected.')
+  console.log('(+) User: ' + data.username + ' successfully created.')
   // Navigate to home page
-  // window.location.href = '/home'
+  window.location.href = '/'
 })
 
 $(document).ready(function() {
