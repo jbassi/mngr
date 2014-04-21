@@ -22,7 +22,7 @@ socket.on('user-created', function(data) {
 
 $(document).ready(function() {
 	$('#login-button').click(function() {
-    socket.emit('verify-login', [$('#login-user').val(), $('#login-password').val()])
+    socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
 	})
 
   $('#signup-button').click(function() {

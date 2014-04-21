@@ -7,7 +7,7 @@ module.exports = function(app) {
 
   // Get home page
   app.get('/', function(req, res) {
-    res.render('index', { title: 'BRAAHS'})
+    res.render('index', { title: 'Mngr'})
   })
 
   // Get sign up page
