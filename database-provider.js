@@ -17,7 +17,7 @@ var DatabaseProvider = function(app, server) {
 
 	// Check database for a test response
 	console.log('[~] Checking database for a test response.')
-	var TestObject = Parse.Object.extend('GameScore')
+	var TestObject = Parse.Object.extend('TestObject')
 	var query = new Parse.Query(TestObject)
 	query.equalTo('foo', 'test')
 	query.find({
