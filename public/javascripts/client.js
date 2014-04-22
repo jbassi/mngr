@@ -25,6 +25,12 @@ $(document).ready(function() {
     socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
 	})
 
+  $('input').keydown(function(e) {
+    if (e.keyCode == 13) {
+      socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
+    }
+  });
+
   $('#signup-button').click(function() {
     socket.emit('create-user', [$('#signup-name').val(), $('#signup-email').val(), 
       $('#signup-user').val(), $('#signup-password').val()])

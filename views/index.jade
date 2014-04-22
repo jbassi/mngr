@@ -1,6 +1,7 @@
 doctype html
 html
   head
+    meta(name='viewport', content='width=device-width, user-scalable=no')
     title= title
     link(rel='stylesheet', href='/stylesheets/index.css')
     link(rel='stylesheet', href='javascripts/sidr/stylesheets/jquery.sidr.dark.css')
@@ -13,9 +14,22 @@ html
       $(document).ready(function() {
         $('#menu').sidr({
         name: 'sidr-left',
-        side: 'left' // By default
+        side: 'left',
+        speed: 100
         });
+        $('#login').sidr({
+        name: 'sidr-right',
+        side: 'right',
+        body: '#login',
+        displace: true,
+        speed: 100
         });
+        $("#scroll").click(function() {
+          $('html, body').animate({
+            scrollTop: $(".row").offset().top
+          }, 500);
+        });
+      });
 
 
   body
@@ -25,14 +39,14 @@ html
     script(src='javascripts/jquery.js') //jquery
     script(src='javascripts/sidr/jquery.sidr.min.js') //sidr
 
-    .header
-      a#menu(href='#menu')
-        // not responsive
-        img#menuimage(src='../resources/menu.png')
-        navtext MENU
-      a#login(href='/')
-        navtext LOGIN
-        img#loginimage(src='../resources/login.png')
+    #header
+      #top
+        a#menu(href='')
+          img#menuimage(src='../resources/menu.png')
+          navtext MENU
+        a#login(href='')
+          navtext LOGIN
+          img#loginimage(src='../resources/login.png')
       
       #banner
         img#logo(src='../resources/logocolor.png')
@@ -40,11 +54,31 @@ html
           h1 Better management for the better manager.
           #subtext
             h2 FULLY INTEGRATED EMPLOYEE SCHEDULING
+              button#scroll GET STARTED
 
+      #sidr-left
+        ul
+          li.active
+            a(href='#') HOME
+          li
+            a(href='#') FEATURES
+          li
+            a(href='#') ABOUT
+          li
+            a(href='#') SIGN UP
 
-    form#login-form
-      form
-        legend Sign Guest Book
-        input#login-user(type='text' placeholder='EMAIL')
-        input#login-pass(type='password' placeholder='PASSWORD')
-        input#login-button.button(type='button', value='Login')
+      form#sidr-right
+        form
+          input#login-user(type='text' placeholder='USERNAME')
+          input#login-pass(type='password' placeholder='PASSWORD')
+          input#login-button(type='button', value='LOGIN')
+
+    #info
+      .row
+        #intro.row_element
+      .row
+        .row_element
+        .row_element
+      .row
+        .row_element
+        .row_element
