@@ -23,7 +23,13 @@ html
         displace: true,
         speed: 100
         });
+        $("#scroll").click(function() {
+          $('html, body').animate({
+            scrollTop: $(".row").offset().top
+          }, 500);
+        });
       });
+
 
   body
   block content
@@ -32,13 +38,13 @@ html
     script(src='javascripts/jquery.js') //jquery
     script(src='javascripts/sidr/jquery.sidr.min.js') //sidr
 
-    .header
+    #header
       #top
-        a#menu(href='#menu')
+        a#menu(href='')
           // not responsive
           img#menuimage(src='../resources/menu.png')
           navtext MENU
-        a#login(href='#login')
+        a#login(href='')
           navtext LOGIN
           img#loginimage(src='../resources/login.png')
       
@@ -48,12 +54,13 @@ html
           h1 Better management for the better manager.
           #subtext
             h2 FULLY INTEGRATED EMPLOYEE SCHEDULING
+        button#scroll GET STARTED
 
       #sidr-left
         ul
-          li
-            a(href='#') HOME
           li.active
+            a(href='#') HOME
+          li
             a(href='#') FEATURES
           li
             a(href='#') ABOUT
@@ -61,8 +68,19 @@ html
             a(href='#') SIGN UP
 
       form#sidr-right
-        input#login-user(type='text' placeholder='EMAIL')
-        input#login-pass(type='password' placeholder='PASSWORD')
-        input#login-button.button(type='button', value='LOGIN')
+        form
+          input#login-user(type='text' placeholder='USERNAME')
+          input#login-pass(type='password' placeholder='PASSWORD')
+          input#login-button(type='button', value='LOGIN')
 
     #intro
+
+    .row
+      .row_element
+      .row_element
+    .row
+      .row_element
+      .row_element
+    .row
+      .row_element
+      .row_element

@@ -1,4 +1,4 @@
-.sidr { //TODO make responsive
+.sidr {
 display:none;
 position:fixed;
 top:0;
@@ -20,17 +20,17 @@ margin-top:1.4em;
 margin-left:-2em;
 padding-right:2em;
 left:auto;
-right:-30%;
-width:30%;
+right:-35%;
+width:35%;
 min-width: 260px;
-color:#414141;
+color:#424242;
 }
 
 .sidr.left {
 left:-260px;
 width:260px;
 right:auto;
-background:#414141;
+background:#424242;
 color:#a7a7a7;
 }
 
@@ -72,7 +72,7 @@ line-height:48px;
 margin:0;
 }
 
-.sidr ul li:hover,.sidr ul li.active,.sidr ul li.sidr-class-active {
+.sidr ul li:hover,.sidr ul li.active,.sidr ul li.sidr-class-active { //TODO fix if submenus
 border-top:none;
 }
 
@@ -132,7 +132,7 @@ box-sizing:border-box;
 border-radius:.3em;
 border:1px solid #a7a7a7;
 background:rgba(#fff);
-color:rgba(#414141);
+color:rgba(#424242);
 display:block;
 clear:both;
 }
@@ -145,7 +145,7 @@ clear:none;
 
 .sidr input[type=button],.sidr input[type=submit] {
 width:100%;
-min-width: 100px;
+min-width: 75px;
 height:2.25em;
 padding-left: .5em;
 margin-bottom: .36em;
@@ -164,9 +164,10 @@ box-sizing:border-box;
 -o-border-radius:.3em;
 border-radius:.3em;
 border:none;
-background:#414141;
+background:#424242;
 color:#FFF;
 display:block;
+cursor: pointer;
 clear:both;
 }
 
@@ -180,9 +181,53 @@ margin-right:15px;
 }
 
 .sidr ul li:hover>a,.sidr ul li:hover>span,.sidr ul li ul li:hover>a,.sidr ul li ul li:hover>span{
-color:#414141;
+color:#424242;
 }
 
 .sidr ul li.active>a,.sidr ul li.active>span,.sidr ul li.sidr-class-active>a,.sidr ul li.sidr-class-active>span,.sidr ul li ul li.active>a,.sidr ul li ul li.active>span,.sidr ul li ul li.sidr-class-active>a,.sidr ul li ul li.sidr-class-active>span{
 color:#fff;
+}
+
+
+@media (min-height: 640px) and (max-width:1024px) {
+   .sidr {
+   display:none;
+   position:fixed;
+   top:0;
+   height:100%;
+   z-index:999999;
+
+   overflow-x:none;
+   overflow-y:auto;
+   font-family:BrandonRegular, sans-serif;
+   font-size:2em;
+   }
+
+   .sidr.right {
+   margin-top:1em;
+   margin-left:0em;
+   padding-right:2em;
+   left:auto;
+   right:-260;
+   width:260;
+   color:#424242;
+   }
+
+   .sidr ul {
+   display:block;
+   border-top:1px solid #1a1a1a;
+   border-bottom:1px solid #4d4d4d;
+   margin:0 0 15px;
+   padding:0;
+   }
+
+   .sidr ul li {
+   display:block;
+   line-height:48px;
+   border-top:1px solid #4d4d4d;
+   border-bottom:1px solid #1a1a1a;
+   margin:0;
+   padding:15px 0;
+   }
+
 }
