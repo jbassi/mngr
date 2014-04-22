@@ -13,10 +13,17 @@ html
       $(document).ready(function() {
         $('#menu').sidr({
         name: 'sidr-left',
-        side: 'left' // By default
+        side: 'left',
+        speed: 100
         });
+        $('#login').sidr({
+        name: 'sidr-right',
+        side: 'right',
+        body: '#login',
+        displace: true,
+        speed: 100
         });
-
+      });
 
   body
   block content
@@ -26,13 +33,14 @@ html
     script(src='javascripts/sidr/jquery.sidr.min.js') //sidr
 
     .header
-      a#menu(href='#menu')
-        // not responsive
-        img#menuimage(src='../resources/menu.png')
-        navtext MENU
-      a#login(href='/')
-        navtext LOGIN
-        img#loginimage(src='../resources/login.png')
+      #top
+        a#menu(href='#menu')
+          // not responsive
+          img#menuimage(src='../resources/menu.png')
+          navtext MENU
+        a#login(href='#login')
+          navtext LOGIN
+          img#loginimage(src='../resources/login.png')
       
       #banner
         img#logo(src='../resources/logocolor.png')
@@ -41,10 +49,20 @@ html
           #subtext
             h2 FULLY INTEGRATED EMPLOYEE SCHEDULING
 
+      #sidr-left
+        ul
+          li
+            a(href='#') HOME
+          li.active
+            a(href='#') FEATURES
+          li
+            a(href='#') ABOUT
+          li
+            a(href='#') SIGN UP
 
-    form#login-form
-      form
-        legend Sign Guest Book
+      form#sidr-right
         input#login-user(type='text' placeholder='EMAIL')
         input#login-pass(type='password' placeholder='PASSWORD')
-        input#login-button.button(type='button', value='Login')
+        input#login-button.button(type='button', value='LOGIN')
+
+    #intro
