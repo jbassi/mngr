@@ -4,9 +4,10 @@ overflow-y: scroll;
 height: 100%;
 margin: 0px auto;
 padding: 0;
+background-color:#FFF;
 }
 
-body {
+body {   
 font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 height: 100%;
 margin: 0px auto;
@@ -50,7 +51,7 @@ font-weight:normal;
 font-size:1.25em;
 color:#A7A7A7;
 line-height:90%;
-letter-spacing:-.05em;
+letter-spacing:.2em;
 }
 
 h3 {
@@ -67,10 +68,6 @@ letter-spacing:-.05em;
 a {
 color:#424242;
 text-decoration:none;
-}
-
-html {
-background-color:#FFF;
 }
 
 .clear {
@@ -147,8 +144,8 @@ display: inline-block;
 }
 
 #tagline {
-margin-right: auto;
-margin-left: auto;
+width:110%;
+margin-left: -5%;
 text-align:center;
 }
 
@@ -162,7 +159,7 @@ text-align:center;
 
 #scroll{
 position:relative;
-margin-top: 1em;
+margin-top: 1.5em;
 margin-left: auto;
 margin-right: auto;
 }
@@ -230,10 +227,6 @@ font-weight:normal;
 vertical-align:middle;
 }
 
-#intro{
-
-}
-
 .row {
 margin: 0 auto;
 width:75%;
@@ -242,9 +235,13 @@ width:75%;
 .row_element {
 float:left;
 width:40%;
-background:#94B4AF;
+background:#eee;
 height:25em;
 margin:5%;
+}
+
+#intro{
+width:90%;
 }
 
 /* mobile */
@@ -259,8 +256,8 @@ margin:5%;
    top:0;
    padding-top:2em;
    left:0;
-   width:25%;
-   height:75%;
+   width:40%;
+   height:5em;
    }
 
    #menuimage {
@@ -274,8 +271,8 @@ margin:5%;
    top:0;
    padding-top:2em;
    right:0;
-   width:25%;
-   height:75%;
+   width:40%;
+   height:5em;
    }
 
    #loginimage {
@@ -307,16 +304,30 @@ margin:5%;
    right:0;
    }
 
+   .row {
+   width:100%;
+   }
+
   .row_element {
-   display:block;
    width:90%;
-   background:#94B4AF;
    height:25em;
-   margin:5%;
+   margin:5% 5% 0% 5%;
    }
 }
 
-@media (min-height:640px) and (max-width:800px) {
+@media (orientation:portrait) and (max-width:1024px) {
+
+   h1{
+   font-size:2.2em;
+   }
+   h2{
+   font-size:1em;
+   }
+
+   #header {
+   background-size:150%;
+   background-position:right bottom;
+   }
 
    #banner {
    margin-left:auto;
@@ -327,35 +338,30 @@ margin:5%;
    }
 
    #logo {
-   margin-top: 55%;
-   margin-left: -15%;
-   width:130%;
+   margin-top: 50%;
+   margin-left: 0%;
+   width:100%;
    display: inline-block;
    }
 
    #tagline {
-   margin-right: auto;
-   margin-left: auto;
-   text-align:center;
+   margin-left:-40%;
+   width:180%;
    }
 
    #subtext {
    position:relative;
-   top:-1em;
-   left:-50%;
-   width:200%;
+   top:1em;
+   left:0%;
+   width:100%;
    text-align:center;
    }
 
    #scroll{
    position:relative;
-   margin-top: 4em;
+   margin-top: 3em;
    margin-left: auto;
    margin-right: auto;
-   }
-
-   button{
-   font-size:1.75em;
    }
 
 }

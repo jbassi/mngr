@@ -1,6 +1,7 @@
 doctype html
 html
   head
+    meta(name='viewport', content='width=device-width, user-scalable=no')
     title= title
     link(rel='stylesheet', href='/stylesheets/index.css')
     link(rel='stylesheet', href='javascripts/sidr/stylesheets/jquery.sidr.dark.css')
@@ -41,7 +42,6 @@ html
     #header
       #top
         a#menu(href='')
-          // not responsive
           img#menuimage(src='../resources/menu.png')
           navtext MENU
         a#login(href='')
@@ -54,7 +54,7 @@ html
           h1 Better management for the better manager.
           #subtext
             h2 FULLY INTEGRATED EMPLOYEE SCHEDULING
-        button#scroll GET STARTED
+              button#scroll GET STARTED
 
       #sidr-left
         ul
@@ -73,14 +73,12 @@ html
           input#login-pass(type='password' placeholder='PASSWORD')
           input#login-button(type='button', value='LOGIN')
 
-    #intro
-
-    .row
-      .row_element
-      .row_element
-    .row
-      .row_element
-      .row_element
-    .row
-      .row_element
-      .row_element
+    #info
+      .row
+        #intro.row_element
+      .row
+        .row_element
+        .row_element
+      .row
+        .row_element
+        .row_element

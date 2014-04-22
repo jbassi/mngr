@@ -8,6 +8,8 @@ z-index:999999;
 overflow-x:none;
 overflow-y:auto;
 font-family:BrandonRegular, sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
 font-size:1.25em;
 }
 
@@ -22,13 +24,13 @@ padding-right:2em;
 left:auto;
 right:-35%;
 width:35%;
-min-width: 260px;
+min-width: 150px;
 color:#424242;
 }
 
 .sidr.left {
-left:-260px;
-width:260px;
+left:-180px;
+width:180px;
 right:auto;
 background:#424242;
 color:#a7a7a7;
@@ -66,7 +68,7 @@ padding:0;
 
 .sidr ul li {
 display:block;
-line-height:48px;
+line-height:3em;
 //border-top:1px solid #4d4d4d;
 //border-bottom:1px solid #1a1a1a;
 margin:0;
@@ -189,45 +191,35 @@ color:#fff;
 }
 
 
-@media (min-height: 640px) and (max-width:1024px) {
-   .sidr {
-   display:none;
-   position:fixed;
-   top:0;
-   height:100%;
-   z-index:999999;
+@media (max-width:1024px) {
 
-   overflow-x:none;
-   overflow-y:auto;
-   font-family:BrandonRegular, sans-serif;
-   font-size:2em;
+   .sidr input[type="text"],.sidr input[type="password"],.sidr input[type="date"],.sidr input[type="datetime"],.sidr input[type="email"],.sidr input[type="number"],.sidr input[type="search"],.sidr input[type="tel"],.sidr input[type="time"],.sidr input[type="url"],.sidr textarea,.sidr select {
+   height:4em;
    }
 
    .sidr.right {
-   margin-top:1em;
+   margin-top:1.4em;
    margin-left:0em;
    padding-right:2em;
-   left:auto;
-   right:-260;
-   width:260;
-   color:#424242;
+   right:-50%;
+   width:50%;
+   max-width: 250px;
    }
 
-   .sidr ul {
-   display:block;
-   border-top:1px solid #1a1a1a;
-   border-bottom:1px solid #4d4d4d;
-   margin:0 0 15px;
-   padding:0;
+   .sidr.left {
+   left:-160px;
+   width:160px;
+   right:auto;
+   background:#424242;
+   color:#a7a7a7;
    }
 
    .sidr ul li {
-   display:block;
-   line-height:48px;
-   border-top:1px solid #4d4d4d;
-   border-bottom:1px solid #1a1a1a;
-   margin:0;
-   padding:15px 0;
+   line-height:4em;
    }
 
+
+   .sidr ul li a,.sidr ul li span {
+   text-align: left;
+   }
 }
