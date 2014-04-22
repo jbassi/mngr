@@ -37,11 +37,14 @@ if ('development' == app.get('env')) {
 }
 
 // Configure page routes
+// var test = require('./routes/router.js')
+// test(app)
 require('./routes/router.js')(app)
 
 app.databaseProvider = new DatabaseProvider(app, server)
 
 io.sockets.on('connection', function(socket) {
+  //JSON Object
   socket.emit('status', {msg:'connection established'})
 
   socket.on('create-user', function(args) {
