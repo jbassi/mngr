@@ -8,6 +8,12 @@ block head
           scrollTop: $("#info").offset().top
         }, 500);
       });
+      $("#signup").click(function() {
+        $( "#tagline" ).fadeOut( "slow", function() {
+        });
+        $( "#signup-form" ).fadeIn( "slow", function() {
+        });
+      });
     });
 //everything in header goes here
 block banner
@@ -27,6 +33,7 @@ block content
         li
           a(href='#') ABOUT
         li
+          //a#signup SIGN UP
           a(href='/signup') SIGN UP
   #info
     .row

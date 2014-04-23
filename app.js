@@ -65,7 +65,7 @@ io.sockets.on('connection', function(socket) {
     var password = args[1].toString()
     app.databaseProvider.verifyLogin(user, password, function(err, res) {
       if(err) {
-        // TODO handle error
+        socket.emit('login-failed', res)
       } else {
         socket.emit('login-verified', res)
       }

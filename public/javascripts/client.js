@@ -14,6 +14,10 @@ socket.on('login-verified', function(data) {
   window.location.href = '/home'
 })
 
+socket.on('login-failed', function(data) {
+  $( "#sidr-right" ).effect( "shake", {times:2, distance:12}, 500 )
+})
+
 socket.on('user-created', function(data) {
   console.log('(+) User: ' + data.username + ' successfully created.')
   // Navigate to home page

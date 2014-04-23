@@ -152,6 +152,7 @@ font-weight:normal;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 vertical-align:middle;
+color:#424242;
 }
 
 #menu {
@@ -159,6 +160,10 @@ position:absolute;
 top:2em;
 left:0;
 width:10em;
+}
+
+#menu:hover {
+cursor: pointer;
 }
 
 #menuimage {
@@ -173,6 +178,10 @@ position:absolute;
 top:2em;
 right:0;
 width:10em;
+}
+
+#login:hover {
+cursor: pointer;
 }
 
 #loginimage {
@@ -197,6 +206,10 @@ margin-right:2%;
 #login-button {
 display: inline;
 width: 20%;
+}
+
+#signup:hover{
+cursor: pointer;
 }
 
 #banner { /*banner container*/

@@ -5,7 +5,7 @@
 
 module.exports = function(app) {
 
-  // Get home page
+  // Get index page
   app.get('/', function(req, res) {
     res.render('index', { title: 'Mngr'})
   })
