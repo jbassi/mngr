@@ -1,0 +1,58 @@
+//parent layout for landing pages
+doctype html
+html
+  head
+    meta(name='viewport', content='width=device-width, user-scalable=no')
+    title= title
+    link(rel='stylesheet', href='/stylesheets/stylelanding.css')
+    //TODO how to put css link in respective jade files?
+    link(rel='stylesheet', href='/stylesheets/index.css')
+    link(rel='stylesheet', href='/stylesheets/signup.css')
+    link(rel='stylesheet', href='javascripts/sidr/stylesheets/jquery.sidr.dark.css')
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='javascripts/client.js')
+    script(src='javascripts/sidr/jquery.sidr.min.js') //scripts for sidr menu
+    script.
+      $(document).ready(function() {
+        $('#menu').sidr({
+        name: 'sidr-left',
+        side: 'left',
+        speed: 100
+        });
+        $('#login').sidr({
+        name: 'sidr-right',
+        side: 'right',
+        body: '#login',
+        displace: true,
+        speed: 200
+        });
+        $("#scroll").click(function() {
+          $('html, body').animate({
+            scrollTop: $(".row").offset().top
+          }, 500);
+        });
+      });
+  body
+  //whole screen header
+  #header
+    //menu and login buttons
+    #top
+      a#menu(href='')
+        img#menuimage(src='../resources/menu.png')
+        navtext MENU
+      a#login(href='')
+        navtext LOGIN
+        img#loginimage(src='../resources/login.png')
+    #banner
+      img#logo(src='../resources/logocolor.png')
+      block banner
+    block header
+  //login form
+  form#sidr-right
+    form
+      input#login-user(type='text' placeholder='USERNAME')
+      input#login-pass(type='password' placeholder='PASSWORD')
+      input#login-button(type='button', value='LOGIN')
+  //everything under header
+  block content

@@ -18,12 +18,11 @@ padding:0 0 15px;
 }
 
 .sidr.right {
-margin-top:1.4em;
+margin-top:1.15em;
 margin-left:-2em;
-padding-right:2em;
 left:auto;
-right:-35%;
-width:35%;
+right:-40%;
+width:40%;
 min-width: 150px;
 color:#424242;
 }
@@ -118,11 +117,8 @@ font-size:13px;
 }
 
 .sidr input[type="text"],.sidr input[type="password"],.sidr input[type="date"],.sidr input[type="datetime"],.sidr input[type="email"],.sidr input[type="number"],.sidr input[type="search"],.sidr input[type="tel"],.sidr input[type="time"],.sidr input[type="url"],.sidr textarea,.sidr select {
-width:100%;
-min-width: 150px;
 height:2.7em;
-padding-left: .5em;
-margin-bottom: .5em;
+margin: .25em;
 vertical-align:middle;
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;
@@ -132,11 +128,6 @@ box-sizing:border-box;
 -ms-border-radius:.3em;
 -o-border-radius:.3em;
 border-radius:.3em;
-border:1px solid #a7a7a7;
-background:rgba(#fff);
-color:rgba(#424242);
-display:block;
-clear:both;
 }
 
 .sidr input[type=checkbox] {
@@ -147,30 +138,9 @@ clear:none;
 
 .sidr input[type=button],.sidr input[type=submit] {
 width:100%;
-min-width: 75px;
 height:2.25em;
-padding-left: .5em;
-margin-bottom: .36em;
-font-family:BrandonRegular, sans-serif;
+margin: .25em;
 font-size:.9em;
-font-weight:normal;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
-vertical-align:middle;
--webkit-box-sizing:border-box;
--moz-box-sizing:border-box;
-box-sizing:border-box;
--webkit-border-radius:.3em;
--moz-border-radius:.3em;
--ms-border-radius:.3em;
--o-border-radius:.3em;
-border-radius:.3em;
-border:none;
-background:#424242;
-color:#FFF;
-display:block;
-cursor: pointer;
-clear:both;
 }
 
 .sidr input[type=button]:hover,.sidr input[type=submit]:hover {
@@ -183,7 +153,7 @@ margin-right:15px;
 }
 
 .sidr ul li:hover>a,.sidr ul li:hover>span,.sidr ul li ul li:hover>a,.sidr ul li ul li:hover>span{
-color:#424242;
+color:#808080;
 }
 
 .sidr ul li.active>a,.sidr ul li.active>span,.sidr ul li.sidr-class-active>a,.sidr ul li.sidr-class-active>span,.sidr ul li ul li.active>a,.sidr ul li ul li.active>span,.sidr ul li ul li.sidr-class-active>a,.sidr ul li ul li.sidr-class-active>span{

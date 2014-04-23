@@ -1,0 +1,247 @@
+html { /* applies to whole document */
+overflow-x:hidden;
+overflow-y: scroll;
+height: 100%; /* for header */
+margin: 0px auto;
+padding: 0;
+background-color:#FFF;
+}
+
+body {   
+font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+height: 100%; /* for header */
+margin: 0px auto;
+padding: 0;
+}
+
+@font-face { /*BrandonLight font*/
+font-family: 'BrandonLight';
+src: url('../resources/brandonlight.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonlight.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face { /*BrandonBlack font*/
+font-family: 'BrandonBlack';
+src: url('../resources/brandonblack.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonblack.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face { /*BrandonRegular font*/
+font-family: 'BrandonRegular';
+src: url('../resources/brandonregular.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonregular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+h1 { /*titles*/
+font-family:BrandonLight, sans-serif;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+font-size:2.5em;
+color:#424242;
+line-height:90%;
+letter-spacing:-.05em;
+}
+
+h2 {
+font-family:BrandonRegular, sans-serif;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+font-size:1.25em;
+color:#A7A7A7;
+line-height:90%;
+letter-spacing:.18em;
+}
+
+h3 {
+font-family:BrandonBlack, sans-serif;
+font-size:1.5em;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+color:#424242;
+line-height:90%;
+letter-spacing:-.05em;
+}
+
+a { /*hyperlinks*/
+color:#424242;
+text-decoration:none;
+}
+
+input{ /*input forms*/
+width:100%;
+height:4em;
+padding: 0em .5em;
+border:1px solid #a7a7a7;
+background:rgba(#fff);
+color:rgba(#424242);
+display:block;
+clear:both;
+}
+
+::-webkit-input-placeholder { /*input placeholder*/
+position:relative;
+top:-.2em;
+padding-bottom:1.2em;
+font-family:BrandonRegular, sans-serif;
+font-size:1.1em;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+:-moz-placeholder,::-moz-placeholder,:-ms-input-placeholder {
+font-family:BrandonRegular, sans-serif;
+font-size:1.1em;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+input[type=button], button{
+height:2.3em;
+padding:0 1em;
+font-family:BrandonRegular, sans-serif;
+font-size:1.2em;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-radius:.3em;
+-moz-border-radius:.3em;
+-ms-border-radius:.3em;
+-o-border-radius:.3em;
+border-radius:.3em;
+border:none;
+background:#424242;
+color:#FFF;
+display:block;
+cursor: pointer;
+clear:both;
+}
+
+.clear { /*no idea*/
+clear:both;
+}
+
+#header {
+top:0;
+overflow-x:hidden;
+background-image:url(../resources/background.png);
+background-repeat:no-repeat;
+background-size:100%;
+background-position:bottom;
+width:100%;
+height:100%;
+}
+
+#top {
+position:fixed;
+width: 100%;
+height:10%;
+}
+
+navtext { /*menu and login text*/
+font-family:BrandonBlack, sans-serif;
+font-size:1.5em;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+vertical-align:middle;
+}
+
+#menu {
+position:absolute;
+top:2em;
+left:0;
+width:10em;
+}
+
+#menuimage {
+vertical-align:middle;
+padding-left:2em;
+padding-right:.25em;
+height:1.1em;
+}
+
+#login {
+position:absolute;
+top:2em;
+right:0;
+width:10em;
+}
+
+#loginimage {
+vertical-align:middle;
+padding-right:2em;
+padding-left:.25em;
+height:1.1em;
+}
+
+#login-user{
+display: inline;
+width:35%;
+margin-right:2%;
+}
+
+#login-pass{
+display: inline;
+width:35%;
+margin-right:2%;
+}
+
+#login-button {
+display: inline;
+width: 20%;
+}
+
+/* small screens */
+@media (max-width:1024px) {
+
+   input[type=button], button{
+   font-size:1.4em;
+   }
+
+   navtext {
+   display:none;
+   }
+
+   #menu {
+   width:40%;
+   height:5em;
+   }
+
+   #menuimage {
+   height:50%;
+   }
+
+   #login {
+   width:40%;
+   height:5em;
+   }
+
+   #loginimage {
+   float:right;
+   height:50%;
+   }
+}
+
+/* mobile */
+@media (orientation:portrait) and (max-width:1024px) {
+   h1{
+   font-size:2.2em;
+   }
+   h2{
+   font-size:1em;
+   }
+
+   #header {
+   background-size:150%;
+   background-position:right bottom;
+   }
+}
