@@ -12,11 +12,11 @@ module.exports = function(app) {
 
   // Get sign up page
   app.get('/signup', function(req, res) {
-    res.render('signup')
+    res.render('signup', { title: 'Mngr'})
   })
 
   app.get('/home', function(req, res) {
-    res.render('home')
+    res.render('home', { title: 'Mngr'})
   })
 
 }

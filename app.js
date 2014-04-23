@@ -47,8 +47,8 @@ io.sockets.on('connection', function(socket) {
   socket.on('create-user', function(args) {
     var name = args[0].toString()
     var email = args[1].toString()
-    var username = args[2].toString()
-    var password = args[3].toString()
+    var username = args[1].toString()
+    var password = args[2].toString()
     console.log('[~] Attempting to create user ' + username + '.')
     app.databaseProvider.createUser(name, email, username, password, function(err, res) {
       if(err) {

@@ -1,4 +1,14 @@
 extends layoutlanding
+block head
+  link(rel='stylesheet', href='/stylesheets/index.css')
+  script.
+    $(document).ready(function() {
+      $("#scroll").click(function() {
+        $('html, body').animate({
+          scrollTop: $("#info").offset().top
+        }, 500);
+      });
+    });
 //everything in header goes here
 block banner
   #tagline

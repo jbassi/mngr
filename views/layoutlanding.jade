@@ -2,12 +2,9 @@
 doctype html
 html
   head
-    meta(name='viewport', content='width=device-width, user-scalable=no')
     title= title
+    meta(name='viewport', content='width=device-width, user-scalable=no')
     link(rel='stylesheet', href='/stylesheets/stylelanding.css')
-    //TODO how to put css link in respective jade files?
-    link(rel='stylesheet', href='/stylesheets/index.css')
-    link(rel='stylesheet', href='/stylesheets/signup.css')
     link(rel='stylesheet', href='javascripts/sidr/stylesheets/jquery.sidr.dark.css')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
     script(src='/socket.io/socket.io.js')
@@ -27,12 +24,8 @@ html
         displace: true,
         speed: 200
         });
-        $("#scroll").click(function() {
-          $('html, body').animate({
-            scrollTop: $(".row").offset().top
-          }, 500);
-        });
       });
+    block head
   body
   //whole screen header
   #header

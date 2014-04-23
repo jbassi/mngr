@@ -1,11 +1,14 @@
 extends layoutlanding
+block head
+  link(rel='stylesheet', href='/stylesheets/signup.css')
 block banner
   form#signup-form
     form
       //TODO get rid of username field in parse, extraneous
       input#signup-name(type='text' placeholder='NAME')
       input#signup-email(type='text' placeholder='EMAIL')
-      input#signup-password(type='password' placeholder='PASSWORD')
+      //input#signup-user(type='username' placeholder='USERNAME')
+      input#signup-pass(type='password' placeholder='PASSWORD')
       input#signup-button.button(type='button', value='SIGN UP')
 block content
   #sidr-left
