@@ -14,18 +14,23 @@ socket.on('login-verified', function(data) {
   window.location.href = '/home'
 })
 
+socket.on('login-failed', function(data) {
+  $( "#sidr-right" ).effect( "shake", {times:2, distance:12}, 500 )
+})
+
 socket.on('user-created', function(data) {
   console.log('(+) User: ' + data.username + ' successfully created.')
   // Navigate to home page
-  window.location.href = '/'
+  window.location.href = '/home'
 })
 
+//TODO how to check if user is logged in??
 $(document).ready(function() {
 	$('#login-button').click(function() {
     socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
 	})
 
-  $('input').keydown(function(e) {
+  $('#login-pass').keydown(function(e) { //TODO is there a way to do this for both #login-pass and #login-user?
     if (e.keyCode == 13) {
       socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
     }
@@ -33,6 +38,13 @@ $(document).ready(function() {
 
   $('#signup-button').click(function() {
     socket.emit('create-user', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-user').val(), $('#signup-password').val()])
+      $('#signup-pass').val()])
   })
+
+  $('#signup-pass').keydown(function(e) {
+    if (e.keyCode == 13) {
+    socket.emit('create-user', [$('#signup-name').val(), $('#signup-email').val(), 
+      $('#signup-pass').val()])
+    }
+  });
 })

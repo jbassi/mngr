@@ -1,31 +1,22 @@
-/*
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+/*css for home pages, not used yet*/
 
-a {
-  color: #00B7FF;
-}
-*/
+*              { margin: 0; padding: 0; }
+body           { font-family: Garamond, serif; background-color: #ededed;  }
 
-*					{ margin: 0; padding: 0; }
-body				{ font-family: Garamond, serif; background-color: #ededed;  }
+.clear            { clear: both; }
 
-.clear				{ clear: both; }
+form           { width: 406px; margin: 170px auto 0; }
 
-form				{ width: 406px; margin: 170px auto 0; }
+legend            { display: none; }
 
-legend				{ display: none; }
+fieldset       { border: 0; }
 
-fieldset			{ border: 0; }
+label          { width: 115px; text-align: right; float: left; margin: 0 10px 0 0; padding: 9px 0 0 0; font-size: 16px; }
 
-label				{ width: 115px; text-align: right; float: left; margin: 0 10px 0 0; padding: 9px 0 0 0; font-size: 16px; }
-
-input				{ width: 220px; display: block; padding: 4px; margin: 0 0 10px 0; font-size: 18px;
-					  color: #3a3a3a; font-family: Garamond, serif;}
-					  
-.button				{ border: 1px solid #999;
-					  -moz-border-radius: 5px; padding: 5px; background: white; color: black; font-weight: bold;
-					  -webkit-border-radius: 5px; font-size: 13px;  width: 70px; }
-.button:hover		{ background: #dbdbdb; color: black; cursor: pointer; }
+input          { width: 220px; display: block; padding: 4px; margin: 0 0 10px 0; font-size: 18px;
+                 color: #3a3a3a; font-family: Garamond, serif;}
+                 
+.button           { border: 1px solid #999;
+                 -moz-border-radius: 5px; padding: 5px; background: white; color: black; font-weight: bold;
+                 -webkit-border-radius: 5px; font-size: 13px;  width: 70px; }
+.button:hover     { background: #dbdbdb; color: black; cursor: pointer; }

@@ -1,0 +1,73 @@
+#signup-form{
+width:20em;
+margin:5% auto;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-radius:.6em;
+-moz-border-radius:.6em;
+-ms-border-radius:.6em;
+-o-border-radius:.6em;
+border-radius:.6em;
+}
+
+#signup-name{
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-top-left-radius:.3em;
+-moz-border-top-left-radius:.3em;
+-ms-border-top-left-radius:.3em;
+-o-border-top-left-radius:.3em;
+border-top-left-radius:.3em;
+-webkit-border-top-right-radius:.3em;
+-moz-border-top-right-radius:.3em;
+-ms-border-top-right-radius:.3em;
+-o-border-top-right-radius:.3em;
+border-top-right-radius:.3em;
+}
+
+#signup-email,#signup-name,#signup-user{
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+}
+
+#signup-pass{
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-bottom-left-radius:.3em;
+-moz-border-bottom-left-radius:.3em;
+-ms-border-bottom-left-radius:.3em;
+-o-border-bottom-left-radius:.3em;
+border-bottom-left-radius:.3em;
+-webkit-border-bottom-right-radius:.3em;
+-moz-border-bottom-right-radius:.3em;
+-ms-border-bottom-right-radius:.3em;
+-o-border-bottom-right-radius:.3em;
+border-bottom-right-radius:.3em;
+}
+
+#signup-button{
+margin:.75em auto 0;
+width:60%;
+}
+
+/* small screens */
+@media (max-width:1024px) {
+   #signup-form{
+   margin-top: 15%;
+   }
+}
+
+/* mobile */
+@media (orientation:portrait) and (max-width:1024px) {
+   #signup-form{
+   width:140%;
+   margin:10% -20%;
+   }
+}

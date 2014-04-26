@@ -1,23 +1,23 @@
-extends layout
-
-block content
-  script(src='/socket.io/socket.io.js')
-  script(src='javascripts/client.js')
-
+extends layoutlanding
+block head
+  link(rel='stylesheet', href='/stylesheets/signup.css')
+block banner
   form#signup-form
-    h3 Please tell us a little about yourself.
     form
-      label Name
-      input#signup-name(type='text')
-      div.clear
-      label Email
-      input#signup-email(type='text')
-      div.clear
-      label Username
-      input#signup-user(type='text')
-      div.clear
-      label Password
-      input#signup-password(type='password')
-      div.clear
-      br
-      input#signup-button.button(type='button', style='margin: -20px 0 0 287px;', value='Submit')
+      //TODO get rid of username field in parse, extraneous
+      input#signup-name(type='text' placeholder='NAME')
+      input#signup-email(type='text' placeholder='EMAIL')
+      //input#signup-user(type='username' placeholder='USERNAME')
+      input#signup-pass(type='password' placeholder='PASSWORD')
+      input#signup-button.button(type='button', value='SIGN UP')
+block content
+  #sidr-left
+      ul
+        li
+          a(href='/') HOME
+        li
+          a(href='#') FEATURES
+        li
+          a(href='#') ABOUT
+        li.active
+          a(href='/signup') SIGN UP
