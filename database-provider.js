@@ -19,13 +19,9 @@ var DatabaseProvider = function(app, server) {
 	// Check database for a test response
 	// If a response is recieved, the database connected successfully 
 	console.log('[~] Checking database for a test response.')
-<<<<<<< HEAD
-	var TestObject = Parse.Object.extend('TestObject')
-=======
 	// Create a new Parse object of type TestObject
 	var TestObject = Parse.Object.extend('TestObject')
 	// Create a query that searches Parse for a TestObject
->>>>>>> UI
 	var query = new Parse.Query(TestObject)
 	// Look for { foo: 'test' } in the TestObject
 	query.equalTo('foo', 'test')

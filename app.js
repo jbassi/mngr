@@ -34,15 +34,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-<<<<<<< HEAD
-// Configure page routes
-// var test = require('./routes/router.js')
-// test(app)
-=======
 // Configure page routes -- this is equivalent to:
 // var req = require('./routes/router.js')
 // req(app)
->>>>>>> UI
 require('./routes/router.js')(app)
 
 // Create a databaseProvider object that links to the Parse database
@@ -50,11 +44,7 @@ app.databaseProvider = new DatabaseProvider(app, server)
 
 // Configure socket.io server emits and on messages
 io.sockets.on('connection', function(socket) {
-<<<<<<< HEAD
-  //JSON Object
-=======
   // Emit a successful connection message if socket.io connects
->>>>>>> UI
   socket.emit('status', {msg:'connection established'})
 
   // Attempts to create a new Parse user by passing socket.io args array 
