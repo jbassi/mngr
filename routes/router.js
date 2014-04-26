@@ -15,6 +15,7 @@ module.exports = function(app) {
     res.render('signup', { title: 'Mngr'})
   })
 
+  // Get home page
   app.get('/home', function(req, res) {
     res.render('home', { title: 'Mngr'})
   })
