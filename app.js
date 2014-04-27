@@ -87,4 +87,19 @@ io.sockets.on('connection', function(socket) {
       }
     })
   })
+
+  // Attempts to reset given Parse user password
+  socket.on('reset-password', function(email) {
+    // DatabaseProvider object handles password reset
+    app.databaseProvider.resetPassword(email, function(err) {
+      // Emit result of password reset, err is null if no error exists
+      if(err) {
+        // Emit error to front end
+        socket.emit('reset-fail', email)
+      } else {
+        // Emit success to front end
+        socket.emit('reset-success', email)
+      }
+    }) 
+  })
 })
