@@ -80,6 +80,29 @@ DatabaseProvider.prototype.verifyLogin = function(user, password, callback) {
 	})
 }
 
+DatabaseProvider.prototype.resetPassword = function(email, callback) {
+    // Reset password in database provider
+	Parse.User.requestPasswordReset(email, {
+  		success: function() {
+    		// Password reset request was sent successfully
+    		console.log('[~] Reset Request sent')
+    		callback(null)
+ 		 },
+  		error: function(error) {
+    		// Show the error message somewhere
+    		console.log('[~] Reset Request Failed')
+    		callback(err)
+ 		 }
+	});
+
+}
+
 // Allow all functions in DatabaseProvider to be accesed outside file scope
 // if this file is required
 exports.DatabaseProvider = DatabaseProvider
+
+
+
+
+
+
