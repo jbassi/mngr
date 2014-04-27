@@ -1,45 +1,4 @@
-#tagline {
-width:110%;
-margin-left: -5%;
-text-align:center;
-}
-
-#subtitle {
-position:relative;
-top:-1em;
-left:-50%;
-width:200%;
-text-align:center;
-}
-
-#scroll{ /*get started button*/
-position:relative;
-margin-top: 1.5em;
-margin-left: auto;
-margin-right: auto;
-}
-
-.row {
-margin: 0 auto;
-width:75%;
-}
-
-.row_element {
-float:left;
-width:40%;
-background:#eee;
-height:25em;
-margin:5%;
-}
-
-#intro{
-width:90%;
-}
-
 #signup-form{
-position: absolute;
-left: 0;
-right: 0;
 width:20em;
 margin:5% auto;
 -webkit-box-sizing:border-box;
@@ -50,7 +9,6 @@ box-sizing:border-box;
 -ms-border-radius:.6em;
 -o-border-radius:.6em;
 border-radius:.6em;
-display: none;
 }
 
 #signup-name{
@@ -95,8 +53,8 @@ border-bottom-right-radius:.3em;
 }
 
 #signup-button{
-width:10em;
-margin: 1em auto 2.5em;
+margin:.75em auto 0;
+width:60%;
 }
 
 /* small screens */
@@ -109,45 +67,7 @@ margin: 1em auto 2.5em;
 /* mobile */
 @media (orientation:portrait) and (max-width:1024px) {
    #signup-form{
-   }
-}
-
-
-
-
-
-/* small screens */
-@media (max-width:1024px) {
-   .row {
-   width:100%;
-   }
-
-  .row_element {
-   width:90%;
-   height:25em;
-   margin:5% 5% 0% 5%;
-   }
-}
-
-/* mobile */
-@media (orientation:portrait) and (max-width:1024px) {
-   #tagline {
-   margin-left:-40%;
-   width:180%;
-   }
-
-   #subtitle {
-   position:relative;
-   top:1em;
-   left:0%;
-   width:100%;
-   text-align:center;
-   }
-
-   #scroll{
-   position:relative;
-   margin-top: 3em;
-   margin-left: auto;
-   margin-right: auto;
+   width:140%;
+   margin:10% -20%;
    }
 }
