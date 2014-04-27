@@ -1,5 +1,7 @@
 var socket = io.connect()
 
+// Put some comments please!!!!
+//
 socket.on('status', function(data) {
   if (data.msg == 'connection established') {
     console.log('(+) socket.io: connection established.')
