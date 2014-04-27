@@ -6,7 +6,7 @@ var http = require('http');
 var path = require('path');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
-var DatabaseProvider = require('./database-provider').DatabaseProvider
+var DatabaseProvider = require('./server/database-provider').DatabaseProvider
 
 // Configure app settings 
 app.configure(function() {
