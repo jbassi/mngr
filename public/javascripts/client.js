@@ -39,8 +39,6 @@ socket.on('reset-fail', function(data) {
 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
-  socket.emit('reset-password', 'asdfasdfasd@gmail.com')
-
 	$('#login-button').click(function() {
     socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
 	})
