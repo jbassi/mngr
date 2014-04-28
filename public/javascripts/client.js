@@ -32,9 +32,14 @@ socket.on('user-created', function(data) {
 // Listens for a failed password reset after an emit of reset-password
 socket.on('reset-fail', function(data) {
   // TODO: Print reset error message to user
-  console.log('(+) Email reset on: ' + data + ' failed.')
+  console.log('(+) Password reset on: ' + data + ' failed.')
 })
 
+// Listens for a successful password reset after an emit of reset-password
+socket.on('reset-success', function(data) {
+  // TODO: Print reset success message to user
+  console.log('(+) Password reset on: ' + data + ' success.')
+})
 
 
 //TODO how to check if user is logged in??
