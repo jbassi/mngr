@@ -65,4 +65,17 @@ $(document).ready(function() {
       $('#signup-pass').val()])
     }
   });
+
+/*
+//On button click
+  $('#forgetPassword-button').click(function() {
+    socket.emit('reset-password', [$('#signup-name').val()])
+  })
+//On enter key
+  $('#forgetPassword-pass').keydown(function(e) {
+    if (e.keyCode == 13) {
+    socket.emit('reset-password', [$('#signup-name').val()])
+    }
+  }); */
+
 })
