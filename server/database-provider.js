@@ -30,8 +30,8 @@ var DatabaseProvider = function(app, server) {
 	    console.log('[+] Successfully retrieved test object.')
 	  },
 	  error: function(err) {
-	    console.log('[-] Error retrieving test response: Error: ' + 
-				err.code + ' ' + err.message)
+	   //  console.log('[-] Error retrieving test response: Error: ' + 
+				// err.code + ' ' + err.message)
 	  }
 	})
 }
@@ -74,8 +74,8 @@ DatabaseProvider.prototype.verifyLogin = function(user, password, callback) {
 			callback(null, user)
 		},
 		error: function(user, err) {
-			console.log('[~] Unsuccessful login. Error message: ' + err)
-			callback(err, user)
+			console.log('[~] Unsuccessful login. Error: ' + JSON.stringify(err, true))
+			callback(err.code, user)
 		}
 	})
 }
@@ -100,9 +100,3 @@ DatabaseProvider.prototype.resetPassword = function(email, callback) {
 // Allow all functions in DatabaseProvider to be accesed outside file scope
 // if this file is required
 exports.DatabaseProvider = DatabaseProvider
-
-
-
-
-
-

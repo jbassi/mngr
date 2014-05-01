@@ -20,6 +20,14 @@ socket.on('login-verified', function(data) {
 // Listens for a failed login verification after an emit of verify-login 
 socket.on('login-failed', function(data) {
   $("#sidr-right").effect( "shake", {times:2, distance:12}, 500 )
+
+  // Display error message
+  if(data === 200) {
+    console.log('(~) Username missing.')
+  }
+  if(data === 201) {
+    console.log('(~) Password missing.')
+  }
 })
 
 // Listens for a successfully created user after an emit of create-user 
@@ -40,7 +48,6 @@ socket.on('reset-success', function(data) {
   // TODO: Print reset success message to user
   console.log('(+) Password reset on: ' + data + ' success.')
 })
-
 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
