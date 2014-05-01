@@ -20,6 +20,14 @@ socket.on('login-verified', function(data) {
 // Listens for a failed login verification after an emit of verify-login 
 socket.on('login-failed', function(data) {
   $("#sidr-right").effect( "shake", {times:2, distance:12}, 500 )
+
+  // Display error message
+  if(data === 200) {
+    console.log('(~) Username missing.')
+  }
+  if(data === 201) {
+    console.log('(~) Password missing.')
+  }
 })
 
 // Listens for a successfully created user after an emit of create-user 
@@ -32,15 +40,17 @@ socket.on('user-created', function(data) {
 // Listens for a failed password reset after an emit of reset-password
 socket.on('reset-fail', function(data) {
   // TODO: Print reset error message to user
-  console.log('(+) Email reset on: ' + data + ' failed.')
+  console.log('(+) Password reset on: ' + data + ' failed.')
 })
 
-
+// Listens for a successful password reset after an emit of reset-password
+socket.on('reset-success', function(data) {
+  // TODO: Print reset success message to user
+  console.log('(+) Password reset on: ' + data + ' success.')
+})
 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
-  socket.emit('reset-password', 'asdfasdfasd@gmail.com')
-
 	$('#login-button').click(function() {
     socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
 	})
@@ -62,4 +72,17 @@ $(document).ready(function() {
       $('#signup-pass').val()])
     }
   });
+
+/*
+//On button click
+  $('#forgetPassword-button').click(function() {
+    socket.emit('reset-password', [$('#signup-name').val()])
+  })
+//On enter key
+  $('#forgetPassword-pass').keydown(function(e) {
+    if (e.keyCode == 13) {
+    socket.emit('reset-password', [$('#signup-name').val()])
+    }
+  }); */
+
 })

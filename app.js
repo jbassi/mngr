@@ -1,4 +1,3 @@
-
 // Require module dependencies and create the app server.
 var express = require('express');
 var app = express();
@@ -51,10 +50,10 @@ io.sockets.on('connection', function(socket) {
   // data to databaseProvider
   socket.on('create-user', function(args) {
     // Store data locally to pass into databaseProvider 
-    var name = args[0].toString()
-    var email = args[1].toString()
-    var username = args[1].toString()
-    var password = args[2].toString()
+    var name = args[0] === '' ? null : args[0].toString()
+    var email = args[1] === '' ? null : args[1].toString()
+    var username = args[2] === '' ? null : args[2].toString()
+    var password = args[3] === '' ? null : args[3].toString()
 
     console.log('[~] Attempting to create user ' + username + '.')
     app.databaseProvider.createUser(name, email, username, password, 
@@ -74,14 +73,15 @@ io.sockets.on('connection', function(socket) {
   // Checks Parse for valid login and password passed in via the args array
   socket.on('verify-login', function(args) {
     // Store data locally to pass into databaseProvider 
-    var user = args[0].toString()
-    var password = args[1].toString()
+    console.log('Name: ' + args[0])
+    var user = args[0] === '' ? null : args[0].toString()
+    var password = args[1] === '' ? null : args[1].toString()
 
     app.databaseProvider.verifyLogin(user, password, function(err, res) {
       // Emit result of verifyLogin
       // err is null if there is not an error 
       if(err) {
-        socket.emit('login-failed', res)
+        socket.emit('login-failed', err)
       } else {
         socket.emit('login-verified', res)
       }
