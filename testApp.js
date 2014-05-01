@@ -104,3 +104,33 @@ io.sockets.on('connection', function(socket) {
   })
 })
 
+// Allow the the user input in the console 
+// for debugging purposes
+var sys = require("sys");
+
+var stdin = process.openStdin();
+
+stdin.addListener("data", function(d) {
+    // note:  d is an object, and when converted to a string it will
+    // end with a linefeed.  so we (rather crudely) account for that  
+    // with toString() and then substring() 
+    var input = d.toString().substring(0, d.length-1)
+    var userInfo = input.split(" ");
+
+    // do something clever with the input string
+    console.log("you entered: [" + 
+        input + "]");
+
+    app.databaseProvider.createUser(userInfo[0], userInfo[1], userInfo[1], userInfo[2], 
+        // Check if the user was successfully added 
+        // err is null if there is not an error 
+        function(err, res) {
+          if(err) {
+            console.log(err)
+          } else {
+            // Emit user created with response message from databaseProvider
+            console.log("New User has been created: " + userInfo[0])
+          }
+        } // end of callback
+    )
+})

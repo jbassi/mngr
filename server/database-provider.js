@@ -1,4 +1,5 @@
 var Parse = require('parse').Parse
+var Worker = require('./worker').Worker
 
 // Constructor for a DatabaseProvider object
 var DatabaseProvider = function(app, server) {
@@ -39,19 +40,10 @@ var DatabaseProvider = function(app, server) {
 // This function takes in a name, email, username, and password and attempts
 // to create a new user in Parse. A callback function is also included to alert
 // the caller of the user creation status
-DatabaseProvider.prototype.createUser = function(name, email, username, 
-																													password, callback) {
+DatabaseProvider.prototype.createUser = function(name, email, username, password, callback) {
 	// Create a new Parse user to add to the database
-	var newUser = new Parse.User()
-
-	// Set user object fields
-	newUser.set('username', username)
-	newUser.set('password', password)
-	newUser.set('email', email)
-	newUser.set('name', name)
-
 	// Sign up new user
-	newUser.signUp(null, {
+    Worker(name, email, username, password).signUp(null, {
 	  success: function(user) {
 	  	console.log('[+] Successfully created new user ' + name)
 	  	callback(null, user)
@@ -100,8 +92,6 @@ DatabaseProvider.prototype.resetPassword = function(email, callback) {
 // Allow all functions in DatabaseProvider to be accesed outside file scope
 // if this file is required
 exports.DatabaseProvider = DatabaseProvider
-
-
 
 
 
