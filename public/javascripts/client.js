@@ -30,7 +30,7 @@ socket.on('login-failed', function(data) {
   }
 })
 
-// Listens for a successfully created user after an emit of create-user 
+// Listens for a successfully created user after an emit of sign-up
 socket.on('user-created', function(data) {
   console.log('(+) User: ' + data.username + ' successfully created.')
   // Navigate to home page
@@ -62,14 +62,14 @@ $(document).ready(function() {
   });
 
   $('#signup-button').click(function() {
-    socket.emit('create-user', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val()])
+    socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
+      $('#signup-pass').val(), 'Manager'])
   })
 
   $('#signup-pass').keydown(function(e) {
     if (e.keyCode == 13) {
-    socket.emit('create-user', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val()])
+    socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
+      $('#signup-pass').val(), 'Manager'])
     }
   });
 
