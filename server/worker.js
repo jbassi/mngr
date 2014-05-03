@@ -3,6 +3,10 @@ var Parse = require('parse').Parse
 // Constructor for worker
 var Worker = Parse.User.extend({
   // Instance methods
+
+  // This function takes in a name, email, username, and password and attempts
+  // to create a new user in Parse. A callback function is also included to 
+  // alert the caller of the user creation status
   createUser:  function(name, email, username, password, callback) {
     // Set user object fields
     this.set('username', username)
@@ -41,21 +45,26 @@ var Worker = Parse.User.extend({
           callback(err.code, user)
         }
     })
-  } // end of verifyLogin
+  }, // end of verifyLogin
 
+  // This function attempts to reset a Parse user password with the given email.
+  // A callback with an error from parse is provided.
+  resetPassword: function(email, callback) {
+    Parse.User.requestPasswordReset(email, {
+        success: function() {
+          // Password reset request was successful
+          console.log('[~] Reset Request sent')
+          callback(null)
+       },
+        error: function(err) {
+          // Send error message back to calling function
+          console.log('[~] Reset Request Failed')
+          callback(err)
+       }
+    })
+  }
 })
-
-// This function takes in a name, email, username, and password and attempts
-// to create a new user in Parse. A callback function is also included to alert
-// the caller of the user creation status
-
 
 // Allow all the functions in this file to be accessed 
 // when this file is required 
 module.exports.Worker = Worker 
-
-
-
-
-
-
