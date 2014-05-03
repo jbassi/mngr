@@ -1,4 +1,3 @@
-
 // Require module dependencies and create the app server.
 var express = require('express');
 var app = express();
@@ -7,6 +6,7 @@ var path = require('path');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var DatabaseProvider = require('./server/database-provider').DatabaseProvider
+var Worker = require('./server/worker').Worker
 
 // Configure app settings 
 app.configure(function() {
@@ -42,6 +42,10 @@ require('./routes/router.js')(app)
 // Create a databaseProvider object that links to the Parse database
 app.databaseProvider = new DatabaseProvider(app, server)
 
+// ********************** ****************** ********************** //
+// ********************** Socket Connections ********************** //
+// ********************** ****************** ********************** //
+
 // Configure socket.io server emits and on messages
 io.sockets.on('connection', function(socket) {
   // Emit a successful connection message if socket.io connects
@@ -51,42 +55,46 @@ io.sockets.on('connection', function(socket) {
   // data to databaseProvider
   socket.on('create-user', function(args) {
     // Store data locally to pass into databaseProvider 
-    var name = args[0].toString()
-    var email = args[1].toString()
-    var username = args[1].toString()
-    var password = args[2].toString()
+    var name = args[0] === '' ? null : args[0].toString()
+    var email = args[1] === '' ? null : args[1].toString()
+    var password = args[2] === '' ? null : args[2].toString()
 
-    console.log('[~] Attempting to create user ' + username + '.')
-    app.databaseProvider.createUser(name, email, username, password, 
-    // Check if the user was successfully added 
-    // err is null if there is not an error 
-    function(err, res) {
-      if(err) {
-        console.log(err)
-        // TODO: handle error messages
-      } else {
-        // Emit user created with response message from databaseProvider
-        socket.emit('user-created', res)
-      }
+    console.log('[~] Attempting to create user ' + name + '.')
+
+    var worker = new Worker()
+    worker.createUser(name, email, email, password, 
+      // Check if the user was successfully added 
+      // err is null if there is not an error 
+      function(err, res) {
+        if(err) {
+          console.log(err)
+          // TODO: handle error messages
+        } else {
+          // Emit user created with response message from databaseProvider
+          socket.emit('user-created', res)
+        }
     })
-  })
+  }) // create-user
 
   // Checks Parse for valid login and password passed in via the args array
   socket.on('verify-login', function(args) {
     // Store data locally to pass into databaseProvider 
-    var user = args[0].toString()
-    var password = args[1].toString()
+    console.log('Name: ' + args[0])
+    var user = args[0] === '' ? null : args[0].toString()
+    var password = args[1] === '' ? null : args[1].toString()
 
-    app.databaseProvider.verifyLogin(user, password, function(err, res) {
-      // Emit result of verifyLogin
-      // err is null if there is not an error 
-      if(err) {
-        socket.emit('login-failed', res)
-      } else {
-        socket.emit('login-verified', res)
-      }
+    //app.databaseProvider.verifyLogin(user, password, function(err, res) {
+    Worker.verifyLogin(user, password,
+      function(err, res) {
+          // Emit result of verifyLogin
+          // err is null if there is not an error 
+          if(err) {
+            socket.emit('login-failed', err)
+          } else {
+            socket.emit('login-verified', res)
+          }
     })
-  })
+  }) // end of verify-login
 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(email) {
@@ -101,7 +109,7 @@ io.sockets.on('connection', function(socket) {
         socket.emit('reset-success', email)
       }
     }) 
-  })
+  }) // end of reset-password
 })
 
 // Allow the the user input in the console 
@@ -115,13 +123,14 @@ stdin.addListener("data", function(d) {
     // end with a linefeed.  so we (rather crudely) account for that  
     // with toString() and then substring() 
     var input = d.toString().substring(0, d.length-1)
-    var userInfo = input.split(" ");
+    var userInfo = input.split(" "); // Split the input from the console 
 
     // do something clever with the input string
     console.log("you entered: [" + 
         input + "]");
 
-    app.databaseProvider.createUser(userInfo[0], userInfo[1], userInfo[1], userInfo[2], 
+   var worker = new Worker()
+   worker.createUser(userInfo[0], userInfo[1], userInfo[1], userInfo[2], 
         // Check if the user was successfully added 
         // err is null if there is not an error 
         function(err, res) {
@@ -133,4 +142,5 @@ stdin.addListener("data", function(d) {
           }
         } // end of callback
     )
+   console.log(worker.getEmail())
 })
