@@ -9,6 +9,7 @@ var Worker = Parse.User.extend({
   // This function takes in a name, email, username, and password and attempts
   // to create a new user in Parse. A callback function is also included to 
   // alert the caller of the user creation status
+  
   createUser:  function(args, callback) {
     // Store data locally to pass into databaseProvider 
     var name = args[0] === '' ? null : args[0]
@@ -72,7 +73,7 @@ var Worker = Parse.User.extend({
           callback(null, user)
         },
         error: function(user, err) {
-          console.log('[~] Unsuccessful login. Error: ' + JSON.stringify(err, true))
+          console.log('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
           callback(err.code, user)
         }
     })

@@ -13,9 +13,7 @@ module.exports = function(app, server, callback) {
 	})
 
 	// Initialize database with Parse keys after waiting 1 second
-	setTimeout(function() {
-		console.log('[~] Connecting to Parse database.')
-		Parse.initialize(APP_ID, JAVASCRIPT_KEY, MASTER_KEY)
-		callback(null)
-	}, 1000)
+	console.log('[~] Connecting to Parse database.')
+	Parse.initialize(APP_ID, JAVASCRIPT_KEY, MASTER_KEY)
+	callback(null)
 }
