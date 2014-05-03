@@ -5,7 +5,6 @@ var http = require('http');
 var path = require('path');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
-var DatabaseProvider = require('./server/database-provider').DatabaseProvider
 var Worker = require('./server/worker').Worker
 
 // Configure app settings 
@@ -40,7 +39,12 @@ if ('development' == app.get('env')) {
 require('./routes/router.js')(app)
 
 // Create a databaseProvider object that links to the Parse database
-app.databaseProvider = new DatabaseProvider(app, server)
+require('./server/database-provider')(app, server, function(err) {
+  if(!err) {
+    // No errors connecting to Parse, continue with app functionality 
+    console.log('[+] Successfully connected to Parse.')   
+  }
+})
 
 // ********************** ****************** ********************** //
 // ********************** Socket Connections ********************** //
@@ -79,7 +83,6 @@ io.sockets.on('connection', function(socket) {
   // Checks Parse for valid login and password passed in via the args array
   socket.on('verify-login', function(args) {
     // Store data locally to pass into databaseProvider 
-    console.log('Name: ' + args[0])
     var user = args[0] === '' ? null : args[0].toString()
     var password = args[1] === '' ? null : args[1].toString()
 
