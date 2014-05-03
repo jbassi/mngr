@@ -6,6 +6,7 @@ var path = require('path');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var DatabaseProvider = require('./server/database-provider').DatabaseProvider
+var Worker = require('./server/worker').Worker
 
 // Configure app settings 
 app.configure(function() {
@@ -41,6 +42,10 @@ require('./routes/router.js')(app)
 // Create a databaseProvider object that links to the Parse database
 app.databaseProvider = new DatabaseProvider(app, server)
 
+// ********************** ****************** ********************** //
+// ********************** Socket Connections ********************** //
+// ********************** ****************** ********************** //
+
 // Configure socket.io server emits and on messages
 io.sockets.on('connection', function(socket) {
   // Emit a successful connection message if socket.io connects
@@ -52,23 +57,24 @@ io.sockets.on('connection', function(socket) {
     // Store data locally to pass into databaseProvider 
     var name = args[0] === '' ? null : args[0].toString()
     var email = args[1] === '' ? null : args[1].toString()
-    var username = args[2] === '' ? null : args[2].toString()
-    var password = args[3] === '' ? null : args[3].toString()
+    var password = args[2] === '' ? null : args[2].toString()
 
-    console.log('[~] Attempting to create user ' + username + '.')
-    app.databaseProvider.createUser(name, email, username, password, 
-    // Check if the user was successfully added 
-    // err is null if there is not an error 
-    function(err, res) {
-      if(err) {
-        console.log(err)
-        // TODO: handle error messages
-      } else {
-        // Emit user created with response message from databaseProvider
-        socket.emit('user-created', res)
-      }
+    console.log('[~] Attempting to create user ' + name + '.')
+
+    var worker = new Worker()
+    worker.createUser(name, email, email, password, 
+      // Check if the user was successfully added 
+      // err is null if there is not an error 
+      function(err, res) {
+        if(err) {
+          console.log(err)
+          // TODO: handle error messages
+        } else {
+          // Emit user created with response message from databaseProvider
+          socket.emit('user-created', res)
+        }
     })
-  })
+  }) // create-user
 
   // Checks Parse for valid login and password passed in via the args array
   socket.on('verify-login', function(args) {
@@ -77,16 +83,18 @@ io.sockets.on('connection', function(socket) {
     var user = args[0] === '' ? null : args[0].toString()
     var password = args[1] === '' ? null : args[1].toString()
 
-    app.databaseProvider.verifyLogin(user, password, function(err, res) {
-      // Emit result of verifyLogin
-      // err is null if there is not an error 
-      if(err) {
-        socket.emit('login-failed', err)
-      } else {
-        socket.emit('login-verified', res)
-      }
+    //app.databaseProvider.verifyLogin(user, password, function(err, res) {
+    Worker.verifyLogin(user, password,
+      function(err, res) {
+          // Emit result of verifyLogin
+          // err is null if there is not an error 
+          if(err) {
+            socket.emit('login-failed', err)
+          } else {
+            socket.emit('login-verified', res)
+          }
     })
-  })
+  }) // end of verify-login
 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(email) {
@@ -101,6 +109,5 @@ io.sockets.on('connection', function(socket) {
         socket.emit('reset-success', email)
       }
     }) 
-  })
+  }) // end of reset-password
 })
-
