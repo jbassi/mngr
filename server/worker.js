@@ -1,7 +1,7 @@
 var Parse = require('parse').Parse
 
 // Constructor for worker
-var Worker = Parse.User.extend("Worker", {
+var Worker = Parse.User.extend({
   // Instance methods
   createUser:  function(name, email, username, password, callback) {
     // Set user object fields
