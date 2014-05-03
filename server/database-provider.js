@@ -17,6 +17,7 @@ var DatabaseProvider = function(app, server) {
 	console.log('[+] Connecting to Parse database.')
 	Parse.initialize(APP_ID, JAVASCRIPT_KEY, MASTER_KEY)
 
+    ////////////////// DEBUG ///////////////////////
 	// Check database for a test response
 	// If a response is recieved, the database connected successfully 
 	console.log('[~] Checking database for a test response.')
@@ -37,40 +38,6 @@ var DatabaseProvider = function(app, server) {
 	})
 }
 
-// This function takes in a name, email, username, and password and attempts
-// to create a new user in Parse. A callback function is also included to alert
-// the caller of the user creation status
-DatabaseProvider.prototype.createUser = function(name, email, username, password, callback) {
-	// Create a new Parse user to add to the database
-	// Sign up new user
-    Worker(name, email, username, password).signUp(null, {
-	  success: function(user) {
-	  	console.log('[+] Successfully created new user ' + name)
-	  	callback(null, user)
-	  },
-	  error: function(user, err) {
-	    console.log('[~] Error: ' + err.code + ' ' + err.message)
-	    callback(err, user)
-	  }
-	})
-}
-
-// This function checks Parse to see if the (user, password) pair is valid. A 
-// callback function is also included to alert the caller if the pair is valid
-// or not
-DatabaseProvider.prototype.verifyLogin = function(user, password, callback) {
-	// Check Parse for the given username and password
-	Parse.User.logIn(user, password, {
-		success: function(user) {
-			console.log('[~] Successful login.')
-			callback(null, user)
-		},
-		error: function(user, err) {
-			console.log('[~] Unsuccessful login. Error: ' + JSON.stringify(err, true))
-			callback(err.code, user)
-		}
-	})
-}
 
 // This function attempts to reset a Parse user password with the given email.
 // A callback with an error from parse is provided.
