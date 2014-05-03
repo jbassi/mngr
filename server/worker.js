@@ -2,14 +2,22 @@ var Parse = require('parse').Parse
 
 // Constructor for worker
 var Worker = Parse.User.extend({
-  // Instance methods
+  // ***************** **************** ***************** // 
+  // ***************** Instance methods ***************** // 
+  // ***************** **************** ***************** // 
 
   // This function takes in a name, email, username, and password and attempts
   // to create a new user in Parse. A callback function is also included to 
   // alert the caller of the user creation status
-  createUser:  function(name, email, username, password, callback) {
+  createUser:  function(args, callback) {
+    // Store data locally to pass into databaseProvider 
+    var name = args[0] === '' ? null : args[0]
+    var email = args[1] === '' ? null : args[1]
+    var password = args[2] === '' ? null : args[2]
+    var role = args[3] === '' ? null : args[3]
+
     // Set user object fields
-    this.set('username', username)
+    this.set('username', email)
     this.set('password', password)
     this.set('email', email)
     this.set('name', name)
@@ -18,6 +26,24 @@ var Worker = Parse.User.extend({
     this.signUp(null, {
       success: function(user) {
         console.log('[+] Successfully created new user ' + name)
+
+        // Giving the new user the role of Manager or Employee
+        var roleQuery = new Parse.Query(Parse.Role)
+        roleQuery.equalTo('name', role)
+
+        // get the manger role
+        roleQuery.first({
+          success: function(role) {
+            // successfully retrieved the object role          
+            role.getUsers().add(Parse.User.current())
+            role.save()
+          }, 
+          error: function(error) {
+            // error occurred when querying the role object
+            console.error("[~] Error: " + error.code + error.message)
+          }
+        })
+
         callback(null, user)
       },
       error: function(user, err) {
@@ -25,10 +51,15 @@ var Worker = Parse.User.extend({
         callback(err, user)
       }
     })
+   
+
+    //workerRole.getUsers().add(this)
   } // end of createUser
 
 }, {
-  // Class methods
+  // ***************** ************* ***************** // 
+  // ***************** Class methods ***************** // 
+  // ***************** ************* ***************** // 
 
   // This function checks Parse to see if the (user, password) pair is valid. A 
   // callback function is also included to alert the caller if the pair is valid
