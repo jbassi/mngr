@@ -6,6 +6,7 @@ var path = require('path');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var Worker = require('./server/worker').Worker
+var Parse = require('parse').Parse
 
 // Configure app settings 
 app.configure(function() {
@@ -133,7 +134,7 @@ stdin.addListener("data", function(d) {
         input + "]");
 
    var worker = new Worker()
-   worker.createUser(userInfo[0], userInfo[1], userInfo[1], userInfo[2], 
+   worker.createUser(userInfo,
         // Check if the user was successfully added 
         // err is null if there is not an error 
         function(err, res) {

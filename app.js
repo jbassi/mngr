@@ -57,16 +57,11 @@ io.sockets.on('connection', function(socket) {
 
   // Attempts to create a new Parse user by passing socket.io args array 
   // data to databaseProvider
-  socket.on('create-user', function(args) {
-    // Store data locally to pass into databaseProvider 
-    var name = args[0] === '' ? null : args[0].toString()
-    var email = args[1] === '' ? null : args[1].toString()
-    var password = args[2] === '' ? null : args[2].toString()
-
-    console.log('[~] Attempting to create user ' + name + '.')
+  socket.on('sign-up', function(args) {
+    console.log('[~] Attempting to create user ' + args[0] + '.')
 
     var worker = new Worker()
-    worker.createUser(name, email, email, password, 
+    worker.createUser(args,
       // Check if the user was successfully added 
       // err is null if there is not an error 
       function(err, res) {
@@ -78,7 +73,7 @@ io.sockets.on('connection', function(socket) {
           socket.emit('user-created', res)
         }
     })
-  }) // create-user
+  }) // sign-up
 
   // Checks Parse for valid login and password passed in via the args array
   socket.on('verify-login', function(args) {
