@@ -17,7 +17,12 @@ var Calendar = Parse.Object.extend('Calendar', {
   // stores the created calendar in Parse
   createCalendar: function() {
     var calendar = new Calendar()
-    var date = new Date()
+
+    // Set ACL access permission for this object
+    var calendarACL = new Parse.ACL()
+    calendarACL.setRoleWriteAccess('Manager', true)
+    calendar.setRoleReadAccess('Manager', true)
+    calendar.setRoleReadAccess('Employee', true)
 
     var days = []
     for(var i = 0; i < 366; i++) {
@@ -29,6 +34,8 @@ var Calendar = Parse.Object.extend('Calendar', {
       avaliabilities.push(new Day())
     }
 
+    // JavaScript provided Date class
+    var date = new Date()
     calendar.set('Year', date.getFullYear())
     calendar.set('Days', days)
     calendar.set('Avaliability', avaliabilities)
