@@ -10,54 +10,54 @@ socket.on('status', function(data) {
   }
 })
 
-// Listens for a successful login verification after an emit of verify-login 
-socket.on('login-verified', function(data) {
-  console.log('(+) User: ' + data.username + ' successfully connected.')
-  // Navigate to home page
-  window.location.href = '/home'
-})
-
-// Listens for a failed login verification after an emit of verify-login 
-socket.on('login-failed', function(data) {
-  $("#sidr-right").effect( "shake", {times:2, distance:12}, 500 )
-
-  // Display error message
-  if(data === 200) {
-    console.log('(~) Username missing.')
-  }
-  if(data === 201) {
-    console.log('(~) Password missing.')
+// Listens for a login-response
+socket.on('login-response', function(data) {
+  // Check if an error message was passed
+  if(data === 200 || data === 201) {
+    console.log('(~) Username or password missing.')
+    // TODO: Display message to user
+  } else if(data === 101) {
+    console.log('(~) Invalid username or password.')
+    $("#sidr-right").effect("shake", {times:2, distance:12}, 500)
+  } else {
+    console.log('(+) User: ' + data.username + ' successfully connected.')
+    // Navigate to home page
+    window.location.href = '/home'
   }
 })
 
-// Listens for a successfully created user after an emit of sign-up
-socket.on('user-created', function(data) {
-  console.log('(+) User: ' + data.username + ' successfully created.')
-  // Navigate to home page
-  window.location.href = '/home'
+// Listens for a sign-up response
+socket.on('sign-up-response', function(data) {
+  if(data === 203) {
+    // Email / username already taken. 
+    // TODO: Alert user
+    console.log('(-) Username already taken.')
+  } else {
+    console.log('(+) User: ' + data.username + ' successfully created.')
+    // Navigate to home page
+    window.location.href = '/home'
+  }
 })
 
-// Listens for a failed password reset after an emit of reset-password
-socket.on('reset-fail', function(data) {
-  // TODO: Print reset error message to user
-  console.log('(+) Password reset on: ' + data + ' failed.')
-})
-
-// Listens for a successful password reset after an emit of reset-password
-socket.on('reset-success', function(data) {
-  // TODO: Print reset success message to user
-  console.log('(+) Password reset on: ' + data + ' success.')
+// Listens for a password reset response 
+socket.on('password-reset-response', function(data) {
+  if(data == null) {
+    console.log('(+) Password reset successful.')
+    // Reset successful
+  } else {
+    console.log('(-) Password reset unsuccessful.')
+  }
 })
 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
 	$('#login-button').click(function() {
-    socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
+    socket.emit('login', [$('#login-user').val(), $('#login-pass').val()])
 	})
 
   $('#login-pass').keydown(function(e) { //TODO is there a way to do this for both #login-pass and #login-user?
     if (e.keyCode == 13) {
-      socket.emit('verify-login', [$('#login-user').val(), $('#login-pass').val()])
+      socket.emit('login', [$('#login-user').val(), $('#login-pass').val()])
     }
   });
 

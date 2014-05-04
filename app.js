@@ -66,17 +66,17 @@ io.sockets.on('connection', function(socket) {
       // err is null if there is not an error 
       function(err, res) {
         if(err) {
-          console.log(err)
+          socket.emit('sign-up-response', err)
           // TODO: handle error messages
         } else {
           // Emit user created with response message from databaseProvider
-          socket.emit('user-created', res)
+          socket.emit('sign-up-response', res)
         }
     })
   }) // sign-up
 
   // Checks Parse for valid login and password passed in via the args array
-  socket.on('verify-login', function(args) {
+  socket.on('login', function(args) {
     // Store data locally to pass into databaseProvider 
     var user = args[0] === '' ? null : args[0].toString()
     var password = args[1] === '' ? null : args[1].toString()
@@ -84,28 +84,22 @@ io.sockets.on('connection', function(socket) {
     //app.databaseProvider.verifyLogin(user, password, function(err, res) {
     Worker.verifyLogin(user, password,
       function(err, res) {
-          // Emit result of verifyLogin
-          // err is null if there is not an error 
-          if(err) {
-            socket.emit('login-failed', err)
-          } else {
-            socket.emit('login-verified', res)
-          }
+        // Emit result of verifyLogin
+        // err is null if there is not an error 
+        if(err) {
+          socket.emit('login-response', err)
+        } else {
+          socket.emit('login-response', res)
+        }
     })
   }) // end of verify-login
 
   // Attempts to reset given Parse user password
-  socket.on('reset-password', function(email) {
+  socket.on('reset-password', function(args) {
     // DatabaseProvider object handles password reset
-    app.databaseProvider.resetPassword(email, function(err) {
+    Worker.resetPassword(args, function(err) {
       // Emit result of password reset, err is null if no error exists
-      if(err) {
-        // Emit error to front end
-        socket.emit('reset-fail', email)
-      } else {
-        // Emit success to front end
-        socket.emit('reset-success', email)
-      }
+      socket.emit('reset-password-response', err)
     }) 
   }) // end of reset-password
 })

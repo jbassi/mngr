@@ -9,7 +9,7 @@ var Worker = Parse.User.extend({
   // This function takes in a name, email, username, and password and attempts
   // to create a new user in Parse. A callback function is also included to 
   // alert the caller of the user creation status
-  
+
   createUser:  function(args, callback) {
     // Store data locally to pass into databaseProvider 
     var name = args[0] === '' ? null : args[0]
@@ -43,9 +43,9 @@ var Worker = Parse.User.extend({
             role.getUsers().add(Parse.User.current())
             role.save()
           }, 
-          error: function(error) {
+          error: function(err) {
             // error occurred when querying the role object
-            console.error("[~] Error: " + error.code + error.message)
+            console.error("[~] Error: " + err.code + error.message)
           }
         })
 
@@ -53,7 +53,7 @@ var Worker = Parse.User.extend({
       },
       error: function(user, err) {
         console.log('[~] Error: ' + err.code + ' ' + err.message)
-        callback(err, user)
+        callback(err.code, user)
       }
     })
    
@@ -89,12 +89,12 @@ var Worker = Parse.User.extend({
     Parse.User.requestPasswordReset(email, {
         success: function() {
           // Password reset request was successful
-          console.log('[~] Reset Request sent')
+          console.log('[~] Reset request sent')
           callback(null)
        },
         error: function(err) {
           // Send error message back to calling function
-          console.log('[~] Reset Request Failed')
+          console.log('[~] Reset request failed')
           callback(err)
        }
     })
