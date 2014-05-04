@@ -26,7 +26,11 @@ width:75%;
 
 /* This is for the span id=About_Us */ 
 span#About_Us {
-font-variant:small-caps;
+font-variant: small-caps;
+font-weight: normal;
+}
+#info .row:nth-child(4){
+font-weight: bold;
 }
 
 .row_element {
