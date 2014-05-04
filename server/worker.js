@@ -1,4 +1,5 @@
 var Parse = require('parse').Parse
+var Calendar = require('./calendar').Calendar
 
 // Constructor for worker
 var Worker = Parse.User.extend({
@@ -10,14 +11,15 @@ var Worker = Parse.User.extend({
   // to create a new user in Parse. A callback function is also included to 
   // alert the caller of the user creation status
 
-  createUser:  function(args, callback) {
+  createUser: function(args, callback) {
     // Store data locally to pass into databaseProvider 
     var name = args[0] === '' ? null : args[0]
     var email = args[1] === '' ? null : args[1]
     var password = args[2] === '' ? null : args[2]
     var role = args[3] === '' ? null : args[3]
-    var companyName = args[4] === '' ? null : args[4]
-    var telephoneNum = args[5] === '' ? null : args[5]
+    var isOnSignup = args[4] === '' ? null : args[4]
+    var companyName = args[5] === '' ? null : args[5]
+    var telephoneNum = args[6] === '' ? null : args[6]
 
     // Set user object fields
     this.set('username', email)
@@ -35,6 +37,13 @@ var Worker = Parse.User.extend({
         // Giving the new user the role of Manager or Employee
         var roleQuery = new Parse.Query(Parse.Role)
         roleQuery.equalTo('name', role)
+
+        // TODO: Associate calendar with newly created Manager
+        if(role === 'Manager' && isOnSignup == true) {
+          Calendar.createCalendar()
+        } else if(role === 'Manager' && isOnSignup == false) {
+          // TODO: Associate calendar with newly created Manager account
+        }
 
         // get the manger role
         roleQuery.first({
