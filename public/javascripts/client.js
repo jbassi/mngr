@@ -18,7 +18,7 @@ socket.on('login-response', function(data) {
     // TODO: Display message to user
   } else if(data === 101) {
     console.log('(~) Invalid username or password.')
-    $("#sidr-right").effect("shake", {times:2, distance:12}, 500)
+    $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
   } else {
     console.log('(+) User: ' + data.username + ' successfully connected.')
     // Navigate to home page
@@ -28,7 +28,7 @@ socket.on('login-response', function(data) {
 
 // Listens for a sign-up response
 socket.on('sign-up-response', function(data) {
-  if(data === 203) {
+  if(data === 203 || data === 202) {
     // Email / username already taken. 
     // TODO: Alert user
     console.log('(-) Username already taken.')
@@ -63,7 +63,7 @@ $(document).ready(function() {
 
   $('#signup-button').click(function() {
     socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val(), 'Manager',/* $('#company-name').val()*/'PANCAKES4U', /*$('#telephone-num').val()*/'555-5555' ])
+      $('#signup-pass').val(), 'Manager', true,/* $('#company-name').val()*/'PANCAKES4U', /*$('#telephone-num').val()*/'555-5555' ])
   })
 
   $('#signup-pass').keydown(function(e) {
