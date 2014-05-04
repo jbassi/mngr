@@ -29,6 +29,7 @@ span#About_Us {
 font-variant: small-caps;
 font-weight: normal;
 }
+/* This style applies to the 4 box (bottom-right) */
 #info .row:nth-child(4){
 font-weight: bold;
 }
