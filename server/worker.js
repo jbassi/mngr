@@ -38,7 +38,6 @@ var Worker = Parse.User.extend({
         var roleQuery = new Parse.Query(Parse.Role)
         roleQuery.equalTo('name', role)
 
-        // TODO: Associate calendar with newly created Manager
         if(role === 'Manager' && isOnSignup == true) {
           Calendar.createCalendar()
         } else if(role === 'Manager' && isOnSignup == false) {
