@@ -16,12 +16,16 @@ var Worker = Parse.User.extend({
     var email = args[1] === '' ? null : args[1]
     var password = args[2] === '' ? null : args[2]
     var role = args[3] === '' ? null : args[3]
+    var companyName = args[4] === '' ? null : args[4]
+    var telephoneNum = args[5] === '' ? null : args[5]
 
     // Set user object fields
     this.set('username', email)
     this.set('password', password)
     this.set('email', email)
     this.set('name', name)
+    this.set('companyName', companyName)
+    this.set('telephoneNum', telephoneNum)
 
     // Sign up the worker
     this.signUp(null, {

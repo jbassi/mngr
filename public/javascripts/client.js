@@ -63,13 +63,13 @@ $(document).ready(function() {
 
   $('#signup-button').click(function() {
     socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val(), 'Manager'])
+      $('#signup-pass').val(), 'Manager',/* $('#company-name').val()*/'PANCAKES4U', /*$('#telephone-num').val()*/'555-5555' ])
   })
 
   $('#signup-pass').keydown(function(e) {
     if (e.keyCode == 13) {
     socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val(), 'Manager'])
+      $('#signup-pass').val(), 'Manager', /* $('#company-name').val()*/'PANCAKES4U', /*$('#telephone-num').val()*/'555-5555' ])
     }
   });
 
