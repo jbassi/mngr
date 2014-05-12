@@ -13,17 +13,24 @@ socket.on('status', function(data) {
 // Listens for a login-response
 socket.on('login-response', function(data) {
   // Check if an error message was passed
-  if(data === 200 || data === 201) {
-    console.log('(~) Username or password missing.')
-    // TODO: Display message to user
-  } else if(data === 101) {
-    console.log('(~) Invalid username or password.')
-    $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
-  } else {
-    console.log('(+) User: ' + data.username + ' successfully connected.')
-    // Navigate to home page
-    window.location.href = '/home'
+  switch(data) {
+    case 200:
+    case 201:
+      console.log('(~) Username or password missing.')
+      // TODO: Display message to user
+      break;
+    case 101:
+      console.log('(~) Invalid username or password.')
+      break;
+    default:
+      console.log('(+) User: ' + data.username + ' successfully connected.')
+      // Navigate to home page
+      window.location.href = '/home'
+      return;
   }
+  
+  // make the login field shake
+  $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
 })
 
 // Listens for a sign-up response
@@ -51,27 +58,56 @@ socket.on('password-reset-response', function(data) {
 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Even handle when sign-up is clicked
 	$('#login-button').click(function() {
-    socket.emit('login', [$('#login-user').val(), $('#login-pass').val()])
+    socket.emit('login', {
+      "user" : $('#login-user').val(),
+      "password" : $('#login-pass').val()
+    })
 	})
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Event handle when <CR> was pressed on sign-up
   $('#login-pass').keydown(function(e) { //TODO is there a way to do this for both #login-pass and #login-user?
     if (e.keyCode == 13) {
-      socket.emit('login', [$('#login-user').val(), $('#login-pass').val()])
+      socket.emit('login', {
+        "user" : $('#login-user').val(),
+        "password" : $('#login-pass').val()
+      })
     }
   });
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Even handle when sign-up is clicked
   $('#signup-button').click(function() {
-    socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val(), 'Manager', true,/* $('#company-name').val()*/'PANCAKES4U', /*$('#telephone-num').val()*/'555-5555' ])
+    socket.emit('sign-up', {
+      "name" : $('#signup-name').val(),
+      "email" : $('#signup-email').val(), 
+      "password" : $('#signup-pass').val(),
+      "assignedRole" : 'Manager',
+      "phoneNumber" : /*$('#telephone-num').val()*/'555-5555',
+      "companyName" : /* $('#company-name').val()*/'PANCAKES4U',
+      "isOnSignUp" : true
+    })  
   })
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Event handle when <CR> was pressed on sign-up
   $('#signup-pass').keydown(function(e) {
     if (e.keyCode == 13) {
-    socket.emit('sign-up', [$('#signup-name').val(), $('#signup-email').val(), 
-      $('#signup-pass').val(), 'Manager', /* $('#company-name').val()*/'PANCAKES4U', /*$('#telephone-num').val()*/'555-5555' ])
+      socket.emit('sign-up', {
+        "name" : $('#signup-name').val(),
+        "email" : $('#signup-email').val(), 
+        "password" : $('#signup-pass').val(),
+        "assignedRole" : 'Manager',
+        "phoneNumber" : /*$('#telephone-num').val()*/'555-5555',
+        "companyName" : /* $('#company-name').val()*/'PANCAKES4U',
+        "isOnSignUp" : true
+      })  
     }
-  });
+  })
 
 /*
 //On button click
