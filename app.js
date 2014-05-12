@@ -60,8 +60,7 @@ io.sockets.on('connection', function(socket) {
   socket.on('sign-up', function(args) {
     console.log('[~] Attempting to create user ' + args[0] + '.')
 
-    var worker = new Worker()
-    worker.createUser(args,
+    Worker.create(args,
       // Check if the user was successfully added 
       // err is null if there is not an error 
       function(err, res) {
@@ -77,12 +76,8 @@ io.sockets.on('connection', function(socket) {
 
   // Checks Parse for valid login and password passed in via the args array
   socket.on('login', function(args) {
-    // Store data locally to pass into databaseProvider 
-    var user = args[0] === '' ? null : args[0].toString()
-    var password = args[1] === '' ? null : args[1].toString()
-
     //app.databaseProvider.verifyLogin(user, password, function(err, res) {
-    Worker.verifyLogin(user, password,
+    Worker.verifyLogin(args,
       function(err, res) {
         // Emit result of verifyLogin
         // err is null if there is not an error 

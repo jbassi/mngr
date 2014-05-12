@@ -1,8 +1,11 @@
-node: app.js server routes clients
+test: dependencies
+	@cat .callHelp 
+	node testApp 
+
+node: app.js clients dependencies 
 	node app
 
-test: server routes
-	node testApp 
+dependencies: server routes
 
 server: server/database-provider.js
 
