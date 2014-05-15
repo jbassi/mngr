@@ -1,4 +1,5 @@
 var socket = io.connect()
+var calendar
 
 // All socket requests defined below
 // Listens for a connection to the backend
@@ -18,15 +19,31 @@ socket.on('login-response', function(data) {
     case 201:
       console.log('(~) Username or password missing.')
       // TODO: Display message to user
-      break;
+      break
     case 101:
       console.log('(~) Invalid username or password.')
-      break;
+      break
     default:
       console.log('(+) User: ' + data.username + ' successfully connected.')
       // Navigate to home page
-      window.location.href = '/home'
-      return;
+      // window.location.href = '/home'
+      
+      // Get users calendar
+      // Retrieve calendar with company name
+      socket.emit('retrieve-calendar')
+      
+      socket.on('retrieve-calendar-response', function(companyCalendar) {
+        if(!companyCalendar) {
+          // Error -- args is null
+          console.log('(-) Calendar initialization failed.')
+        } else {
+          // Calendar successfully passed
+          // console.log('(+) ' + args.test + ' company calendar initialized.')
+          calendar = companyCalendar
+        }
+      })
+
+      return
   }
   
   // make the login field shake
