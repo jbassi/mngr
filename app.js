@@ -1,24 +1,25 @@
 // Require module dependencies and create the app server.
-var express = require('express');
-var app = express();
-var http = require('http');
-var path = require('path');
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+var express = require('express')
+var app = express()
+var http = require('http')
+var path = require('path')
+var server = http.createServer(app)
+var io = require('socket.io').listen(server)
 var Worker = require('./server/worker').Worker
+var Calendar = require('./server/calendar').Calendar
 
 // Configure app settings 
 app.configure(function() {
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', path.join(__dirname, 'views'));
-  app.set('view engine', 'jade');
-  // app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.json());
-  app.use(express.urlencoded());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.set('port', process.env.PORT || 3000)
+  app.set('views', path.join(__dirname, 'views'))
+  app.set('view engine', 'jade')
+  // app.use(express.favicon())
+  app.use(express.logger('dev'))
+  app.use(express.json())
+  app.use(express.urlencoded())
+  app.use(express.methodOverride())
+  app.use(app.router)
+  app.use(express.static(path.join(__dirname, 'public')))
 })
 
 // Configure socket.io settings
@@ -30,7 +31,7 @@ io.set('log level', 1)
 
 // Development specific items go here
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(express.errorHandler())
 }
 
 // Configure page routes -- this is equivalent to:
@@ -97,4 +98,18 @@ io.sockets.on('connection', function(socket) {
       socket.emit('reset-password-response', err)
     }) 
   }) // end of reset-password
+
+  // Attempt to send the company calendar object to the frontend
+  socket.on('retrieve-calendar', function(args) {
+    // Emit result of password reset, err is null if no error exists
+    var currentUser = Worker.current()
+
+    currentUser.retrieveCalendar(function(err, companyCalendar) {
+      if(err) {
+        socket.emit('retrieve-calendar-response', err)
+      } else {
+        socket.emit('retrieve-calendar-response', companyCalendar)
+      }
+    })
+  })
 })

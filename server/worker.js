@@ -7,8 +7,41 @@ var Worker = Parse.User.extend({
   // ***************** Instance methods ***************** // 
   // ***************** **************** ***************** // 
 
-  delete: function() {
+  // This function retrieves a calendar based off the Company name
+  retrieveCalendar: function(callback) {
+    var currentUserCompany = this.get('company')
+    // console.log('ID: ' + JSON.stringify(currentUserCompanyID.objectId))
+    // console.log('ID: ' + currentUserCompanyID)
+
+    currentUserCompany.fetch({
+
+      success: function(company) {
+
+        console.log(JSON.stringify(company))
+        callback(company.get('calendars'))
+        
+ 
+
+      }
+    })
+    // console.log('ID: ' + JSON.stringify(currentUserCompanyID['objectId']))
+
+    // var companyQuery = new Parse.Query('Company')
+    // companyQuery.get('rCZ39v1q66', {
+    //   success: function(company) {
+    //     console.log(JSON.stringify(company))
+    //   },
+    //   error: function(object, error) {
+    //     console.log('Could not find company.')
+    //   }
+    // })
+
+    // console.log(JSON.stringify(currentUserCompany))
+    // var currentUserCalendar = currentUserCompany.get('calendar')
+    // callback(currentUserCalendar)
+    // callback(null)
   }
+
 }, {
   // ***************** ************* ***************** // 
   // ***************** Class methods ***************** // 
