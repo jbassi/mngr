@@ -7,6 +7,41 @@ var Worker = Parse.User.extend({
   // ***************** Instance methods ***************** // 
   // ***************** **************** ***************** // 
 
+  // This function retrieves a calendar based off the Company name
+  retrieveCalendar: function(callback) {
+    var currentUserCompany = this.get('company')
+    // console.log('ID: ' + JSON.stringify(currentUserCompanyID.objectId))
+    // console.log('ID: ' + currentUserCompanyID)
+
+    currentUserCompany.fetch({
+
+      success: function(company) {
+
+        console.log(JSON.stringify(company))
+        callback(company.get('calendars'))
+        
+ 
+
+      }
+    })
+    // console.log('ID: ' + JSON.stringify(currentUserCompanyID['objectId']))
+
+    // var companyQuery = new Parse.Query('Company')
+    // companyQuery.get('rCZ39v1q66', {
+    //   success: function(company) {
+    //     console.log(JSON.stringify(company))
+    //   },
+    //   error: function(object, error) {
+    //     console.log('Could not find company.')
+    //   }
+    // })
+
+    // console.log(JSON.stringify(currentUserCompany))
+    // var currentUserCalendar = currentUserCompany.get('calendar')
+    // callback(currentUserCalendar)
+    // callback(null)
+  }
+
 }, {
   // ***************** ************* ***************** // 
   // ***************** Class methods ***************** // 
@@ -17,14 +52,6 @@ var Worker = Parse.User.extend({
   // to create a new user in Parse. A callback function is also included to 
   // alert the caller of the user creation status
   create: function(userInfo, callback) {
-    // Store data locally to pass into databaseProvider 
-    //var name = args[0] === '' ? null : args[0]
-    //var email = args[1] === '' ? null : args[1]
-    //var password = args[2] === '' ? null : args[2]
-    //var assignedRole = args[3] === '' ? null : args[3]
-    //var isOnSignUp = args[4] === '' ? null : args[4]
-    //var companyName = args[5] === '' ? null : args[5]
-    //var telephoneNum = args[6] === '' ? null : args[6]
     var worker = new Worker()
 
     var name = userInfo.name === '' ? null : userInfo.name
