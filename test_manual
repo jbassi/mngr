@@ -3,5 +3,26 @@
 ****************************************************************************** 
 This is manual for testing the app
 
+SIGNUP
+signUp [name] [email] [password] [companyName]
+  - Sign up a new manager with given user info
+    
+CREATE
+create [name] [email] [password] OPTIONAL: [assignedRole: 'Manager', 'Employee']
+  - Creates a new user with given user info
+  - The assigned role is optional. If the assigned role is not given, 
+    the new user is assigned to Employee
+
+DELETE
+delete [username]
+  - Deletes the user with given username
+
+LOGIN
+login [username] [password]
+  - Logs in the user with given login info
+
+CURRENT
+current
+  - Prints out the current user
 
 *********************************** End ************************************** 

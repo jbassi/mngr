@@ -13,7 +13,7 @@ var Company = Parse.Object.extend('Company', {
   // ***************** ************* ***************** // 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  create: function(companyName) {
+  create: function(companyName, callback) {
     var company = new Company()                
 
     // set ACL for company
@@ -31,10 +31,12 @@ var Company = Parse.Object.extend('Company', {
 
     company.save(null, {
       success: function(res) {
-        console.log('[+] New object created with objectId: ' + res.id)
+        console.log('[+] New Company ' + companyName + ' created with objectId: ' + res.id)
+        callback()
       },
       error: function(res, err) {
-        console.log('[-] Object not created. Error: ' + err.description)
+        console.log('[-] Company not created. Error: ' + err.description)
+        callback()
       }
     }) // save new company data to the database
     

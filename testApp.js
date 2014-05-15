@@ -6,6 +6,7 @@ var path = require('path');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var Worker = require('./server/worker').Worker
+var Parse = require('parse').Parse
 
 // Configure app settings 
 app.configure(function() {
@@ -51,6 +52,7 @@ var fs = require('fs')
 
 var stdin = process.openStdin();
 
+//Parse.Cloud.useMasterKey()
 stdin.addListener("data", function(d) {
   // note:  d is an object, and when converted to a string it will
   // end with a linefeed.  so we (rather crudely) account for that  
@@ -62,12 +64,19 @@ stdin.addListener("data", function(d) {
   switch(inputInfo[0]) {
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
     case "signUp": // TEST: sign-up
-      //userInfo = ['x', 'x@gmail.com', 'x', 'Manager'] // Create dummy user
+      if(inputInfo.length < 5) {
+        console.log("not enough arguments. Look at the manual to use \"create\" test")
+        break;
+      }
+
       userInfo = {
-        "name" : "x",
-        "email" : "x@gmail.com",
-        "password" : "x",
-        "assignedRole" : "Employee"
+        "name" : inputInfo[1],
+        "email" : inputInfo[2],
+        "password" : inputInfo[3],
+        "assignedRole" : "Manager",
+        "phoneNumber" : "xxx-xxx-xxxx",
+        "isOnSignUp" : true, 
+        "companyName" : inputInfo[4]
       }
 
       Worker.create(userInfo,
@@ -78,7 +87,47 @@ stdin.addListener("data", function(d) {
               console.log(err)
             } else {
               // Emit user created with response message from databaseProvider
-              console.log("New User has been created: " + userInfo[0])
+              console.log("New User has been created: " + userInfo.email)
+            }
+          } // end of callback
+      ) // end of Worker create
+      
+      break;
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+    case "create": // TEST: create new worker
+      if(inputInfo.length < 4) {
+        console.log("not enough arguments. Look at the manual to use \"create\" test")
+        break;
+      }
+
+      // If the role was not assigned through the console, 
+      // assign it to Employee
+      if(inputInfo.length == 4)
+        inputInfo[4] = 'Employee'
+
+      // do something clever with the input string
+      console.log("you entered: [" + 
+          inputInfo + "]");
+
+      userInfo = {
+        "name" : inputInfo[1],
+        "email" : inputInfo[2],
+        "password" : inputInfo[3],
+        "assignedRole" : inputInfo[4],
+        "phoneNumber" : "xxx-xxx-xxxx",
+        "isOnSignUp" : false
+      }
+
+      Worker.create(userInfo,
+          // Check if the user was successfully added 
+          // err is null if there is not an error 
+          function(err, res) {
+            if(err) {
+              console.log(err + " error has occurred")
+            } else {
+              // Emit user created with response message from databaseProvider
+              console.log("New User has been created: " + inputInfo[1])
             }
           } // end of callback
       ) // end of Worker create
@@ -86,38 +135,43 @@ stdin.addListener("data", function(d) {
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
     case "delete": // TEST: delete a user 
-      // TODO: delete specified user
-      if('' != null)
-        console.log('\'\' is the same as null')
+      if(inputInfo.length != 2) {
+        console.log("args count is not correct. Look at the manual to use \"delete\" test")
+        break; 
+      }
+
+      Worker.delete(inputInfo[1]) // username as parameter
       break;
 
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-    case "create": // TEST: create new worker
-      // If the role was not assigned through the console, 
-      // assign it to Employee
-      if(!userInfo[3])
-        userInfo[3] = ('Employee')
+    case "login":
+      if(inputInfo.length != 3) {
+        console.log("args count is not correct. Look at the manual to use \"delete\" test")
+        break; 
+      }
+      
+      userInfo = {
+        "user" : inputInfo[1],
+        "password" : inputInfo[2]
+      }
 
-      // do something clever with the input string
-      console.log("you entered: [" + 
-          input + "]");
+      Worker.verifyLogin(userInfo, function(error, response) {
+        if(!error)
+         console.log('logged in')
+      })
+      break;
 
-      Worker.create(userInfo,
-          // Check if the user was successfully added 
-          // err is null if there is not an error 
-          function(err, res) {
-            if(err) {
-              console.log(err)
-            } else {
-              // Emit user created with response message from databaseProvider
-              console.log("New User has been created: " + userInfo[0])
-            }
-          } // end of callback
-      ) // end of Worker create
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+    case "current": 
+      console.log('the current worker is ' + JSON.stringify(Worker.current()))
+      break;
+
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
     case "man":
-    default: 
       fs.readFile('./test_manual', function(error, buffer) {
         console.log(buffer.toString())
       })
+    default: 
+      console.log('Please look at the man for right test')
   } // end of switch
 })
