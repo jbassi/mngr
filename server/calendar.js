@@ -10,6 +10,7 @@ var Calendar = Parse.Object.extend('Calendar', {
 
   initialize: function(attrs, options) {
     // Stores an array of all the calendar year days
+    //console.log('im here in initialize')
     this.days = []
     this.avaliabilities = []
   },
@@ -93,12 +94,13 @@ var Calendar = Parse.Object.extend('Calendar', {
 
       // Create days field 
       for(var i = 0; i < 366; i++) {
-        this.days.push(new Day())
+        //console.log('before initialize is called')
+        calendar.days.push(new Day())
       }
 
       // Create availability field
       for(var i = 0; i < 7; i++) {
-        this.avaliabilities.push(new Day())
+        calendar.avaliabilities.push(new Day())
       }
 
       // JavaScript provided Date class
@@ -106,8 +108,8 @@ var Calendar = Parse.Object.extend('Calendar', {
 
       // Set the fields
       calendar.set('Year', date.getFullYear())
-      calendar.set('Days', days)
-      calendar.set('Avaliability', avaliabilities)
+      calendar.set('Days', calendar.days)
+      calendar.set('Avaliability', calendar.avaliabilities)
 
       return calendar // return calendar object
     } // end of createCalendar

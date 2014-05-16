@@ -32,11 +32,12 @@ var Company = Parse.Object.extend('Company', {
     company.save(null, {
       success: function(res) {
         console.log('[+] New Company ' + companyName + ' created with objectId: ' + res.id)
-        callback()
+        callback(null) // this callback is called by whoever create a new company
       },
-      error: function(res, err) {
+      error: function(res, error) {
         console.log('[-] Company not created. Error: ' + err.description)
-        callback()
+        callback(error) // this callback is called by whoever create a new company
+
       }
     }) // save new company data to the database
     

@@ -19,9 +19,6 @@ var Worker = Parse.User.extend({
 
         console.log(JSON.stringify(company))
         callback(company.get('calendars'))
-        
- 
-
       }
     })
     // console.log('ID: ' + JSON.stringify(currentUserCompanyID['objectId']))
@@ -68,6 +65,7 @@ var Worker = Parse.User.extend({
     worker.set('password', password)
     worker.set('email', email)
     worker.set('name', name)
+    worker.set('assignedRole', assignedRole)
 
     worker.set('phoneNumber', phoneNumber)
     
@@ -112,23 +110,26 @@ var Worker = Parse.User.extend({
          
           // create a new company with the given company name
           company = Company.create(userInfo.companyName, 
-            function() {
-            
-              worker.set('company', company) // set the company for the worker 
-              worker.save(null, {
-                success: function() {
-                  console.log('New attributes have been saved to the new worker')
-                }, // end of success() for setting up company
-                
-                error: function() {
-                  console.log('Could not save new attributes to the new worker')
-                }
-              }) // end of worker.save()
+            function(error) {
+              if(error) { // if there was problem creating a new company
+                console.error('Could not create a new company') 
 
+              } else { // if there was no error when creating a new company 
+                worker.set('company', company) // set the company for the worker 
+                worker.save(null, {
+                  success: function() {
+                    console.log('New attributes have been saved to the new worker')
+                  }, // end of success() for setting up company
+                  
+                  error: function() {
+                    console.log('Could not save new attributes to the new worker')
+                  }
+                }) // end of worker.save()
+
+                callback(null, user) // callback to the UI
+              } // end for checking error 
           }) // create the company 
-          
-          callback(null, user) // callback to the UI
-        }, 
+        }, // end success for signUp
             
         error: function(user, err) {
           console.log('[~] Error: ' + err.code + ' ' + err.message)
@@ -185,6 +186,11 @@ var Worker = Parse.User.extend({
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   delete: function(username) {
+    // allow master key if manager logs in
+    if(Worker.current().get('assignedRole') === 'Manager') {
+      Parse.Cloud.useMasterKey()
+    }
+
     var users = new Parse.Query(Parse.User)
     users.equalTo('username', username)
     
@@ -192,12 +198,9 @@ var Worker = Parse.User.extend({
       
       success: function(userToBeDeleted) {
 
-        // allow master key if manager logs in
-        //if(user.get('assignedRole') === 'Manager')
-         // Parse.Cloud.useMasterKey
-
         if(userToBeDeleted === undefined)
           console.log('no such user found')
+
         else
           userToBeDeleted.destroy({
             success: function(object) {
@@ -217,6 +220,7 @@ var Worker = Parse.User.extend({
         console.error('could not find the user to delete'); 
       } // error
     })
+    
   }, // end of delete()
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
@@ -232,6 +236,7 @@ var Worker = Parse.User.extend({
   } // end of login()
 })
 
+// helper function for creating new worker
 function setRole(worker, assignedRole) {
   // Giving the new user the role of Manager or Employee
   var roleQuery = new Parse.Query(Parse.Role)
