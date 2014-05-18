@@ -10,7 +10,6 @@ var Calendar = Parse.Object.extend('Calendar', {
 
   initialize: function(attrs, options) {
     // Stores an array of all the calendar year days
-    //console.log('im here in initialize')
     this.days = []
     this.avaliabilities = []
   },
