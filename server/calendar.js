@@ -42,7 +42,8 @@ var Calendar = Parse.Object.extend('Calendar', {
     var currentDay = new Date()
     // TODO: Calculate and return current day as an index
 
-  },
+  }, // end of getCurrentDayAsIndex()
+
   getWeek: function(offset) {},
   getMonth: function(offset) {},
 
@@ -71,6 +72,10 @@ var Calendar = Parse.Object.extend('Calendar', {
         }
       })
     }
+  }, // end of addShiftAtDayIndex()
+
+  writeSomething: function() {
+    console.log('im writing this onto console')               
   }
 
 }, {

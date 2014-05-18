@@ -18,7 +18,10 @@ var Worker = Parse.User.extend({
       success: function(company) {
 
         console.log(JSON.stringify(company))
-        callback(company.get('calendars'))
+      var calendar = company.get('calendars')
+        //callback(company.get('calendars'))
+          calendar[0].writeSomething() 
+          console.log(calendar[0].Days)
       }
     })
     // console.log('ID: ' + JSON.stringify(currentUserCompanyID['objectId']))
