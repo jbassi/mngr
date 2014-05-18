@@ -39,9 +39,9 @@ socket.on('login-response', function(data) {
         } else {
           // Calendar successfully passed
           // console.log('(+) ' + args.test + ' company calendar initialized.')
-          calendar = companyCalendar
-          console.log('i\'m here before writing something')
-          calendar[0].writeSomething() 
+          console.log(companyCalendar)
+          calendar = new ClientCalendar(companyCalendar)
+          calendar.writeSomething()
         }
       })
 

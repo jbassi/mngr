@@ -1,6 +1,5 @@
 var Parse = require('parse').Parse
-var Day = require('./day').Day
-var Worker = require('./day').Worker
+var Day = require('./../public/javascripts/day').Day
 
 // Constructor for Calendar
 var Calendar = Parse.Object.extend('Calendar', {
@@ -11,71 +10,9 @@ var Calendar = Parse.Object.extend('Calendar', {
   initialize: function(attrs, options) {
     // Stores an array of all the calendar year days
     this.days = []
-    this.avaliabilities = []
+    this.availabilities = []
   },
 
-  //TODO:
-  // This function returns an array of shifts at the given day index, if 
-  // day_index is null, return index of current day
-  getAvaliableShiftsAtDayIndex: function(day_index) {
-    var currentDay
-
-    // Calculate the current day
-    if(day_index == null) {
-      var currentDay = this.getCurrentDayAsIndex()
-    } else {
-      currentDay = day_index
-    }
-
-    // Check array index to prevent out of bounds exception
-    if(typeof days[currentDay] === 'undefined') {
-      console.log('Invalid day index range.')
-    } else {
-      return days[currentDay].getAllShiftsAtDay()
-    }
-
-    return null
-  },
-
-  getCurrentDayAsIndex: function() {
-    var currentDay = new Date()
-    // TODO: Calculate and return current day as an index
-
-  }, // end of getCurrentDayAsIndex()
-
-  getWeek: function(offset) {},
-  getMonth: function(offset) {},
-
-  // This function adds a new shift at the given day index, if day_index is null
-  // create a new shift at the index of the current day
-  addShiftAtDayIndex: function(day_index, employee_login, position, time_range, break_time) {
-    var currentDay
-    // Calculate the current day
-    if(day_index == null) {
-      var currentDay = this.getCurrentDayAsIndex()
-    } else {
-      currentDay = day_index
-    }
-
-    // Check array index to prevent out of bounds exception
-    if(typeof days[currentDay] === 'undefined') {
-      console.log('Invalid day index range.')
-    } else {
-      days[currentDay].addShift(employee_login, position, time_range, break_time)
-
-      // Update Parse object
-      this.save(null, {
-        success: function() {
-          this.set('Days', days)
-          this.save()
-        }
-      })
-    }
-  }, // end of addShiftAtDayIndex()
-
-  writeSomething: function() {
-    console.log('im writing this onto console')               
-  }
 
 }, {
     // ***************** ************* ***************** // 
@@ -104,7 +41,7 @@ var Calendar = Parse.Object.extend('Calendar', {
 
       // Create availability field
       for(var i = 0; i < 7; i++) {
-        calendar.avaliabilities.push(new Day())
+        calendar.availabilities.push(new Day())
       }
 
       // JavaScript provided Date class
@@ -113,7 +50,7 @@ var Calendar = Parse.Object.extend('Calendar', {
       // Set the fields
       calendar.set('Year', date.getFullYear())
       calendar.set('Days', calendar.days)
-      calendar.set('Avaliability', calendar.avaliabilities)
+      calendar.set('Availabilities', calendar.availabilities)
 
       return calendar // return calendar object
     } // end of createCalendar
