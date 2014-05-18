@@ -14,6 +14,8 @@ block head
         });
         $( "#signup-form" ).fadeIn( "slow", function() {
         });
+        $('li').removeClass();
+        $(this).parent().addClass('active');
         $('html, body').animate({
           scrollTop: $("#header").offset().top
         }, 500);
@@ -23,10 +25,13 @@ block head
       $.sidr('close', 'sidr-left');
       $.sidr('close', 'sidr-right');
     });
-    $("#menu").swipe({
-      swipeLeft:function(event, direction, distance, duration, fingerCount) {
-        $.sidr('close', 'sidr-left');
-      }
+    $(function() { //doesnt work
+      $("#menu").swipe({
+        swipeLeft:function(event, direction, distance, duration, fingerCount) {
+          $.sidr('close', 'sidr-left');
+        },
+        threshold:0
+      });
     });
 
 //everything in header goes here
@@ -40,7 +45,7 @@ block banner
 block content
   #sidr-left
       ul
-        li.active
+        li.home.active
           a(href='/') HOME
         li
           a(href='#') FEATURES

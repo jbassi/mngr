@@ -1,10 +1,60 @@
-//parent layout for home pages, not used
+//parent layout for home pages
 doctype html
-html(style='height: 100%;')
-  head(style='height: 100%;')
+html
+  head
     title= title
+    meta(name='viewport', content='width=device-width, user-scalable=no')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/sidrhome.css')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
-    
-  body(style='height: 100%;')
-    block content
+    script(src='http://code.jquery.com/ui/1.10.4/jquery-ui.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='javascripts/client.js')
+    script(src='javascripts/jquery.touchSwipe.js') //script for touch events
+    script(src='javascripts/sidr/jquery.sidr.min.js') //scripts for sidr menu
+    script.
+      $(document).ready(function() {
+        $('#menu').sidr({
+        name: 'sidr-left',
+        side: 'left',
+        body: '#container',
+        displace: true,
+        resize: true,
+        speed: 100
+        });
+        $('#profile').sidr({
+        name: 'sidr-right',
+        side: 'right',
+        body: '#profile',
+        displace: true,
+        speed: 200     
+        });
+        $(window).resize(function () {
+          $.sidr('close', 'sidr-left');
+          $.sidr('close', 'sidr-right');
+        });
+      });
+
+    block head
+  body
+  #header
+    #menu
+      img#menuimage(src='../resources/menulight.png')
+      navtext MENU
+    #profile
+      navtext PROFILE
+      img#loginimage(src='../resources/loginlight.png')
+    a(href='/')
+      img#logo(src='../resources/logocolor.png')
+  #sidr-left
+      ul
+        li.active
+          a(href='/') HOME
+        li
+          a(href='#') FEATURES
+        li
+          a(href='#') ABOUT
+        li
+          a.signup SIGN UP
+  #container
+    #calendar

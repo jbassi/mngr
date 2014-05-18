@@ -15,6 +15,7 @@ socket.on('login-response', function(data) {
   // Check if an error message was passed
   if(data === 200 || data === 201) {
     console.log('(~) Username or password missing.')
+    $("#sidr-right").effect("shake", {times:2, distance:12}, 500)
     // TODO: Display message to user
   } else if(data === 101) {
     console.log('(~) Invalid username or password.')
