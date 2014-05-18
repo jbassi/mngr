@@ -1,5 +1,6 @@
 var Parse = require('parse').Parse
 var Company = require('./company').Company
+var Calendar = require('./calendar').Calendar
 
 // Constructor for worker
 var Worker = Parse.User.extend({
@@ -14,29 +15,32 @@ var Worker = Parse.User.extend({
     // console.log('ID: ' + currentUserCompanyID)
 
     currentUserCompany.fetch({
+      success: function(returnedCompany) {
 
-      success: function(company) {
+        // console.log(JSON.stringify(returnedCompany))
+        var calendars = returnedCompany.get('calendars')
+        // var calendarObjectID = calendars.get('objectId')
+        // console.log(calendars[0].id)
+        // console.log(JSON.stringify(calendars[0]))
 
-        console.log(JSON.stringify(company))
-        callback(company.get('calendars'))
+        var calendarQuery = new Parse.Query('Calendar')
+        calendarQuery.get(calendars[0].id, {
+          success: function(returnedCalendar) {
+            // var calendar = new Calendar()
+            // callback(calendar)
+            callback(returnedCalendar)
+          },
+          error: function() {
+            console.log('Failed calendar retrieval in worker.js.')
+          }
+        })
+
+      },
+      error: function() {
+        console.log('Failed company retrieval in worker.js.')
       }
+
     })
-    // console.log('ID: ' + JSON.stringify(currentUserCompanyID['objectId']))
-
-    // var companyQuery = new Parse.Query('Company')
-    // companyQuery.get('rCZ39v1q66', {
-    //   success: function(company) {
-    //     console.log(JSON.stringify(company))
-    //   },
-    //   error: function(object, error) {
-    //     console.log('Could not find company.')
-    //   }
-    // })
-
-    // console.log(JSON.stringify(currentUserCompany))
-    // var currentUserCalendar = currentUserCompany.get('calendar')
-    // callback(currentUserCalendar)
-    // callback(null)
   }
 
 }, {
