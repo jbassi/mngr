@@ -1,6 +1,7 @@
 var socket = io.connect()
 var calendar
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // All socket requests defined below
 // Listens for a connection to the backend
 socket.on('status', function(data) {
@@ -11,6 +12,7 @@ socket.on('status', function(data) {
   }
 })
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a login-response
 socket.on('login-response', function(data) {
   // Check if an error message was passed
@@ -41,17 +43,21 @@ socket.on('login-response', function(data) {
           // console.log('(+) ' + args.test + ' company calendar initialized.')
           console.log(companyCalendar)
           calendar = new ClientCalendar(companyCalendar)
-          calendar.writeSomething()
+          //calendar.writeSomething()
+
+          console.log(calendar.getWeek(139))
+          console.log(calendar.indexToDate(142))
         }
       })
 
       return
-  }
+  } // end switch()
   
   // make the login field shake
   $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
-})
+}) // end of login-response
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a sign-up response
 socket.on('sign-up-response', function(data) {
   if(data === 203 || data === 202) {
@@ -63,8 +69,9 @@ socket.on('sign-up-response', function(data) {
     // Navigate to home page
     window.location.href = '/home'
   }
-})
+}) // end of sign-up-response 
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a password reset response 
 socket.on('password-reset-response', function(data) {
   if(data == null) {
@@ -73,8 +80,17 @@ socket.on('password-reset-response', function(data) {
   } else {
     console.log('(-) Password reset unsuccessful.')
   }
-})
+}) // end of password-reset-response
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+// Listens for calendar update
+socket.on('calendar-update', function() {
+
+}) // end of calendar-update 
+
+
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
 
@@ -96,7 +112,7 @@ $(document).ready(function() {
         "password" : $('#login-pass').val()
       })
     }
-  });
+  }) 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Even handle when sign-up is clicked

@@ -3,8 +3,6 @@ var ClientCalendar = function(calendar) {
   this.days = []
   this.availabilities = []
 
-  console.log('trying to create days')
-
   // creating Days on client side
   for(var i=0; i<calendar.Days.length; ++i) {
     this.days.push(new Day(calendar.Days[i]))
@@ -20,7 +18,6 @@ var ClientCalendar = function(calendar) {
   this.year = calendar.Year
 }
 
-//TODO:
 // This function returns an array of shifts at the given day index, if 
 // day_index is null, return index of current day
 ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index) {
@@ -161,8 +158,40 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
 
 } // end of getCurrentDayAsIndex()
 
-ClientCalendar.prototype.getWeek = function(offset) {}
-ClientCalendar.prototype.getMonth =  function(offset) {}
+ClientCalendar.prototype.getWeek = function(index) {
+  var day = this.indexToDate(index);
+  var date = new Date(this.year, day.month, day.day);
+  var week = []
+  var offset = - date.getDay()
+
+  for( var i = 0; i <= 6; i++, offset++) {
+    week[i] = index + offset
+  }
+
+  return week
+} // end of getWeek()
+
+ClientCalendar.prototype.indexToDate = function(index) {
+  var month = [31,29,31,30,31,30,31,31,30,31,30,31]
+  var sumOfDays = 0
+  var i = 0
+  
+  while(sumOfDays+month[i] < index ){
+      sumOfDays += month[i++]
+  }
+
+  return {  
+    "month" : i,
+    "day" : (index - sumOfDays)
+  }
+} // end of indexToDate()
+
+ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
+//var date = new Date(this.year, month, dayOfMonth)
+//var index = da
+} // end of dateToIndex()
+
+//ClientCalendar.prototype.getMonth =  function(offset) {}
 
 // This function adds a new shift at the given day index, if day_index is null
 // create a new shift at the index of the current day

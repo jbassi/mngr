@@ -56,6 +56,7 @@ io.sockets.on('connection', function(socket) {
   // Emit a successful connection message if socket.io connects
   socket.emit('status', {msg:'connection established'})
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to create a new Parse user by passing socket.io args array 
   // data to databaseProvider
   socket.on('sign-up', function(args) {
@@ -73,8 +74,9 @@ io.sockets.on('connection', function(socket) {
           socket.emit('sign-up-response', res)
         }
     })
-  }) // sign-up
+  }) // end of sign-up
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Checks Parse for valid login and password passed in via the args array
   socket.on('login', function(args) {
     //app.databaseProvider.verifyLogin(user, password, function(err, res) {
@@ -90,6 +92,7 @@ io.sockets.on('connection', function(socket) {
     })
   }) // end of verify-login
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(args) {
     // DatabaseProvider object handles password reset
@@ -99,6 +102,7 @@ io.sockets.on('connection', function(socket) {
     }) 
   }) // end of reset-password
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempt to send the company calendar object to the frontend
   socket.on('retrieve-calendar', function(args) {
     // Emit result of password reset, err is null if no error exists
@@ -111,5 +115,5 @@ io.sockets.on('connection', function(socket) {
         socket.emit('retrieve-calendar-response', companyCalendar)
       }
     })
-  })
+  }) // end of retrieve-calendar
 })
