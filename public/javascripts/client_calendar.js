@@ -57,7 +57,7 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
     var year = currentDay.getFullYear()
     //Index to be returned 
     var dayIndex 
-    //Non Leap year array of months
+    //Non Leap year array of months 
     var months = [0,31,59,90,120,151,181,212,243,273,304,334]
     //Leap year array of months
     var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
@@ -80,7 +80,7 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
       }
     }
 
-    //Day index is  by adding the amount of days
+    //Day index is finalized by adding the amount of days
     dayIndex = dayIndex + day
 
     return dayIndex
