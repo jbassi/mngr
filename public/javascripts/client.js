@@ -44,9 +44,9 @@ socket.on('login-response', function(data) {
           console.log(companyCalendar)
           calendar = new ClientCalendar(companyCalendar)
           //calendar.writeSomething()
-        //  console.log(calendar.indexToDate(30))
 
-
+          console.log(calendar.getWeek(139))
+          console.log(calendar.indexToDate(142))
         }
       })
 
