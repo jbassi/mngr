@@ -11,7 +11,8 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='javascripts/client.js')
     script(src='javascripts/jquery.touchSwipe.js') //script for touch events
-    script(src='javascripts/sidr/jquery.sidr.min.js') //scripts for sidr menu
+    script(src='javascripts/sidr/sidrhome.js') //scripts for sidr menu
+    script(src='javascripts/scheduler/dhtmlxscheduler.js')
     script.
       $(document).ready(function() {
         $('#menu').sidr({
@@ -33,9 +34,17 @@ html
           $.sidr('close', 'sidr-left');
           $.sidr('close', 'sidr-right');
         });
+        /* Make signup login appear once header has been clicked. 
+         * Will also scroll to top of page if button at the bottom
+         * is clicked */
+        $(".signup").click(function() {
+          $.sidr('close', 'sidr-left');
+          $( "#calendar" ).fadeOut( "slow", function() {
+          });
+        });
       });
 
-    block head
+  block head
   body
   #header
     #menu
@@ -58,3 +67,4 @@ html
           a.signup SIGN UP
   #container
     #calendar
+      block scheduler

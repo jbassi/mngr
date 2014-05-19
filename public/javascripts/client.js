@@ -1,5 +1,10 @@
 var socket = io.connect()
 
+//if forgot password more than 2-3 times will display forgot email link
+var forgotpassword = 0;
+//require index.js for jquery functions
+
+
 // All socket requests defined below
 // Listens for a connection to the backend
 socket.on('status', function(data) {
@@ -10,16 +15,41 @@ socket.on('status', function(data) {
   }
 })
 
-// Listens for a login-response
+// Listens for a login-response, if you dont type anything
+// or dont type a password
 socket.on('login-response', function(data) {
   // Check if an error message was passed
   if(data === 200 || data === 201) {
+
+    //display log error
     console.log('(~) Username or password missing.')
-    $("#sidr-right").effect("shake", {times:2, distance:12}, 500)
+
+    //for displaying forgot email link
+    forgotpassword++;
+
+    //call failedLogin to display css
+    failedLogin();
+
+    
+
+
     // TODO: Display message to user
-  } else if(data === 101) {
+  } 
+  
+  //for displaying invalid password 
+  else if(data === 101) {
     console.log('(~) Invalid username or password.')
+    //shake whenever there is an error
     $("#sidr-right").effect("shake", {times:2, distance:12}, 500)
+
+    //for displaying forgot email link
+    forgotpassword++;
+    
+    //call failed login to display css
+    failedLogin();
+    
+    
+  
   } else {
     console.log('(+) User: ' + data.username + ' successfully connected.')
     // Navigate to home page
@@ -52,9 +82,9 @@ socket.on('password-reset-response', function(data) {
 
 //TODO how to check if user is logged in??
 $(document).ready(function() {
-	$('#login-button').click(function() {
+  $('#login-button').click(function() {
     socket.emit('login', [$('#login-user').val(), $('#login-pass').val()])
-	})
+  })
 
   $('#login-pass').keydown(function(e) { //TODO is there a way to do this for both #login-pass and #login-user?
     if (e.keyCode == 13) {

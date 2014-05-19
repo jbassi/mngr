@@ -142,9 +142,28 @@
 
         // onOpen callback
         onOpen();
+
+        window.clearTimeout(scheduler._resize_timer);
+        scheduler._resize_timer=window.setTimeout(function(){
+           if (scheduler.callEvent("onSchedulerResize",[]))  {
+              scheduler.update_view();
+              scheduler.callEvent("onAfterSchedulerResize", []);
+           }
+        }, 100);
+ 
+
       }
       // Close Sidr
       else {
+
+        window.clearTimeout(scheduler._resize_timer);
+        scheduler._resize_timer=window.setTimeout(function(){
+           if (scheduler.callEvent("onSchedulerResize",[]))  {
+              scheduler.update_view();
+              scheduler.callEvent("onAfterSchedulerResize", []);
+           }
+        }, 250);
+
         // Check if we can close it
         if( !$menu.is(':visible') || sidrMoving ) {
           return;
@@ -182,8 +201,12 @@
           $body.removeClass('sidr-animating');
         });
 
+
+
         // onClose callback
         onClose();
+
+
       }
     }
   };

@@ -1,38 +1,10 @@
 extends layoutlanding
 block head
   link(rel='stylesheet', href='/stylesheets/index.css')
-  script.
-    $(document).ready(function() {
-      $("#scroll").click(function() {
-        $('html, body').animate({
-          scrollTop: $("#info").offset().top
-        }, 500);
-      });
-      $(".signup").click(function() {
-        $.sidr('close', 'sidr-left');
-        $( "#tagline" ).fadeOut( "slow", function() {
-        });
-        $( "#signup-form" ).fadeIn( "slow", function() {
-        });
-        $('li').removeClass();
-        $(this).parent().addClass('active');
-        $('html, body').animate({
-          scrollTop: $("#header").offset().top
-        }, 500);
-      });
-    });
-    $(window).resize(function () {
-      $.sidr('close', 'sidr-left');
-      $.sidr('close', 'sidr-right');
-    });
-    $(function() { //doesnt work
-      $("#menu").swipe({
-        swipeLeft:function(event, direction, distance, duration, fingerCount) {
-          $.sidr('close', 'sidr-left');
-        },
-        threshold:0
-      });
-    });
+
+  //import index javascript
+  script(type='text/javascript' src='/javascripts/index.js')
+
 
 //everything in header goes here
 block banner
@@ -45,12 +17,12 @@ block banner
 block content
   #sidr-left
       ul
-        li.home.active
+        li.active
           a(href='/') HOME
         li
           a(href='#') FEATURES
         li
-          a(href='#About_Us_goto') ABOUT US
+          a(href='#') ABOUT US
         li
           a.signup SIGN UP
           //a(href='/signup') SIGN UP
@@ -64,6 +36,7 @@ block content
       .row_element
     .row
       .row_element
+      //
         p(style='font-size: 15px')
           b
             u

@@ -5,35 +5,18 @@ html
     title= title
     meta(name='viewport', content='width=device-width, user-scalable=no')
     link(rel='stylesheet', href='/stylesheets/stylelanding.css')
-    link(rel='stylesheet', href='/stylesheets/sidrlanding.css')
+    link(rel='stylesheet', href='javascripts/sidr/stylesheets/jquery.sidr.dark.css')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
     script(src='http://code.jquery.com/ui/1.10.4/jquery-ui.js')
     script(src='/socket.io/socket.io.js')
     script(src='javascripts/client.js')
     script(src='javascripts/jquery.touchSwipe.js') //script for touch events
-    script(src='javascripts/sidr/jquery.sidr.min.js') //scripts for sidr menu
-    script.
-      $(document).ready(function() {
-        $('#menu').sidr({
-        name: 'sidr-left',
-        side: 'left',
-        speed: 100
-        });
-        // hides the failed login message
-        $(".login-fail").hide();
-        $('#login').sidr({
-        name: 'sidr-right',
-        side: 'right',
-        body: '#login',
-        displace: true,
-        speed: 200     
-        });
-        $(window).resize(function () {
-          $.sidr('close', 'sidr-left');
-          $.sidr('close', 'sidr-right');
-        });
-      });
+    script(src='javascripts/sidr/sidr.js') //scripts for sidr menu
 
+    //import layoutlanding javascript
+    script(type="text/javascript" src='/javascripts/layoutlanding.js')
+
+      
     block head
   body
   //whole screen header
@@ -54,7 +37,8 @@ html
           //TODO get rid of username field in parse, extraneous
           input#signup-name(type='text' placeholder='NAME')
           input#signup-email(type='text' placeholder='EMAIL')
-          //input#signup-user(type='username' placeholder='USERNAME')
+          input#signup-company(type='text' placeholder='COMPANY NAME')
+          input#signup-telephone(type='text' placeholder='TELPHONE NUMBER')
           input#signup-pass(type='password' placeholder='PASSWORD')
           input#signup-button.button(type='button', value='SIGN UP')
       block banner
@@ -65,7 +49,11 @@ html
       input#login-user(type='text' placeholder='USERNAME')
       input#login-pass(type='password' placeholder='PASSWORD')
       input#login-button(type='button', value='LOGIN')
-      .login-fail
-        Please Try again
+      //ahrefer #sidr-right, otherwise the slider closes
+      a#forgot-password(href='#sidr-right')  Forgot Password? 
+      input#send-email(type='text' placeholder='EMAIL')
+      input#send-button(type='button', value='SEND EMAIL')
+    
   //everything under header
   block content
+
