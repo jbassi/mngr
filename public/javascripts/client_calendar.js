@@ -53,8 +53,45 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
 
 } // end of getCurrentDayAsIndex()
 
-ClientCalendar.prototype.getWeek = function(offset) {}
-ClientCalendar.prototype.getMonth =  function(offset) {}
+ClientCalendar.prototype.getWeek = function(index) {
+  var day = indexToDate(index);
+  var date = new Date(this.year, day.month, day.day);
+  var week = []
+  var offset = - date.getDay()
+
+  for( var i = 0; i <= 6; i++, offset++) {
+    week[i] = index + offset
+  }
+  return week
+
+}
+
+ClientCalendar.prototype.indexToDate = function(index){
+  var month[] = [31,29,31,30,31,30,31,31,30,31,30,31]
+  var sumOfDays = 0
+  var i = 0
+  
+  while(sumOfDays <= index ){
+      
+      sumOfDays += month[i++]
+  
+  }
+
+  return {  
+    "month" : --i,
+    "day" : (index - sumOfDays + 1)
+  }
+
+
+}
+
+
+ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
+var date = new Date(this.year, month, dayOfMonth)
+var index = da
+
+}
+//ClientCalendar.prototype.getMonth =  function(offset) {}
 
 // This function adds a new shift at the given day index, if day_index is null
 // create a new shift at the index of the current day
