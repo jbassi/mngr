@@ -43,7 +43,10 @@ socket.on('login-response', function(data) {
           // console.log('(+) ' + args.test + ' company calendar initialized.')
           console.log(companyCalendar)
           calendar = new ClientCalendar(companyCalendar)
-          calendar.writeSomething()
+          //calendar.writeSomething()
+        //  console.log(calendar.indexToDate(30))
+
+
         }
       })
 
