@@ -57,101 +57,30 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
     var year = currentDay.getFullYear()
     //Index to be returned 
     var dayIndex 
-    
+    //Non Leap year array of months
+    var months = [0,31,59,90,120,151,181,212,243,273,304,334]
+    //Leap year array of months
+    var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
+
     //Determines if the current year is a leap year
     if((year%4) === 0) {
       var leapYear = true
     }else{
       var leapYear = false
     }
-    
-    //Calculates months for NOT a leap year
-    if(!leapYear) {
-      switch(month) {
-      case 0:
-         dayIndex = 0
-         break;
-      case 1:
-         dayIndex = 31
-         break;
-      case 2:
-         dayIndex = 59
-        break;
-      case 3:
-         dayIndex = 90
-         break;
-      case 4:
-         dayIndex = 120
-         break;
-      case 5:
-         dayIndex = 151
-         break;
-      case 6:
-         dayIndex = 181
-         break;
-      case 7:
-         dayIndex = 212
-         break;
-      case 8:
-         dayIndex = 243
-         break;
-      case 9:
-         dayIndex = 273
-         break;
-      case 10:
-         dayIndex = 304
-         break;
-      case 11:
-         dayIndex = 334
-         break;    
-      default:
-         console.log('[+] Error: No month given')
-       }
+
+    //Grabs amount of days for the current month
+    for(var i = 0; i < months.length; ++i) {
+      if(i == month) {
+        if(!leapYear) {
+          dayIndex = months[i]
+        }else{
+          dayIndex = monthsL[i]
+        }   
+      }
     }
-    //Calculates months for a leap year
-    if(leapYear) {
-      switch(month) {
-      case 0:
-         dayIndex = 0
-         break;
-      case 1:
-         dayIndex = 31
-         break;
-      case 2:
-         dayIndex = 60
-        break;
-      case 3:
-         dayIndex = 91
-         break;
-      case 4:
-         dayIndex = 121
-         break;
-      case 5:
-         dayIndex = 152
-         break;
-      case 6:
-         dayIndex = 182
-         break;
-      case 7:
-         dayIndex = 213
-         break;
-      case 8:
-         dayIndex = 244
-         break;
-      case 9:
-         dayIndex = 274
-         break;
-      case 10:
-         dayIndex = 305
-         break;
-      case 11:
-         dayIndex = 335
-         break;    
-      default:
-         console.log('[+] Error: No month given')
-       }
-    }
-    //Day index is finalized
+
+    //Day index is  by adding the amount of days
     dayIndex = dayIndex + day
 
     return dayIndex
