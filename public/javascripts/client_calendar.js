@@ -118,6 +118,47 @@ ClientCalendar.prototype.indexToDate = function(index) {
 ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
 //var date = new Date(this.year, month, dayOfMonth)
 //var index = da
+    
+    var currentDay = new Date()
+
+    //Inputted month 
+    aMonth = month - 1 
+    //Inputted day 
+    day = dayOfMonth
+    //Get year (four digits)
+    var year = currentDay.getFullYear()
+    //Index to be returned 
+    var dayIndex 
+    //Non Leap year array of months 
+    var months = [0,31,59,90,120,151,181,212,243,273,304,334]
+    //Leap year array of months
+    var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
+
+    //Determines if the current year is a leap year
+    if((year%4) === 0) {
+      var leapYear = true
+    }else{
+      var leapYear = false
+    }
+
+    //Grabs amount of days for the current month
+    for(var i = 0; i < months.length; ++i) {
+      if(i == aMonth) {
+        if(!leapYear) {
+          dayIndex = months[i]
+        }else{
+          dayIndex = monthsL[i]
+        }   
+      }
+    }
+
+    //Day index is finalized by adding the amount of days
+    dayIndex = dayIndex + day
+
+    return dayIndex
+
+
+
 } // end of dateToIndex()
 
 //ClientCalendar.prototype.getMonth =  function(offset) {}
