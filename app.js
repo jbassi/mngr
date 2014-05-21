@@ -59,19 +59,19 @@ io.sockets.on('connection', function(socket) {
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to create a new Parse user by passing socket.io args array 
   // data to databaseProvider
-  socket.on('sign-up', function(args) {
-    console.log('[~] Attempting to create user ' + args[0] + '.')
+  socket.on('sign-up', function(userInfo) {
+    console.log('[~] Attempting to create user ' + userInfo.name + '.')
 
-    Worker.create(args,
+    Worker.create(userInfo,
       // Check if the user was successfully added 
       // err is null if there is not an error 
-      function(err, res) {
+      function(err, user) {
         if(err) {
           socket.emit('sign-up-response', err)
           // TODO: handle error messages
         } else {
           // Emit user created with response message from databaseProvider
-          socket.emit('sign-up-response', res)
+          socket.emit('sign-up-response', null, user)
         }
     })
   }) // end of sign-up
@@ -81,13 +81,13 @@ io.sockets.on('connection', function(socket) {
   socket.on('login', function(args) {
     //app.databaseProvider.verifyLogin(user, password, function(err, res) {
     Worker.verifyLogin(args,
-      function(err, res) {
+      function(err, user) {
         // Emit result of verifyLogin
         // err is null if there is not an error 
         if(err) {
           socket.emit('login-response', err)
         } else {
-          socket.emit('login-response', res)
+          socket.emit('login-response', null, user)
         }
     })
   }) // end of verify-login
@@ -104,16 +104,35 @@ io.sockets.on('connection', function(socket) {
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempt to send the company calendar object to the frontend
-  socket.on('retrieve-calendar', function(args) {
+  socket.on('retrieve-calendar', function(sendCalendarsToClient) {
     // Emit result of password reset, err is null if no error exists
     var currentUser = Worker.current()
 
-    currentUser.retrieveCalendar(function(err, companyCalendar) {
-      if(err) {
-        socket.emit('retrieve-calendar-response', err)
+    currentUser.retrieveCalendar( function(error, companyCalendars) {
+      if(error) {
+        // if there was error while retrieving calendars
+        sendCalendarsToClient(error) 
       } else {
-        socket.emit('retrieve-calendar-response', companyCalendar)
+        // send array of calendar objects
+        sendCalendarsToClient(null, companyCalendars) 
       }
     })
   }) // end of retrieve-calendar
-})
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts to reset given Parse user password
+  socket.on('update-calendar', function(clientCalendars, callback) {
+    // update calendar in database
+   /* 
+    Worker.current().updateCalendar(clientCalendars, function(error) {
+      if(error) { // if there was error while updating calendars
+        callback(error)
+
+      } else { 
+        callback(null)
+      }
+    })
+   */ 
+  }) // end of update-calendar 
+
+}) // end of io.socket.on

@@ -2,6 +2,9 @@ var ClientCalendar = function(calendar) {
   //this.days = calendar.Days
   this.days = []
   this.availabilities = []
+  this.year = calendar.Year
+  // tells whether this calendar has been chagned, thus should be updated
+  this.changed = false 
 
   // creating Days on client side
   for(var i=0; i<calendar.Days.length; ++i) {
@@ -9,13 +12,9 @@ var ClientCalendar = function(calendar) {
   }
 
   // creating Availabilities on client side
-  /*
   for(var i=0; i<calendar.Availabilities.length; ++i) {
     this.availabilities.push(new Day(calendar.Availabilities[i]))
   }
-  */
-
-  this.year = calendar.Year
 }
 
 // This function returns an array of shifts at the given day index, if 
@@ -56,7 +55,7 @@ ClientCalendar.prototype.getWeek = function(index) {
   var week = []
   var offset = - date.getDay()
 
-  for( var i = 0; i <= 6; i++, offset++) {
+  for(var i = 0; i <= 6; i++, offset++) {
     week[i] = index + offset
   }
 
@@ -106,6 +105,9 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee_login
     }
 } // end of addShiftAtDayIndex()
 
+ClientCalendar.prototype.goingToChange = function() {
+  this.changed = true
+}
 
 ClientCalendar.prototype.writeSomething = function() {
   console.log('im here with the new client calendar')

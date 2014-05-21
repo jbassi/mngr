@@ -8,40 +8,78 @@ var Worker = Parse.User.extend({
   // ***************** Instance methods ***************** // 
   // ***************** **************** ***************** // 
 
-  // This function retrieves a calendar based off the Company name
+  // This function retrieves array calendars based off the Company pointer 
   retrieveCalendar: function(callback) {
     var currentUserCompany = this.get('company')
-    // console.log('ID: ' + JSON.stringify(currentUserCompanyID.objectId))
-    // console.log('ID: ' + currentUserCompanyID)
 
     currentUserCompany.fetch({
       success: function(returnedCompany) {
+        var allCalendars = []
 
-        // console.log(JSON.stringify(returnedCompany))
-        var calendars = returnedCompany.get('calendars')
-        // var calendarObjectID = calendars.get('objectId')
-        // console.log(calendars[0].id)
-        // console.log(JSON.stringify(calendars[0]))
-
-        var calendarQuery = new Parse.Query('Calendar')
-        calendarQuery.get(calendars[0].id, {
-          success: function(returnedCalendar) {
-            // var calendar = new Calendar()
-            // callback(calendar)
-            callback(returnedCalendar)
-          },
-          error: function() {
-            console.log('Failed calendar retrieval in worker.js.')
-          }
+        // getting array of pointers to calendars from company
+        var calendars = returnedCompany.get('calendars') 
+        
+        // get array of calendars objects from array of calendars pointers
+        getAllCalendars(calendars, allCalendars, function(error) {
+          // send array of calendars to front-end using callback
+          if(error)
+            callback(error) // error occurred when getting all calendars
+          else 
+            callback(null, allCalendars) // send all calendars to client
         })
+      }, // end of success, fetching company
 
-      },
-      error: function() {
-        console.log('Failed company retrieval in worker.js.')
+      error: function(error) {
+        console.error('Failed company retrieval in worker.js.')
+        callback(error) // error occurred when getting related company from worker
+      } // end of error()
+    }) // end of company fetch()
+  }, // end of retrieveCalendar()
+
+  // This function update array calendars to the database
+  updateCalendar: function(clientCalendars, callback) {
+    // retrieve calendar
+    this.retrieveCalendar(function(error, companyCalendars) {
+      if(error) { // if there was error while retrieving calendars
+        callback(error) 
+
+      } else {
+
+        // update the companyCalendars
+        for(var i=0; i<clientCalendars.length; ++i) {
+          if(clientCalendars[i].changed) { // if the calendar is changed, update
+
+            /*
+            for(var index=0; index<366; ++index) {
+              companyCalendars[i].days[index] = clientCalendars[i].days[index] 
+            } // end of for() looping through days
+            */
+
+            companyCalendars[i].set('Days', clientCalendars[i].days)
+            companyCalendars[i].set('Availabilities', 
+                                    clientCalendars[i].availabilities)
+
+            companyCalendars[i].save(null, { 
+              success: function() {
+                console.log('updated the calendars successfully')       
+              }, 
+              
+              error: function(error) {
+                console.error('could not update the calendars')       
+                callback(error)
+              }
+
+            }) // end of save()
+          } // end of if
+
+          if(i+1 >= clientCalendars.length)
+            callback(null)
+        } // end of for() looping through calendars
+
+        
       }
-
-    })
-  }
+    }) // end of retrieveCalendar()
+  } // end of updateCalendar()
 
 }, {
   // ***************** ************* ***************** // 
@@ -63,8 +101,9 @@ var Worker = Parse.User.extend({
     var phoneNumber = userInfo.phoneNumber === '' ? null : userInfo.phoneNumber
 
     var isOnSignUp = userInfo.isOnSignUp === '' ? null : userInfo.isOnSignUp
+    var company 
 
-    // Set user object fields
+    // Set worker object fields
     worker.set('username', email)
     worker.set('password', password)
     worker.set('email', email)
@@ -73,8 +112,6 @@ var Worker = Parse.User.extend({
 
     worker.set('phoneNumber', phoneNumber)
     
-    var company 
-
     // set up company and save the worker
     if(!isOnSignUp) { // if it is not on sign up
       company = Worker.current().get('company') // get pointer to current manager's company
@@ -93,11 +130,11 @@ var Worker = Parse.User.extend({
         success: function() {
           console.log('saved new user')  
           setRole(worker, assignedRole) // set role for the worker
-          callback(null)
+          callback(null, worker) 
         },
 
         error: function(error) {
-          console.log('couldn\'t save new user')  
+          console.error('couldn\'t save new user')  
           callback(error)
         }
       }) // save worker as employee
@@ -126,7 +163,7 @@ var Worker = Parse.User.extend({
                   }, // end of success() for setting up company
                   
                   error: function() {
-                    console.log('Could not save new attributes to the new worker')
+                    console.error('Could not save new attributes to the new worker')
                   }
                 }) // end of worker.save()
 
@@ -136,8 +173,8 @@ var Worker = Parse.User.extend({
         }, // end success for signUp
             
         error: function(user, err) {
-          console.log('[~] Error: ' + err.code + ' ' + err.message)
-          callback(err.code, user)
+          console.error('[~] Error: ' + err.code + ' ' + err.message)
+          callback(err)
         } 
       }) // end of signUp
     }  
@@ -164,7 +201,9 @@ var Worker = Parse.User.extend({
 
         error: function(user, err) {
           console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
-          callback(err.code, user)
+          console.error(err)
+          //callback(err.code, user)
+          callback(err, user)
         }
     })
   }, // end of verifyLogin()
@@ -238,29 +277,63 @@ var Worker = Parse.User.extend({
         }
       })
   } // end of login()
-})
+}) // end of class definition
 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+// @@@@@@@@@@@@@@@@@@@@@@ Helper Functions @@@@@@@@@@@@@@@@@@@@@ // 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // helper function for creating new worker
-function setRole(worker, assignedRole) {
+function setRole(worker, assignedRole)
+{
   // Giving the new user the role of Manager or Employee
   var roleQuery = new Parse.Query(Parse.Role)
   roleQuery.equalTo('name', assignedRole)
 
   // get the manger role
   roleQuery.first({
-
-    success: function(role) {
+    success: function(role)
+    {
       // successfully retrieved the object role          
       role.getUsers().add(worker) // add worker 
       role.save()
     }, 
 
-    error: function(err) {
+    error: function(err)
+    {
       // error occurred when querying the role object
       console.error("[~] Error: " + err.code + error.message + " Role not found")
     }
   })
-}
+} // end of setRole
+
+// helper function for retrieving calendars from worker's company
+function getAllCalendars(calendars, allCalendars, callback)
+{
+  var calendarQuery = new Parse.Query('Calendar')
+  var getDone = false
+
+  // loop through the array of pointers to calendars to get calendar objects
+  for(var i=0; i<calendars.length; i++) {
+    calendarQuery.get(calendars[i].id, {
+      success: function(returnedCalendar)
+      {
+        allCalendars.push(returnedCalendar) // push all the calendars objects to array
+
+        // wait till all the calendars have been retrieved 
+        if(i+1 >= calendars.length) {
+         // no error, with allCalendars containing all calendar objects
+         callback(null) 
+        }
+      },
+
+      error: function(error)
+      { 
+        console.log('Failed calendar retrieval in worker.js.')
+        callback(error) // if error occurred during getting the calendar
+      } 
+    }) // end of get() for calendars
+  } // end for()
+} // end of getAllCalendars()
 
 // Allow all the functions in this file to be accessed 
 // when this file is required 

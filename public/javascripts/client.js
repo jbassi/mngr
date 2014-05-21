@@ -1,5 +1,5 @@
 var socket = io.connect()
-var calendar
+var calendars = []
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // All socket requests defined below
@@ -14,58 +14,109 @@ socket.on('status', function(data) {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a login-response
-socket.on('login-response', function(data) {
+socket.on('login-response', function(error, user) {
   // Check if an error message was passed
-  switch(data) {
-    case 200:
-    case 201:
-      console.log('(~) Username or password missing.')
-      // TODO: Display message to user
-      break
-    case 101:
-      console.log('(~) Invalid username or password.')
-      break
-    default:
-      console.log('(+) User: ' + data.username + ' successfully connected.')
-      // Navigate to home page
-      // window.location.href = '/home'
-      
-      // Get users calendar
-      // Retrieve calendar with company name
-      socket.emit('retrieve-calendar')
-      
-      socket.on('retrieve-calendar-response', function(companyCalendar) {
-        if(!companyCalendar) {
-          // Error -- args is null
-          console.log('(-) Calendar initialization failed.')
-        } else {
-          // Calendar successfully passed
-          // console.log('(+) ' + args.test + ' company calendar initialized.')
-          console.log(companyCalendar)
-          calendar = new ClientCalendar(companyCalendar)
-          //calendar.writeSomething()
+  if(error) { // if error occurred during login
+    console.error(JSON.stringify(error)) // print out the error on the console
 
-          console.log(calendar.getWeek(139))
-          console.log(calendar.indexToDate(142))
+    // make the login field shake
+    $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
+
+  } else { // if no error occurred during login
+    console.log('(+) User: ' + user.username + ' successfully connected.')
+    // TODO: 
+    //      1. notifiy the user that the login was successful
+    //      2. take the user to approriate page
+
+    // %%%%%% FOR REFERENCE: 
+    //        still not sure if we want to retrieve calendar on login
+    //        may retrieve calendar when getting onto schedule page 
+    // Get users calendar
+    // Retrieve calendar with company name
+    socket.emit('retrieve-calendar', function(error, companyCalendars) {
+      if(!companyCalendars) { // if the calendars are not retrieved
+        console.log('(-) Calendar initialization failed.')
+
+      } else { // Calendar successfully passed
+        // Loop through companyCalendar and make ClientCalendars 
+        // We want to create ClientCalendars because, 
+        // we can't call methods with Parse objects
+        for(var i=0; i<companyCalendars.length; ++i) {
+          calendars.push(new ClientCalendar(companyCalendars[i]))
         }
-      })
 
-      return
-  } // end switch()
-  
-  // make the login field shake
-  $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
+        // ***************** DEBUG *********************** // 
+        console.log(calendars)
+        console.log(calendars[0].getWeek(139))
+        console.log(calendars[0].indexToDate(366))
+        calendars[0].goingToChange() // mark the calendar to changed
+
+        console.log(calendars[0].days[0].getAllShiftsAtDay())
+     /* 
+        calendars[0].days[0].addShift({
+          "employee" : {"username" : "james@gmail.com",
+                        "name" : "James" },
+          "position" : 'waitor',
+          "time_range" : [{"start" : 800, "end" : 1400}], 
+          "break_time" : {"start" : 1200, "end" : 1300}
+        })
+        calendars[0].days[0].addShift({
+          "employee" : {"username" : "jeremy@gmail.com", "name" : "Jeremy" },
+          "position" : 'waitor',
+          "time_range" : [{"start" : 800, "end" : 1400}], 
+          "break_time" : {"start" : 1200, "end" : 1300}
+        })
+        console.log(calendars[0].days[0].getAllShiftsAtDay())
+
+        calendars[0].days[0].editShift(1, {
+          "employee" : {"username" : "colby@gmail.com", "name" : "Colby" },
+          "break_time" : {"start" : 1100, "end" : 1200}
+        })
+
+        //calendars[0].days[0].deleteShift(1)
+
+        console.log('after the delete shift')
+        console.log(calendars[0].days[0].getAllShiftsAtDay())
+     */ 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% // 
+// This should be placed somehwere else 
+// so when the button is pressed, this will start emitting
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% // 
+// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+// Emits for calendar update
+// Pass CliendCalendar array to server 
+socket.emit('update-calendar', calendars, function(error) {
+  if(error) {
+    //TODO: There was error while updating calendar. Let the user know
+    console.log('there was an error while updating the calendars')
+  } else {
+    //TODO: The update was done successfully. Let the user know
+    console.log('the calendars was updated successfully')
+  }
+}) // end of calendar-update 
+
+
+
+
+
+      } 
+    }) // end emit 'retrieve-calendar'
+  }
 }) // end of login-response
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a sign-up response
-socket.on('sign-up-response', function(data) {
-  if(data === 203 || data === 202) {
+socket.on('sign-up-response', function(error, user) {
+  if(error) {
     // Email / username already taken. 
-    // TODO: Alert user
-    console.log('(-) Username already taken.')
+    // TODO: 
+    //      1. Alert user
+    console.error(JSON.stringify(error)) // print out the error to console
+
   } else {
-    console.log('(+) User: ' + data.username + ' successfully created.')
+    console.log('(+) User: ' + user.username + ' successfully created.')
+    // TODO: 
+    //      1. Take the user to the next approriate page 
     // Navigate to home page
     window.location.href = '/home'
   }
@@ -82,78 +133,70 @@ socket.on('password-reset-response', function(data) {
   }
 }) // end of password-reset-response
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-// Listens for calendar update
-socket.on('calendar-update', function() {
-
-}) // end of calendar-update 
 
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-//TODO how to check if user is logged in??
 $(document).ready(function() {
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // Even handle when sign-up is clicked
+  // Even handle when login is clicked
 	$('#login-button').click(function() {
-    socket.emit('login', {
-      "user" : $('#login-user').val(),
-      "password" : $('#login-pass').val()
-    })
+    emit_login()
 	})
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // Event handle when <CR> was pressed on sign-up
+  // Event handle when <CR> was pressed on login 
   $('#login-pass').keydown(function(e) { //TODO is there a way to do this for both #login-pass and #login-user?
     if (e.keyCode == 13) {
-      socket.emit('login', {
-        "user" : $('#login-user').val(),
-        "password" : $('#login-pass').val()
-      })
+      emit_login()
     }
   }) 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Even handle when sign-up is clicked
   $('#signup-button').click(function() {
-    socket.emit('sign-up', {
-      "name" : $('#signup-name').val(),
-      "email" : $('#signup-email').val(), 
-      "password" : $('#signup-pass').val(),
-      "assignedRole" : 'Manager',
-      "phoneNumber" : /*$('#telephone-num').val()*/'555-5555',
-      "companyName" : /* $('#company-name').val()*/'PANCAKES4U',
-      "isOnSignUp" : true
-    })  
+    emit_singUp()
   })
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Event handle when <CR> was pressed on sign-up
   $('#signup-pass').keydown(function(e) {
     if (e.keyCode == 13) {
-      socket.emit('sign-up', {
-        "name" : $('#signup-name').val(),
-        "email" : $('#signup-email').val(), 
-        "password" : $('#signup-pass').val(),
-        "assignedRole" : 'Manager',
-        "phoneNumber" : /*$('#telephone-num').val()*/'555-5555',
-        "companyName" : /* $('#company-name').val()*/'PANCAKES4U',
-        "isOnSignUp" : true
-      })  
+      emit_singUp()
     }
   })
 
-/*
-//On button click
+  /*
+  //On button click
   $('#forgetPassword-button').click(function() {
     socket.emit('reset-password', [$('#signup-name').val()])
   })
-//On enter key
+  //On enter key
   $('#forgetPassword-pass').keydown(function(e) {
     if (e.keyCode == 13) {
     socket.emit('reset-password', [$('#signup-name').val()])
     }
-  }); */
+  });
+  */
 
-})
+}) // end of $(document)
+
+function emit_login() {
+  socket.emit('login', {
+    "user" : $('#login-user').val(),
+    "password" : $('#login-pass').val()
+  })
+}
+
+function emit_singUp() {
+  socket.emit('sign-up', {
+    "name" : $('#signup-name').val(),
+    "email" : $('#signup-email').val(), 
+    "password" : $('#signup-pass').val(),
+    "assignedRole" : 'Manager',
+    "phoneNumber" : /*$('#telephone-num').val()*/'555-5555',
+    "companyName" : /* $('#company-name').val()*/'PANCAKES4U',
+    "isOnSignUp" : true
+  })  
+}
