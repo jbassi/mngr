@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var Parse = require('parse').Parse
 var Company = require('./company').Company
 var Calendar = require('./calendar').Calendar
