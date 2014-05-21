@@ -14,22 +14,12 @@ html
     script(src='javascripts/shift.js')
     script(src='javascripts/client_calendar.js')
     script(src='javascripts/jquery.touchSwipe.js') //script for touch events
-    script(src='javascripts/sidr/jquery.sidr.min.js') //scripts for sidr menu
-    script.
-      $(document).ready(function() {
-        $('#menu').sidr({
-        name: 'sidr-left',
-        side: 'left',
-        speed: 100
-        });
-        $('#login').sidr({
-        name: 'sidr-right',
-        side: 'right',
-        body: '#login',
-        displace: true,
-        speed: 200
-        });
-      });
+    script(src='javascripts/sidr/sidr.js') //scripts for sidr menu
+
+    //import layoutlanding javascript
+    script(type="text/javascript" src='/javascripts/layoutlanding.js')
+
+      
     block head
   body
   //whole screen header
@@ -37,11 +27,11 @@ html
     //menu and login buttons
     #top
       #menu
-        img#menuimage(src='../resources/menu.png')
+        img#menuimage(src='../resources/menudark.png')
         navtext MENU
       #login
         navtext LOGIN
-        img#loginimage(src='../resources/login.png')
+        img#loginimage(src='../resources/logindark.png')
     #banner
       a(href='/')
         img#logo(src='../resources/logocolor.png')
@@ -50,7 +40,8 @@ html
           //TODO get rid of username field in parse, extraneous
           input#signup-name(type='text' placeholder='NAME')
           input#signup-email(type='text' placeholder='EMAIL')
-          //input#signup-user(type='username' placeholder='USERNAME')
+          input#signup-company(type='text' placeholder='COMPANY NAME')
+          input#signup-telephone(type='text' placeholder='TELPHONE NUMBER')
           input#signup-pass(type='password' placeholder='PASSWORD')
           input#signup-button.button(type='button', value='SIGN UP')
       block banner
@@ -61,5 +52,10 @@ html
       input#login-user(type='text' placeholder='USERNAME')
       input#login-pass(type='password' placeholder='PASSWORD')
       input#login-button(type='button', value='LOGIN')
+      //ahrefer #sidr-right, otherwise the slider closes
+      a#forgot-password(href='#sidr-right')  Forgot Password? 
+      input#send-email(type='text' placeholder='EMAIL')
+      input#send-button(type='button', value='SEND EMAIL')
+    
   //everything under header
   block content

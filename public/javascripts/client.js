@@ -1,6 +1,10 @@
 var socket = io.connect()
 var calendars = []
 
+//if forgot password more than 2-3 times will display forgot email link
+var forgotpassword = 0;
+//require index.js for jquery functions
+
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // All socket requests defined below
 // Listens for a connection to the backend
@@ -13,11 +17,18 @@ socket.on('status', function(data) {
 })
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-// Listens for a login-response
+// Listens for a login-response, if you dont type anything
+// or dont type a password
 socket.on('login-response', function(error, user) {
   // Check if an error message was passed
   if(error) { // if error occurred during login
     console.error(JSON.stringify(error)) // print out the error on the console
+
+    //for displaying forgot email link
+    forgotpassword++;
+
+    //call failedLogin to display css
+    failedLogin();
 
     // make the login field shake
     $('#sidr-right').effect('shake', {times:2, distance:12}, 500)
