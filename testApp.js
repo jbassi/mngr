@@ -171,6 +171,7 @@ stdin.addListener("data", function(d) {
       fs.readFile('./test_manual', function(error, buffer) {
         console.log(buffer.toString())
       })
+      console.log('im here')
     default: 
       console.log('Please look at the man for right test')
   } // end of switch
