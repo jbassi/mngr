@@ -54,7 +54,7 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
     var month = currentDay.getMonth()
     //Get year (four digits)
     var year = currentDay.getFullYear()
-    //Index to be returned 
+      //Index to be returned 
     var dayIndex 
     //Non Leap year array of months 
     var months = [0,31,59,90,120,151,181,212,243,273,304,334]
@@ -93,18 +93,19 @@ ClientCalendar.prototype.getWeek = function(index) {
   var offset = - date.getDay()
 
   for(var i = 0; i <= 6; i++, offset++) {
-    week[i] = index + offset
+    week[i] = this.days[index + offset]
   }
 
   return week
 } // end of getWeek()
 
 ClientCalendar.prototype.indexToDate = function(index) {
+ // console.log("HEY " + this.year)
   var month = [31,29,31,30,31,30,31,31,30,31,30,31]
   var sumOfDays = 0
   var i = 0
   
-  while(sumOfDays+month[i] < index ){
+  while(sumOfDays + month[i] < index ){
       sumOfDays += month[i++]
   }
 

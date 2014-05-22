@@ -57,10 +57,12 @@ socket.on('login-response', function(error, user) {
         }
 
         // ***************** DEBUG *********************** // 
-        console.log(calendars)
-        console.log(calendars[0].getWeek(139))
-        console.log(calendars[0].indexToDate(366))
-        calendars[0].goingToChange() // mark the calendar to changed
+        //console.log(calendars.indexToDate())
+        console.log(calendars[0].getWeek(59))
+        //console.log(calendars)
+        //console.log(calendars[0].getWeek(139))
+        //console.log(calendars[0].indexToDate(366))
+        //calendars[0].goingToChange() // mark the calendar to changed
 
         console.log(calendars[0].days[0].getAllShiftsAtDay())
      /* 
