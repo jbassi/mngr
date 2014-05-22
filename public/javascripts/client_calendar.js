@@ -45,44 +45,32 @@ ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index) {
 // This function returns a number that corresponds with a specific date
 // in order to generate a day index
 ClientCalendar.prototype.getCurrentDayAsIndex = function() {
-    //Javascript Date object
-    var currentDay = new Date()
 
-    //Get day of the month (from 1-31)
-    var day = currentDay.getDate()
-    //Get month of the year (from 0-11)
-    var month = currentDay.getMonth()
-    //Get year (four digits)
-    var year = currentDay.getFullYear()
-      //Index to be returned 
-    var dayIndex 
-    //Non Leap year array of months 
-    var months = [0,31,59,90,120,151,181,212,243,273,304,334]
-    //Leap year array of months
-    var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
+  //Javascript Date object
+  var currentDay = new Date()
 
-    //Determines if the current year is a leap year
-    if((year%4) === 0) {
-      var leapYear = true
-    }else{
-      var leapYear = false
+  //Get day of the month (from 1-31)
+  var day = currentDay.getDate()
+  //Get month of the year (from 0-11)
+  var month = currentDay.getMonth()
+  //Get year (four digits)
+  var year = currentDay.getFullYear()
+  //Index to be returned 
+  var dayIndex 
+  //Leap year array of months 
+  var months = [0,31,60,91,121,152,182,213,244,274,305,335]
+
+  //Grabs amount of days for the current month
+  for(var i = 0; i < months.length; ++i) {
+    if(i == month) {
+      dayIndex = months[i]  
     }
+  }
 
-    //Grabs amount of days for the current month
-    for(var i = 0; i < months.length; ++i) {
-      if(i == month) {
-        if(!leapYear) {
-          dayIndex = months[i]
-        }else{
-          dayIndex = monthsL[i]
-        }   
-      }
-    }
+  //Day index is finalized by adding the amount of days
+  dayIndex = dayIndex + day
 
-    //Day index is finalized by adding the amount of days
-    dayIndex = dayIndex + day
-
-    return dayIndex
+  return dayIndex
 
 } // end of getCurrentDayAsIndex()
 
@@ -138,49 +126,27 @@ ClientCalendar.prototype.indexToDate = function(index)
 
 
 ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
-//var date = new Date(this.year, month, dayOfMonth)
-//var index = da
+
+  //Inputted month 
+  aMonth = month 
+  //Inputted day 
+  day = dayOfMonth
+  //Index to be returned 
+  var dayIndex 
+  //Leap year array of months 
+  var months = [0,31,60,91,121,152,182,213,244,274,305,335]
+
+  //Grabs amount of days for the current month
+  for(var i = 0; i < months.length; ++i) {
+    if(i == aMonth) {   
+      dayIndex = months[i]
+    }   
+  }
     
-    var currentDay = new Date()
+  //Day index is finalized by adding the amount of days
+  dayIndex = dayIndex + day
 
-    //Inputted month 
-    aMonth = month - 1 
-    //Inputted day 
-    day = dayOfMonth
-    //Get year (four digits)
-    var year = currentDay.getFullYear()
-    //Index to be returned 
-    var dayIndex 
-    //Non Leap year array of months 
-    var months = [0,31,59,90,120,151,181,212,243,273,304,334]
-    //Leap year array of months
-    var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
-
-    //Determines if the current year is a leap year
-    if((year%4) === 0) {
-      var leapYear = true
-    }else{
-      var leapYear = false
-    }
-
-    //Grabs amount of days for the current month
-    for(var i = 0; i < months.length; ++i) {
-      if(i == aMonth) {
-        if(!leapYear) {
-          dayIndex = months[i]
-        }else{
-          dayIndex = monthsL[i]
-        }   
-      }
-    }
-
-    //Day index is finalized by adding the amount of days
-    dayIndex = dayIndex + day
-
-    return dayIndex
-
-
-
+  return dayIndex
 } // end of dateToIndex()
 
 //ClientCalendar.prototype.getMonth =  function(offset) {}
