@@ -86,21 +86,41 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
 
 } // end of getCurrentDayAsIndex()
 
-ClientCalendar.prototype.getWeek = function(index) {
+// Returns an array of Days starting, starting from sunday
+// to saturday. 0 = Sun., 1 = Mon., ..., 6 = Sat.
+ClientCalendar.prototype.getWeek = function(index) 
+{
+  
+  var isLeapYear = false
   var day = this.indexToDate(index);
   var date = new Date(this.year, day.month, day.day);
   var week = []
   var offset = - date.getDay()
 
+  //if a leap year, set isLeapYear to true :0
+  if( this.year % 4 == 0){
+    isLeapYear = true  
+  }
+
+  //This for loop will store the array of days
   for(var i = 0; i <= 6; i++, offset++) {
+
+    //skips the 60th(29th of Feb) index on non-leap year years
+    if(!isLeapYear && index + offset == 60){
+      week[i] = this.days[index + offset + 1]
+      offset++
+    }
+    
     week[i] = this.days[index + offset]
   }
 
   return week
 } // end of getWeek()
 
-ClientCalendar.prototype.indexToDate = function(index) {
- // console.log("HEY " + this.year)
+//returns the day and month of an index value
+ClientCalendar.prototype.indexToDate = function(index) 
+{
+ 
   var month = [31,29,31,30,31,30,31,31,30,31,30,31]
   var sumOfDays = 0
   var i = 0
@@ -109,6 +129,7 @@ ClientCalendar.prototype.indexToDate = function(index) {
       sumOfDays += month[i++]
   }
 
+  //Month 0 is January, 1 Feb., etc.
   return {  
     "month" : i,
     "day" : (index - sumOfDays)
