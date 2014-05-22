@@ -29,6 +29,7 @@ span#About_Us {
 font-variant: small-caps;
 font-weight: normal;
 }
+
 /* This style applies to the 4 box (bottom-right) */
 #info .row:nth-child(4){
 font-weight: bold;
@@ -82,7 +83,7 @@ border-top-left-radius:.3em;
 border-top-right-radius:.3em;
 }
 
-#signup-email,#signup-name,#signup-user{
+#signup-email,#signup-name,#signup-user,#signup-company,#signup-telephone{
 margin-bottom:-1px;
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;

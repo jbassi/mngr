@@ -13,7 +13,6 @@ var Calendar = Parse.Object.extend('Calendar', {
     this.availabilities = []
   },
 
-
 }, {
     // ***************** ************* ***************** // 
     // ***************** Class methods ***************** // 

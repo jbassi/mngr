@@ -8,7 +8,7 @@
 
 ;(function( $ ){
 
-  var sidrMoving = false,
+  var sidrMoving = false,g
       sidrOpened = false;
 
   // Private methods
@@ -63,6 +63,7 @@
           speed = $menu.data('speed'),
           side = $menu.data('side'),
           displace = $menu.data('displace'),
+          resize = $menu.data('resize'),
           onOpen = $menu.data('onOpen'),
           onClose = $menu.data('onClose'),
           bodyAnimation,
@@ -107,12 +108,22 @@
 
         // Open menu
         if(displace){
-          $body.addClass('sidr-animating').css({
+          if(resize){
+            $body.addClass('sidr-animating').css({
+            width: $body.width() - menuWidth,
+            position: 'absolute'
+            }).animate(bodyAnimation, speed, function() {
+              $(this).addClass(bodyClass);
+            });
+          }
+          else{
+            $body.addClass('sidr-animating').css({
             width: $body.width(),
             position: 'absolute'
-          }).animate(bodyAnimation, speed, function() {
-            $(this).addClass(bodyClass);
-          });
+            }).animate(bodyAnimation, speed, function() {
+              $(this).addClass(bodyClass);
+            });
+          }
         }
         else {
           setTimeout(function() {
@@ -131,9 +142,28 @@
 
         // onOpen callback
         onOpen();
+
+        window.clearTimeout(scheduler._resize_timer);
+        scheduler._resize_timer=window.setTimeout(function(){
+           if (scheduler.callEvent("onSchedulerResize",[]))  {
+              scheduler.update_view();
+              scheduler.callEvent("onAfterSchedulerResize", []);
+           }
+        }, 100);
+ 
+
       }
       // Close Sidr
       else {
+
+        window.clearTimeout(scheduler._resize_timer);
+        scheduler._resize_timer=window.setTimeout(function(){
+           if (scheduler.callEvent("onSchedulerResize",[]))  {
+              scheduler.update_view();
+              scheduler.callEvent("onAfterSchedulerResize", []);
+           }
+        }, 250);
+
         // Check if we can close it
         if( !$menu.is(':visible') || sidrMoving ) {
           return;
@@ -171,8 +201,12 @@
           $body.removeClass('sidr-animating');
         });
 
+
+
         // onClose callback
         onClose();
+
+
       }
     }
   };
@@ -218,6 +252,7 @@
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
       displace: true, // Displace the body content or not
+      resize: false,
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
@@ -243,6 +278,7 @@
         side           : settings.side,
         body           : settings.body,
         displace      : settings.displace,
+        resize        : settings.resize,
         onOpen         : settings.onOpen,
         onClose        : settings.onClose
       });

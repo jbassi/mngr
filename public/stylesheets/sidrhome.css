@@ -22,15 +22,16 @@ overflow-x:hidden;
 margin-top:1.15em;
 margin-left:0em;
 left:auto;
-right:-40%;
-width:40%;
+right:-30%;
+width:30%;
 min-width: 150px;
 color:#424242;
 }
 
 .sidr.left {
-left:-180px;
-width:180px;
+top:4em;
+left:-240px;
+width:240px;
 right:auto;
 background:#424242;
 color:#a7a7a7;
