@@ -114,6 +114,7 @@ ClientCalendar.prototype.indexToDate = function(index) {
   }
 } // end of indexToDate()
 
+
 ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
 //var date = new Date(this.year, month, dayOfMonth)
 //var index = da
@@ -164,7 +165,7 @@ ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
 
 // This function adds a new shift at the given day index, if day_index is null
 // create a new shift at the index of the current day
-ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee_login, position, time_range, break_time) {
+ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, position, time_range, break_time) {
     var currentDay
 
     // Calculate the current day
@@ -178,8 +179,12 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee_login
     if(typeof this.days[currentDay] === 'undefined') {
       console.log('Invalid day index range.')
     } else {
-      this.days[currentDay].addShift(employee_login, position, time_range, break_time)
-
+      // Checks if there is an extra day for leap year
+      // If its not a leap year, skip over the empty day in the array
+      if(this.days[currentDay] == null) {
+        ++currentDay;
+      }
+      this.days[currentDay].addShift(employee, position, time_range, break_time)
     }
 } // end of addShiftAtDayIndex()
 
