@@ -1,8 +1,8 @@
-function init() { //initliaze the calendar
+function init()
+{ //initliaze the calendar
 
     //getshifts and shit
     //get employees
-
     scheduler.locale.labels.timeline_tab = "Timeline";
     scheduler.locale.labels.section_custom="Section";
     scheduler.config.details_on_create=true;
@@ -17,6 +17,7 @@ function init() { //initliaze the calendar
     {key:3, label:"David Miller"},
     {key:4, label:"Linda Brown"}
     ];
+
     scheduler.createTimelineView({
     name: "timeline",
     x_unit:  "minute",
@@ -29,6 +30,7 @@ function init() { //initliaze the calendar
     y_property: "section_id",
     render:"bar"
     });
+
     //===============
     //Data loading
     //===============
@@ -41,5 +43,4 @@ function init() { //initliaze the calendar
     scheduler.parse([
     {id:1, start_date: "2009-06-30 09:00", end_date: "2009-06-30 12:00", text:"6AM - 10AM", section_id:1}
     ],"json");
-    
 }

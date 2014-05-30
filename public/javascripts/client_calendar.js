@@ -1,4 +1,5 @@
-var ClientCalendar = function(calendar) {
+var ClientCalendar = function(calendar)
+{
   //this.days = calendar.Days
   this.days = []
   this.availabilities = []
@@ -19,7 +20,8 @@ var ClientCalendar = function(calendar) {
 
 // This function returns an array of shifts at the given day index, if 
 // day_index is null, return index of current day
-ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index) {
+ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index)
+{
     var currentDay
 
     // Calculate the current day
@@ -44,7 +46,8 @@ ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index) {
 
 // This function returns a number that corresponds with a specific date
 // in order to generate a day index
-ClientCalendar.prototype.getCurrentDayAsIndex = function() {
+ClientCalendar.prototype.getCurrentDayAsIndex = function()
+{
 
   //Javascript Date object
   var currentDay = new Date()
@@ -71,7 +74,6 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function() {
   dayIndex = dayIndex + day
 
   return dayIndex
-
 } // end of getCurrentDayAsIndex()
 
 // Returns an array of Days starting, starting from sunday
@@ -125,8 +127,8 @@ ClientCalendar.prototype.indexToDate = function(index)
 } // end of indexToDate()
 
 
-ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
-
+ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth)
+{
   //Inputted month 
   aMonth = month 
   //Inputted day 
@@ -138,9 +140,8 @@ ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
 
   //Grabs amount of days for the current month
   for(var i = 0; i < months.length; ++i) {
-    if(i == aMonth) {   
+    if(i == aMonth)    
       dayIndex = months[i]
-    }   
   }
     
   //Day index is finalized by adding the amount of days
@@ -153,7 +154,8 @@ ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
 
 // This function adds a new shift at the given day index, if day_index is null
 // create a new shift at the index of the current day
-ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, position, time_range, break_time) {
+ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, position, time_range, break_time)
+{
     var currentDay
 
     // Calculate the current day
@@ -169,17 +171,19 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, posi
     } else {
       // Checks if there is an extra day for leap year
       // If its not a leap year, skip over the empty day in the array
-      if(this.days[currentDay] == null) {
+      if(this.days[currentDay] == null) 
         ++currentDay;
-      }
+      
       this.days[currentDay].addShift(employee, position, time_range, break_time)
     }
 } // end of addShiftAtDayIndex()
 
-ClientCalendar.prototype.goingToChange = function() {
+ClientCalendar.prototype.goingToChange = function()
+{
   this.changed = true
 }
 
-ClientCalendar.prototype.writeSomething = function() {
+ClientCalendar.prototype.writeSomething = function()
+{
   console.log('im here with the new client calendar')
 }

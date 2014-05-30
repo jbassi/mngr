@@ -8,7 +8,8 @@ var forgotpassword = 0;
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // All socket requests defined below
 // Listens for a connection to the backend
-socket.on('status', function(data) {
+socket.on('status', function(data)
+{
   if (data.msg == 'connection established') {
     console.log('(+) socket.io: connection established.')
   } else {
@@ -19,7 +20,8 @@ socket.on('status', function(data) {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a login-response, if you dont type anything
 // or dont type a password
-socket.on('login-response', function(error, user) {
+socket.on('login-response', function(error, user)
+{
   // Check if an error message was passed
   if(error) { // if error occurred during login
     console.error(JSON.stringify(error)) // print out the error on the console
@@ -44,7 +46,8 @@ socket.on('login-response', function(error, user) {
     //        may retrieve calendar when getting onto schedule page 
     // Get users calendar
     // Retrieve calendar with company name
-    socket.emit('retrieve-calendar', function(error, companyCalendars) {
+    socket.emit('retrieve-calendar', function(error, companyCalendars)
+    {
       if(!companyCalendars) { // if the calendars are not retrieved
         console.log('(-) Calendar initialization failed.')
 
@@ -98,7 +101,8 @@ socket.on('login-response', function(error, user) {
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Emits for calendar update
 // Pass CliendCalendar array to server 
-socket.emit('update-calendar', calendars, function(error) {
+socket.emit('update-calendar', calendars, function(error)
+{
   if(error) {
     //TODO: There was error while updating calendar. Let the user know
     console.log('there was an error while updating the calendars')
@@ -119,7 +123,8 @@ socket.emit('update-calendar', calendars, function(error) {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a sign-up response
-socket.on('sign-up-response', function(error, user) {
+socket.on('sign-up-response', function(error, user)
+{
   if(error) {
     // Email / username already taken. 
     // TODO: 
@@ -137,47 +142,47 @@ socket.on('sign-up-response', function(error, user) {
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a password reset response 
-socket.on('password-reset-response', function(data) {
-  if(data == null) {
+socket.on('password-reset-response', function(data)
+{
+  if(data == null) { // Reset successful
     console.log('(+) Password reset successful.')
-    // Reset successful
   } else {
     console.log('(-) Password reset unsuccessful.')
   }
 }) // end of password-reset-response
 
-
-
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-$(document).ready(function() {
+$(document).ready(function()
+{
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Even handle when login is clicked
-	$('#login-button').click(function() {
+	$('#login-button').click(function()
+  {
     emit_login()
 	})
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Event handle when <CR> was pressed on login 
-  $('#login-pass').keydown(function(e) { //TODO is there a way to do this for both #login-pass and #login-user?
-    if (e.keyCode == 13) {
+  $('#login-pass').keydown(function(e)
+  { //TODO is there a way to do this for both #login-pass and #login-user?
+    if (e.keyCode == 13) 
       emit_login()
-    }
   }) 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Even handle when sign-up is clicked
-  $('#signup-button').click(function() {
+  $('#signup-button').click(function()
+  {
     emit_singUp()
   })
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Event handle when <CR> was pressed on sign-up
   $('#signup-pass').keydown(function(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode == 13) 
       emit_singUp()
-    }
   })
 
   /*
@@ -195,14 +200,16 @@ $(document).ready(function() {
 
 }) // end of $(document)
 
-function emit_login() {
+function emit_login()
+{
   socket.emit('login', {
     "user" : $('#login-user').val(),
     "password" : $('#login-pass').val()
   })
 }
 
-function emit_singUp() {
+function emit_singUp()
+{
   socket.emit('sign-up', {
     "name" : $('#signup-name').val(),
     "email" : $('#signup-email').val(), 

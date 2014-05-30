@@ -1,5 +1,6 @@
 // Constructor for day
-var Day = function(day) {
+var Day = function(day)
+{
 
   if(day === undefined) { 
     // Empty shifts array to hold employee shifts 
@@ -15,7 +16,8 @@ var Day = function(day) {
   }
 } // end constructor
 
-Day.prototype.addShift = function(employee, position, time_range, break_time) {
+Day.prototype.addShift = function(employee, position, time_range, break_time)
+{
   var shiftInfo = {
     "employeeInfo" : employee,
     "position" : position, 
@@ -26,7 +28,8 @@ Day.prototype.addShift = function(employee, position, time_range, break_time) {
   this.shifts.push(new Shift(shiftInfo))
 }
 
-Day.prototype.getAllShiftsAtDay = function() {
+Day.prototype.getAllShiftsAtDay = function()
+{
   return this.shifts
 }
 

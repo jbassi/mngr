@@ -1,51 +1,51 @@
 
 /* When document is open (.read) go here. Also put all active jquery here
  * like .click. Self written functions go outside */
-$(document).ready(function() {
+$(document).ready(function()
+{
+  // Make left menu open and slide right 
+  $('#menu').sidr({
+    name: 'sidr-left',
+    side: 'left',
+    speed: 100
+  })
 
-    /* Make left menu open and slide right */
-    $('#menu').sidr({
-        name: 'sidr-left',
-        side: 'left',
-        speed: 100
-    });
-
-    /* make right login open and slide left */
-    $('#login').sidr({
-        name: 'sidr-right',
-        side: 'right',
-        body: '#login',
-        displace: true,
-        speed: 200
-    });
-    
-    /* clear forms upon page reload */
-    $("#login-pass").val('');
-    $("#login-user").val('');
-
-    /* hide these elements initially */
-    $("#send-email").hide();
-    $("#send-button").hide();
-    $("#forgot-password").hide();
-    
-    /* once login-button is clicked again hide these elements */
-    $( "#login-button" ).click(function() {
-       $("#send-email").hide();
-       $("#send-button").hide();
-    });
-
-    /* if retrieve password is clicked show these elements */
-    $( "#forgot-password" ).click(function() {
-       $("#forgot-password").hide();
-       $("#")
-       //$("#sidr-right").show();
-       //$("#login").show();
-       $("#send-email").show();
-       $("#send-button").show();   
-    });
+  /* make right login open and slide left */
+  $('#login').sidr({
+    name: 'sidr-right',
+    side: 'right',
+    body: '#login',
+    displace: true,
+    speed: 200
+  })
   
+  /* clear forms upon page reload */
+  $("#login-pass").val('')
+  $("#login-user").val('')
 
-}); /* end document .ready */
+  /* hide these elements initially */
+  $("#send-email").hide()
+  $("#send-button").hide()
+  $("#forgot-password").hide()
+  
+  /* once login-button is clicked again hide these elements */
+  $( "#login-button" ).click(function()
+  {
+     $("#send-email").hide()
+     $("#send-button").hide()
+  })
+
+  /* if retrieve password is clicked show these elements */
+  $( "#forgot-password" ).click(function()
+  {
+     $("#forgot-password").hide()
+     $("#")
+     //$("#sidr-right").show();
+     //$("#login").show();
+     $("#send-email").show()
+     $("#send-button").show()   
+  })
+}) // end document .ready 
 
 
   

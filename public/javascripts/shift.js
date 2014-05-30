@@ -1,6 +1,7 @@
 // Employee is a Parse.Worker object
 // shiftInfo : JSON object 
-var Shift = function(shiftInfo) {
+var Shift = function(shiftInfo)
+{
   this.employee = shiftInfo.employeeInfo
   this.position = shiftInfo.position
   this.time_range = shiftInfo.time_range
@@ -11,19 +12,23 @@ var Shift = function(shiftInfo) {
 ///------------------------------------------------------------
 /// Getter Methods 
 ///------------------------------------------------------------
-Shift.prototype.getEmployee = function() {
+Shift.prototype.getEmployee = function()
+{
   return this.employee
 }
 
-Shift.prototype.getPosition = function() {
+Shift.prototype.getPosition = function()
+{
   return this.position
 }
 
-Shift.prototype.getTimeRange = function() {
+Shift.prototype.getTimeRange = function()
+{
   return this.time_range
 }
 
-Shift.prototype.getBreakTime = function() {
+Shift.prototype.getBreakTime = function()
+{
   return this.break_time
 }
 
