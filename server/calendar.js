@@ -34,10 +34,26 @@ var Calendar = Parse.Object.extend('Calendar', {
       calendarACL.setRoleReadAccess('Employee', true)
       calendar.setACL(calendarACL)
 
+      // JavaScript provided Date class
+      var currentDay = new Date()
+      var year = currentDay.getFullYear()
+      var isLeapYear
+
+      if(year % 4 == 0) {
+        isLeapYear = true
+      } else {
+        isLeapYear = false
+      }
+
       // Create days field 
       for(var i = 0; i < 366; i++) {
         //console.log('before initialize is called')
         calendar.days.push(new Day())
+      }
+
+      // If a leap year occurs, change the value of that day to null
+      if(isLeapYear) {
+        calendar.days[59] = null
       }
 
       // Create availability field
@@ -45,11 +61,8 @@ var Calendar = Parse.Object.extend('Calendar', {
         calendar.availabilities.push(new Day())
       }
 
-      // JavaScript provided Date class
-      var date = new Date()
-
       // Set the fields
-      calendar.set('Year', date.getFullYear())
+      calendar.set('Year', currentDay.getFullYear())
       calendar.set('Days', calendar.days)
       calendar.set('Availabilities', calendar.availabilities)
 

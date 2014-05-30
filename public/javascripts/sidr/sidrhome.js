@@ -162,7 +162,7 @@
               scheduler.update_view();
               scheduler.callEvent("onAfterSchedulerResize", []);
            }
-        }, 250);
+        }, 150);
 
         // Check if we can close it
         if( !$menu.is(':visible') || sidrMoving ) {

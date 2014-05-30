@@ -45,126 +45,115 @@ ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index) {
 // This function returns a number that corresponds with a specific date
 // in order to generate a day index
 ClientCalendar.prototype.getCurrentDayAsIndex = function() {
-    //Javascript Date object
-    var currentDay = new Date()
 
-    //Get day of the month (from 1-31)
-    var day = currentDay.getDate()
-    //Get month of the year (from 0-11)
-    var month = currentDay.getMonth()
-    //Get year (four digits)
-    var year = currentDay.getFullYear()
-    //Index to be returned 
-    var dayIndex 
-    //Non Leap year array of months 
-    var months = [0,31,59,90,120,151,181,212,243,273,304,334]
-    //Leap year array of months
-    var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
+  //Javascript Date object
+  var currentDay = new Date()
 
-    //Determines if the current year is a leap year
-    if((year%4) === 0) {
-      var leapYear = true
-    }else{
-      var leapYear = false
+  //Get day of the month (from 1-31)
+  var day = currentDay.getDate()
+  //Get month of the year (from 0-11)
+  var month = currentDay.getMonth()
+  //Get year (four digits)
+  var year = currentDay.getFullYear()
+  //Index to be returned 
+  var dayIndex 
+  //Leap year array of months 
+  var months = [0,31,60,91,121,152,182,213,244,274,305,335]
+
+  //Grabs amount of days for the current month
+  for(var i = 0; i < months.length; ++i) {
+    if(i == month) {
+      dayIndex = months[i]  
     }
+  }
 
-    //Grabs amount of days for the current month
-    for(var i = 0; i < months.length; ++i) {
-      if(i == month) {
-        if(!leapYear) {
-          dayIndex = months[i]
-        }else{
-          dayIndex = monthsL[i]
-        }   
-      }
-    }
+  //Day index is finalized by adding the amount of days
+  dayIndex = dayIndex + day
 
-    //Day index is finalized by adding the amount of days
-    dayIndex = dayIndex + day
-
-    return dayIndex
+  return dayIndex
 
 } // end of getCurrentDayAsIndex()
 
-ClientCalendar.prototype.getWeek = function(index) {
+// Returns an array of Days starting, starting from sunday
+// to saturday. 0 = Sun., 1 = Mon., ..., 6 = Sat.
+ClientCalendar.prototype.getWeek = function(index) 
+{
+  
+  var isLeapYear = false
   var day = this.indexToDate(index);
   var date = new Date(this.year, day.month, day.day);
   var week = []
   var offset = - date.getDay()
 
+  //if a leap year, set isLeapYear to true :0
+  if( this.year % 4 == 0){
+    isLeapYear = true  
+  }
+
+  //This for loop will store the array of days
   for(var i = 0; i <= 6; i++, offset++) {
-    week[i] = index + offset
+
+    //skips the 60th(29th of Feb) index on non-leap year years
+    if(!isLeapYear && index + offset == 60){
+      week[i] = this.days[index + offset + 1]
+      offset++
+    }
+    
+    week[i] = this.days[index + offset]
   }
 
   return week
 } // end of getWeek()
 
-ClientCalendar.prototype.indexToDate = function(index) {
+//returns the day and month of an index value
+ClientCalendar.prototype.indexToDate = function(index) 
+{
+ 
   var month = [31,29,31,30,31,30,31,31,30,31,30,31]
   var sumOfDays = 0
   var i = 0
   
-  while(sumOfDays+month[i] < index ){
+  while(sumOfDays + month[i] < index ){
       sumOfDays += month[i++]
   }
 
+  //Month 0 is January, 1 Feb., etc.
   return {  
     "month" : i,
     "day" : (index - sumOfDays)
   }
 } // end of indexToDate()
 
+
 ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth){
-//var date = new Date(this.year, month, dayOfMonth)
-//var index = da
+
+  //Inputted month 
+  aMonth = month 
+  //Inputted day 
+  day = dayOfMonth
+  //Index to be returned 
+  var dayIndex 
+  //Leap year array of months 
+  var months = [0,31,60,91,121,152,182,213,244,274,305,335]
+
+  //Grabs amount of days for the current month
+  for(var i = 0; i < months.length; ++i) {
+    if(i == aMonth) {   
+      dayIndex = months[i]
+    }   
+  }
     
-    var currentDay = new Date()
+  //Day index is finalized by adding the amount of days
+  dayIndex = dayIndex + day
 
-    //Inputted month 
-    aMonth = month - 1 
-    //Inputted day 
-    day = dayOfMonth
-    //Get year (four digits)
-    var year = currentDay.getFullYear()
-    //Index to be returned 
-    var dayIndex 
-    //Non Leap year array of months 
-    var months = [0,31,59,90,120,151,181,212,243,273,304,334]
-    //Leap year array of months
-    var monthsL = [0,31,60,91,121,152,182,213,244,274,305,335]
-
-    //Determines if the current year is a leap year
-    if((year%4) === 0) {
-      var leapYear = true
-    }else{
-      var leapYear = false
-    }
-
-    //Grabs amount of days for the current month
-    for(var i = 0; i < months.length; ++i) {
-      if(i == aMonth) {
-        if(!leapYear) {
-          dayIndex = months[i]
-        }else{
-          dayIndex = monthsL[i]
-        }   
-      }
-    }
-
-    //Day index is finalized by adding the amount of days
-    dayIndex = dayIndex + day
-
-    return dayIndex
-
-
-
+  return dayIndex
 } // end of dateToIndex()
 
 //ClientCalendar.prototype.getMonth =  function(offset) {}
 
 // This function adds a new shift at the given day index, if day_index is null
 // create a new shift at the index of the current day
-ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee_login, position, time_range, break_time) {
+ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, position, time_range, break_time) {
     var currentDay
 
     // Calculate the current day
@@ -178,8 +167,12 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee_login
     if(typeof this.days[currentDay] === 'undefined') {
       console.log('Invalid day index range.')
     } else {
-      this.days[currentDay].addShift(employee_login, position, time_range, break_time)
-
+      // Checks if there is an extra day for leap year
+      // If its not a leap year, skip over the empty day in the array
+      if(this.days[currentDay] == null) {
+        ++currentDay;
+      }
+      this.days[currentDay].addShift(employee, position, time_range, break_time)
     }
 } // end of addShiftAtDayIndex()
 
