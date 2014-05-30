@@ -9,18 +9,21 @@ var Worker = Parse.User.extend({
   // ***************** **************** ***************** // 
 
   // This function retrieves array calendars based off the Company pointer 
-  retrieveCalendar: function(callback) {
+  retrieveCalendar: function(callback)
+  {
     var currentUserCompany = this.get('company')
 
     currentUserCompany.fetch({
-      success: function(returnedCompany) {
+      success: function(returnedCompany)
+      {
         var allCalendars = []
 
         // getting array of pointers to calendars from company
         var calendars = returnedCompany.get('calendars') 
         
         // get array of calendars objects from array of calendars pointers
-        getAllCalendars(calendars, allCalendars, function(error) {
+        getAllCalendars(calendars, allCalendars, function(error)
+        {
           // send array of calendars to front-end using callback
           if(error)
             callback(error) // error occurred when getting all calendars
@@ -29,17 +32,21 @@ var Worker = Parse.User.extend({
         })
       }, // end of success, fetching company
 
-      error: function(error) {
+      error: function(error)
+      {
         console.error('Failed company retrieval in worker.js.')
         callback(error) // error occurred when getting related company from worker
       } // end of error()
+
     }) // end of company fetch()
   }, // end of retrieveCalendar()
 
   // This function update array calendars to the database
-  updateCalendar: function(clientCalendars, callback) {
+  updateCalendar: function(clientCalendars, callback)
+  {
     // retrieve calendar
-    this.retrieveCalendar(function(error, companyCalendars) {
+    this.retrieveCalendar(function(error, companyCalendars)
+    {
       if(error) { // if there was error while retrieving calendars
         callback(error) 
 
@@ -60,11 +67,13 @@ var Worker = Parse.User.extend({
                                     clientCalendars[i].availabilities)
 
             companyCalendars[i].save(null, { 
-              success: function() {
+              success: function()
+              {
                 console.log('updated the calendars successfully')       
               }, 
               
-              error: function(error) {
+              error: function(error)
+              {
                 console.error('could not update the calendars')       
                 callback(error)
               }
@@ -75,8 +84,6 @@ var Worker = Parse.User.extend({
           if(i+1 >= clientCalendars.length)
             callback(null)
         } // end of for() looping through calendars
-
-        
       }
     }) // end of retrieveCalendar()
   } // end of updateCalendar()
@@ -90,7 +97,8 @@ var Worker = Parse.User.extend({
   // This function takes in a name, email, username, and password and attempts
   // to create a new user in Parse. A callback function is also included to 
   // alert the caller of the user creation status
-  create: function(userInfo, callback) {
+  create: function(userInfo, callback)
+  {
     // Store data locally to pass into databaseProvider 
     var worker = new Worker()
 
@@ -116,10 +124,13 @@ var Worker = Parse.User.extend({
     if(!isOnSignUp) { // if it is not on sign up
       company = Worker.current().get('company') // get pointer to current manager's company
       company.fetch({ // fetch current manager's company
-        success: function(fetchedCompany) {
+        success: function(fetchedCompany)
+        {
           company = fetchedCompany
         }, 
-        error: function(error) {
+
+        error: function(error)
+        {
           console.error('No such company can\'t be found')       
         }
       }) 
@@ -127,13 +138,15 @@ var Worker = Parse.User.extend({
       worker.set('company', company)
 
       worker.save(null, {
-        success: function() {
+        success: function()
+        {
           console.log('saved new user')  
           setRole(worker, assignedRole) // set role for the worker
           callback(null, worker) 
         },
 
-        error: function(error) {
+        error: function(error)
+        {
           console.error('couldn\'t save new user')  
           callback(error)
         }
@@ -144,25 +157,28 @@ var Worker = Parse.User.extend({
       // Sign up the worker in parse
       worker.signUp(null, {
 
-        success: function(user) {
+        success: function(user)
+        {
           console.log('[+] Successfully created new user ' + name)
 
           setRole(worker, assignedRole) // set role for the worker
          
           // create a new company with the given company name
-          company = Company.create(userInfo.companyName, 
-            function(error) {
+          company = Company.create(userInfo.companyName, function(error)
+          {
               if(error) { // if there was problem creating a new company
                 console.error('Could not create a new company') 
 
               } else { // if there was no error when creating a new company 
                 worker.set('company', company) // set the company for the worker 
                 worker.save(null, {
-                  success: function() {
+                  success: function()
+                  {
                     console.log('New attributes have been saved to the new worker')
                   }, // end of success() for setting up company
                   
-                  error: function() {
+                  error: function()
+                  {
                     console.error('Could not save new attributes to the new worker')
                   }
                 }) // end of worker.save()
@@ -172,7 +188,8 @@ var Worker = Parse.User.extend({
           }) // create the company 
         }, // end success for signUp
             
-        error: function(user, err) {
+        error: function(user, err)
+        {
           console.error('[~] Error: ' + err.code + ' ' + err.message)
           callback(err)
         } 
@@ -186,20 +203,23 @@ var Worker = Parse.User.extend({
   // This function checks Parse to see if the (user, password) pair is valid. A 
   // callback function is also included to alert the caller if the pair is valid
   // or not
-  verifyLogin: function(loginInfo, callback) {
+  verifyLogin: function(loginInfo, callback)
+  {
     var user = loginInfo.user === '' ? null : loginInfo.user
     var password = loginInfo.password === '' ? null :  loginInfo.password
 
     // Check Parse for the given username and password
     Worker.logIn(user, password, {
-        success: function(user) {
+        success: function(user)
+        {
           console.log('[~] Successful login.')
 
 
           callback(null, user)
         },
 
-        error: function(user, err) {
+        error: function(user, err)
+        {
           console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
           console.error(err)
           //callback(err.code, user)
@@ -211,24 +231,28 @@ var Worker = Parse.User.extend({
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function attempts to reset a Parse user password with the given email.
   // A callback with an error from parse is provided.
-  resetPassword: function(email, callback) {
+  resetPassword: function(email, callback)
+  {
     Parse.User.requestPasswordReset(email, {
-        success: function() {
+        success: function()
+        {
           // Password reset request was successful
           console.log('[~] Reset request sent')
           callback(null)
-       },
+        },
 
-        error: function(err) {
+        error: function(err)
+        {
           // Send error message back to calling function
           console.error('[~] Reset request failed')
           callback(err)
-       }
+        }
     })
   }, // end of resetPassword()
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  delete: function(username) {
+  delete: function(username)
+  {
     // allow master key if manager logs in
     if(Worker.current().get('assignedRole') === 'Manager') {
       Parse.Cloud.useMasterKey()
@@ -238,28 +262,29 @@ var Worker = Parse.User.extend({
     users.equalTo('username', username)
     
     users.first({
-      
-      success: function(userToBeDeleted) {
-
+      success: function(userToBeDeleted)
+      {
         if(userToBeDeleted === undefined)
           console.log('no such user found')
 
         else
           userToBeDeleted.destroy({
-            success: function(object) {
+            success: function(object)
+            {
               console.log('the user was successfully delete') 
             },
 
-            fail: function(object, error) {
+            fail: function(object, error)
+            {
               // error message for deleting a user    
               console.error('the user could not be deleted')
             }
           }) // end of destroy()
-
         //console.log('deleted ' + username)            
       }, // success
 
-      error: function(error) {
+      error: function(error)
+      {
         console.error('could not find the user to delete'); 
       } // error
     })
@@ -267,12 +292,16 @@ var Worker = Parse.User.extend({
   }, // end of delete()
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  login: function(username, userPassword) {
+  login: function(username, userPassword)
+  {
       Parse.User.logIn(username, userPassword, {
-        succuess: function(user) {
+        succuess: function(user)
+        {
           console.log('username is successfully logged in')
         }, 
-        error: function(user, error) {
+
+        error: function(user, error)
+        {
           console.error('login is failed')       
         }
       })

@@ -7,7 +7,8 @@ var Calendar = Parse.Object.extend('Calendar', {
   // ***************** Instance methods ***************** // 
   // ***************** **************** ***************** // 
 
-  initialize: function(attrs, options) {
+  initialize: function(attrs, options)
+  {
     // Stores an array of all the calendar year days
     this.days = []
     this.availabilities = []
@@ -22,7 +23,8 @@ var Calendar = Parse.Object.extend('Calendar', {
     // This function should be called when a new Calendar is made. 
     // This function creates and initializes all the fields of 
     // a Parse Calendar object and stores the created calendar in Parse
-    create: function() {
+    create: function()
+    {
       var calendar = new Calendar()
 
       // Set ACL access permission for this object

@@ -1,14 +1,16 @@
 var Parse = require('parse').Parse
 
 // Constructor for a DatabaseProvider object
-module.exports = function(app, server, callback) {
+module.exports = function(app, server, callback)
+{
 	// Parse assigned IDs
 	var APP_ID = 'VUmeTixLxsOyRmBsi5kFbUSoajFrVYFU9vKfFJyy'
 	var JAVASCRIPT_KEY = 'kq5k9XkvgPpH8Y2y7ZeiSjd4IyCDtmbNSBxqyvti'
 	var MASTER_KEY = 'hXvZIYuOZud90bCPIBkvsKMILIgy59rzvgRJ4ZD4'
 
 	// Begin accepting connection on app port
-	server.listen(app.get('port'), function() {
+	server.listen(app.get('port'), function()
+  {
 		console.log('[+] App is deployed on port ' + app.get('port'));
 	})
 
