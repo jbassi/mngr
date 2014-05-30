@@ -1786,12 +1786,13 @@ dataProcessor.prototype={
    dhx_sort[index]=direction
    dhx_filter[index]=mask
 */
+/*
 if (window.dhtmlXGridObject){
    dhtmlXGridObject.prototype._init_point_connector=dhtmlXGridObject.prototype._init_point;
    dhtmlXGridObject.prototype._init_point=function(){
-      var clear_url=function(url){
-         url=url.replace(/(\?|\&)connector[^\f]*/g,"");
-         return url+(url.indexOf("?")!=-1?"&":"?")+"connector=true"+(this.hdr.rows.length > 0 ? "&dhx_no_header=1":"");
+      var clear_url=function(url)//{
+         url=url.replace(/(\?|\&)connector[^\f]*///g,"");
+         /*return url+(url.indexOf("?")!=-1?"&":"?")+"connector=true"+(this.hdr.rows.length > 0 ? "&dhx_no_header=1":"");
       };
       var combine_urls=function(url){
          return clear_url.call(this,url)+(this._connector_sorting||"")+(this._connector_filter||"");
@@ -1900,7 +1901,7 @@ if (window.dhtmlXGridObject){
          this._colls_loaded=true;
       }
    };
-}
+}*/
 
 if (window.dataProcessor){
    dataProcessor.prototype.init_original=dataProcessor.prototype.init;
@@ -2122,6 +2123,9 @@ scheduler._click={
    dhx_cal_next_button:function(dummy,step){
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      scheduler.parse([
+      {id:2, start_date: "2009-07-01 09:00", end_date: "2009-07-01 12:00", text:"6ffufufckM", section_id:1}
+      ],"json");      
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
