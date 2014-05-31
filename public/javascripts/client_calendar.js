@@ -1,3 +1,20 @@
+/*
+ * Summary:      ClientCalendar provides a way for the frontend to interface 
+ *               with Parse and the backend. Functions are included that make
+ *               it easy to get specific calendar information to display to the
+ *               screen. This function is a JavaScript object constructor.
+ *
+ * Inst. vars:   days -- an array that holds day objects (for more information 
+ *                       see Day object documentation)
+ *               availabilities -- an array that holds day objects 
+ *                       (for more information see Day object documentation)
+ *               year -- an int; the current year
+ *               changed -- boolean; a calendar instance knows if it needs to 
+ *                       be updated on the backend
+ *
+ * Parameters:   Calendar -- a calendar object that is sent in from the backend.
+ * Return:       None.
+ */
 var ClientCalendar = function(calendar)
 {
   //this.days = calendar.Days
@@ -18,8 +35,16 @@ var ClientCalendar = function(calendar)
   }
 }
 
-// This function returns an array of shifts at the given day index, if 
-// day_index is null, return index of current day
+/*
+ * Summary:      getAvaliableShiftsAtDayIndex returns an array of Shift objects
+ *               at the given day index. For example an index of 2 would return
+ *               an array of shifts on January, 2nd.
+ *
+ * Parameters:   day_index -- int or null; if null, return the index of the 
+ *               current calendar day determined by JavaScript.
+ *
+ * Return:       An array of shift objects
+ */
 ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index)
 {
     var currentDay
@@ -44,11 +69,18 @@ ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index)
     return null
 }
 
-// This function returns a number that corresponds with a specific date
-// in order to generate a day index
+/*
+ * Summary:      getCurrentDayAsIndex calculates the current day (determined
+ *               by the JavaScript Date object) and returns the value as an int.
+ *               This value can be used to directly access the array of days
+ *               within a Calendar object.
+ *
+ * Parameters:   None.
+ *
+ * Return:       The calculated index of the current day.
+ */
 ClientCalendar.prototype.getCurrentDayAsIndex = function()
 {
-
   //Javascript Date object
   var currentDay = new Date()
 
@@ -76,11 +108,19 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function()
   return dayIndex
 } // end of getCurrentDayAsIndex()
 
-// Returns an array of Days starting, starting from sunday
-// to saturday. 0 = Sun., 1 = Mon., ..., 6 = Sat.
+/*
+ * Summary:      getWeek calculates the current week block based on parameter
+ *               value. If the parameter value is a Tuesday of the week,
+ *               getWeek calculates the offset and always returns the start day
+ *               (Sunday) of the week.
+ *
+ * Parameters:   None.
+ *
+ * Return:       An array of 7 Day objects. The 0th index of the array is 
+ *               Sunday and the 6th index of the array is Saturday. 
+ */
 ClientCalendar.prototype.getWeek = function(index) 
 {
-  
   var isLeapYear = false
   var day = this.indexToDate(index);
   var date = new Date(this.year, day.month, day.day);
@@ -107,32 +147,44 @@ ClientCalendar.prototype.getWeek = function(index)
   return week
 } // end of getWeek()
 
-//returns the day and month of an index value
+/*
+ * Summary:      indexToDate converts the parameter index to a Date JSON object.
+ *
+ * Parameters:   index -- int; the index to be converted.
+ *
+ * Return:       A JSON object:
+ *                 { 'month': , 'day': }
+ */
 ClientCalendar.prototype.indexToDate = function(index) 
 {
- 
   var month = [31,29,31,30,31,30,31,31,30,31,30,31]
   var sumOfDays = 0
   var i = 0
   
   while(sumOfDays + month[i] < index ){
-      sumOfDays += month[i++]
+    sumOfDays += month[i++]
   }
 
-  //Month 0 is January, 1 Feb., etc.
+  // Month 0 is January, 1 Feb., etc.
   return {  
     "month" : i,
     "day" : (index - sumOfDays)
   }
 } // end of indexToDate()
 
-
-ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth)
+/*
+ * Summary:      dateToIndex converts a JSON object to an integer.
+ *
+ * Parameters:   dateInfo -- a JSON object: { 'month': , 'day': }
+ *
+ * Return:       dayIndex -- an int; the JSON object converted to a int
+ */
+ClientCalendar.prototype.dateToIndex = function(dateInfo)
 {
   //Inputted month 
-  aMonth = month 
+  aMonth = dateInfo.month
   //Inputted day 
-  day = dayOfMonth
+  day = dateInfo.day
   //Index to be returned 
   var dayIndex 
   //Leap year array of months 
@@ -150,10 +202,18 @@ ClientCalendar.prototype.dateToIndex = function(month,dayOfMonth)
   return dayIndex
 } // end of dateToIndex()
 
-//ClientCalendar.prototype.getMonth =  function(offset) {}
-
-// This function adds a new shift at the given day index, if day_index is null
-// create a new shift at the index of the current day
+/*
+ * Summary:      addShiftAtDayIndex creates a Shift object at a given day index.
+ *
+ * Parameters:   day_index -- int; the index of the array where to add the shift
+ *               employee -- JSON object; the employee to add
+ *               position -- string; the position of the employee
+ *               time_range -- JSON object; the range of times the employee 
+ *                             works
+ *               break_time -- JSON object; the break range of the employee
+ *
+ * Return:       None.
+ */
 ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, position, time_range, break_time)
 {
     var currentDay
@@ -178,6 +238,13 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, posi
     }
 } // end of addShiftAtDayIndex()
 
+/*
+ * Summary:      goingToChange sets calendar instance changed boolean to true
+ *
+ * Parameters:   None.
+ *
+ * Return:       None.
+ */
 ClientCalendar.prototype.goingToChange = function()
 {
   this.changed = true
