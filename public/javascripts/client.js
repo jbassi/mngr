@@ -215,8 +215,8 @@ function emit_singUp()
     "email" : $('#signup-email').val(), 
     "password" : $('#signup-pass').val(),
     "assignedRole" : 'Manager',
-    "phoneNumber" : /*$('#telephone-num').val()*/'555-5555',
-    "companyName" : /* $('#company-name').val()*/'PANCAKES4U',
+    "phoneNumber" : $('#telephone-num').val(),
+    "companyName" : $('#company-name').val(),
     "isOnSignUp" : true
   })  
 }

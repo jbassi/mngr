@@ -2,7 +2,7 @@
 // shiftInfo : JSON object 
 var Shift = function(shiftInfo)
 {
-  this.employee = shiftInfo.employeeInfo
+  this.employee = shiftInfo.employee
   this.position = shiftInfo.position
   this.time_range = shiftInfo.time_range
   this.break_time = shiftInfo.break_time
