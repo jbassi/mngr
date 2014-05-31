@@ -23,8 +23,8 @@ display: inline-block;
 }
 
 #intro-form{
-position:relative;
-width:25em;
+position: relative;
+width:20em;
 margin:5% auto;
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;
@@ -132,15 +132,27 @@ width:60%;
 
 /* small screens */
 @media (max-width:1024px) {
-   #signup-form{
+   #logo-nolink {
+   margin-top:15%;
+   }
+   #intro-form{
    margin-top: 15%;
    }
 }
 
 /* mobile */
 @media (orientation:portrait) and (max-width:1024px) {
-   #signup-form{
+   #logo-nolink {
+   margin-top: 50%;
+   margin-left: 0%;
+   width:100%;
+   display: inline-block;
+   }   
+   #intro-form{
    width:140%;
    margin:10% -20%;
+   }
+   #add-button{ /* TODO fix */
+   bottom:5em;
    }
 }
