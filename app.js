@@ -24,13 +24,13 @@ app.configure(function()
 })
 
 // Configure socket.io settings
-io.configure(function()
+/*io.configure(function()
 { 
   io.set("transports", ["xhr-polling"])
   io.set("polling duration", 10)
 })
 
-io.set('log level', 1)
+io.set('log level', 1)*/
 
 // Development specific items go here
 if ('development' == app.get('env')) {
@@ -105,7 +105,7 @@ io.sockets.on('connection', function(socket)
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(args)
-  {
+  {console.log('button CLicked')
     // DatabaseProvider object handles password reset
     Worker.resetPassword(args, function(err)
     {

@@ -231,9 +231,9 @@ var Worker = Parse.User.extend({
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function attempts to reset a Parse user password with the given email.
   // A callback with an error from parse is provided.
-  resetPassword: function(email, callback)
+  resetPassword: function(args, callback)
   {
-    Parse.User.requestPasswordReset(email, {
+    Parse.User.requestPasswordReset(args.email, {
         success: function()
         {
           // Password reset request was successful
