@@ -997,7 +997,7 @@ div.icon_delete{
 .dhx_matrix_cell div, .dhx_matrix_scell div{ 
    overflow:hidden;
    text-align:center;
-    height:auto; 
+    height:1px; 
 }
 
 .dhx_cal_lsection .dhx_readonly{

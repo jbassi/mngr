@@ -3,6 +3,9 @@ function init()
 
     //getshifts and shit
     //get employees
+
+
+
     scheduler.locale.labels.timeline_tab = "Timeline";
     scheduler.locale.labels.section_custom="Section";
     scheduler.config.details_on_create=true;
@@ -12,10 +15,16 @@ function init()
     //Configuration
     //===============
     var sections=[
-    {key:1, label:"James Smith"},
-    {key:2, label:"John Williams"},
-    {key:3, label:"David Miller"},
-    {key:4, label:"Linda Brown"}
+    {key:1, label:"Jeremy Bassi"},
+    {key:2, label:"Nick Ardecky"},
+    {key:3, label:"Christian Carreon"},
+    {key:4, label:"Cole Stipe"},
+    {key:5, label:"James Lee"},
+    {key:6, label:"Colby Harrison"},
+    {key:7, label:"Jonathan Trinh"},
+    {key:8, label:"Richard Ying"},
+    {key:9, label:"Joe Kang"},
+    {key:10, label:"Yutang Lin"}
     ];
 
     scheduler.createTimelineView({

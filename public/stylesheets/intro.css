@@ -1,0 +1,146 @@
+#menu {
+display:none;
+}
+
+#login {
+display:none;
+}
+
+#signup-form {
+display:none;
+}
+
+#logo {
+display:none;
+}
+
+#logo-nolink {
+margin-top: 9%;
+margin-left: 30%;
+margin-right: 30%;
+width:40%;
+display: inline-block;
+}
+
+#intro-form{
+position:relative;
+width:25em;
+margin:5% auto;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-radius:.6em;
+-moz-border-radius:.6em;
+-ms-border-radius:.6em;
+-o-border-radius:.6em;
+border-radius:.6em;
+}
+
+#company{
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-top-left-radius:.3em;
+-moz-border-top-left-radius:.3em;
+-ms-border-top-left-radius:.3em;
+-o-border-top-left-radius:.3em;
+border-top-left-radius:.3em;
+-webkit-border-top-right-radius:.3em;
+-moz-border-top-right-radius:.3em;
+-ms-border-top-right-radius:.3em;
+-o-border-top-right-radius:.3em;
+border-top-right-radius:.3em;
+}
+
+#signup-name,#signup-user{
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+}
+
+#phone{
+margin-bottom:1em;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-bottom-left-radius:.3em;
+-moz-border-bottom-left-radius:.3em;
+-ms-border-bottom-left-radius:.3em;
+-o-border-bottom-left-radius:.3em;
+border-bottom-left-radius:.3em;
+-webkit-border-bottom-right-radius:.3em;
+-moz-border-bottom-right-radius:.3em;
+-ms-border-bottom-right-radius:.3em;
+-o-border-bottom-right-radius:.3em;
+border-bottom-right-radius:.3em;
+}
+
+#employee-name {
+display:inline;
+width:45%;
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-top-left-radius:.3em;
+-moz-border-top-left-radius:.3em;
+-ms-border-top-left-radius:.3em;
+-o-border-top-left-radius:.3em;
+border-top-left-radius:.3em;
+-webkit-border-bottom-left-radius:.3em;
+-moz-border-bottom-left-radius:.3em;
+-ms-border-bottom-left-radius:.3em;
+-o-border-bottom-left-radius:.3em;
+border-bottom-left-radius:.3em;
+}
+
+#employee-email {
+margin-left:-1px;
+display:inline;
+width:calc(55% + 1px);
+width:-moz-calc(55% + 1px);
+width:-webkit-calc(55% + 1px);
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-top-right-radius:.3em;
+-moz-border-top-right-radius:.3em;
+-ms-border-top-right-radius:.3em;
+-o-border-top-right-radius:.3em;
+border-top-right-radius:.3em;
+-webkit-border-bottom-right-radius:.3em;
+-moz-border-bottom-right-radius:.3em;
+-ms-border-bottom-right-radius:.3em;
+-o-border-bottom-right-radius:.3em;
+border-bottom-right-radius:.3em;
+}
+
+#add-button{
+position:absolute;
+bottom:4.4em;
+right:-2.2em;
+width:1.5em;
+}
+
+#next-button{
+margin: .75em auto 0;
+width:60%;
+}
+
+/* small screens */
+@media (max-width:1024px) {
+   #signup-form{
+   margin-top: 15%;
+   }
+}
+
+/* mobile */
+@media (orientation:portrait) and (max-width:1024px) {
+   #signup-form{
+   width:140%;
+   margin:10% -20%;
+   }
+}

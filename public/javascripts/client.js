@@ -136,7 +136,7 @@ socket.on('sign-up-response', function(error, user)
     // TODO: 
     //      1. Take the user to the next approriate page 
     // Navigate to home page
-    window.location.href = '/home'
+    window.location.href = '/intro'
   }
 }) // end of sign-up-response 
 
