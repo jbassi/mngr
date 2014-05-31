@@ -105,8 +105,7 @@ io.sockets.on('connection', function(socket)
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(args)
-  {console.log('button CLicked')
-    // DatabaseProvider object handles password reset
+  {    // DatabaseProvider object handles password reset
     Worker.resetPassword(args, function(err)
     {
       // Emit result of password reset, err is null if no error exists
