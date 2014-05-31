@@ -646,7 +646,7 @@ function y_scale(d) {
       }
 
       // section 1
-      html+="<tr class='"+stats.tr_className+"' style='"+stats.style_height+"'><td class='"+stats.td_className+"' style='"+stats.style_width+" height:"+(stats.height-1)+"px;'>"+stats.td_content+"</td>";
+      html+="<tr class='"+stats.tr_className+"' style='"+stats.style_height+"'><td class='"+stats.td_className+"' style='"+stats.style_width+" height:5px;'>"+stats.td_content+"</td>";
 
       if (this.render == "cell"){
          for (var j=0; j < scheduler._cols.length; j++) {

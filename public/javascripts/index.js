@@ -35,7 +35,7 @@ $(window).resize(function ()
   $.sidr('close', 'sidr-left');
   $.sidr('close', 'sidr-right');
 })
-
+/*
 // not sure what you do bruh 
 $("#menu").swipe({
   swipeLeft:function(event, direction, distance, duration, fingerCount)
@@ -43,7 +43,7 @@ $("#menu").swipe({
     $.sidr('close', 'sidr-left');
   }
 })
-
+*/
 // Once document closes kill these applications 
 
 
