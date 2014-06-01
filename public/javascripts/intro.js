@@ -173,7 +173,7 @@ $(document).ready(function()
                 'borderColor': '#D80000 '
             },500);
   
-            $("#error_message").append("Please Enter A Comapny Name")
+            $("#error_message").append("Please Enter A Company Name")
             $("#error_message").show()
             /* Cant get scroll top to work!!!!
             $('html,body').animate({
