@@ -24,13 +24,13 @@ app.configure(function()
 })
 
 // Configure socket.io settings
-/*io.configure(function()
-{ 
-  io.set("transports", ["xhr-polling"])
-  io.set("polling duration", 10)
-})
+// io.configure(function()
+// { 
+//   io.set("transports", ["xhr-polling"])
+//   io.set("polling duration", 10)
+// })
 
-io.set('log level', 1)*/
+// io.set('log level', 1)
 
 // Development specific items go here
 if ('development' == app.get('env')) {
@@ -105,7 +105,8 @@ io.sockets.on('connection', function(socket)
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(args)
-  {    // DatabaseProvider object handles password reset
+  {
+    // DatabaseProvider object handles password reset
     Worker.resetPassword(args, function(err)
     {
       // Emit result of password reset, err is null if no error exists
@@ -131,6 +132,60 @@ io.sockets.on('connection', function(socket)
     })
 
   }) // end of retrieve-calendar
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempt add new employees to the current signed in Workers company
+  // and add the workers company name and phone number
+  socket.on('intro-manager-info-add', function(newUserInformation, callback)
+  {
+    // Retireved JSON:
+    // { "company_info": { "company_name":, "company_phone":}, "employees": }
+
+    var currentUser = Worker.current()
+
+    // get the company info of the newUserInformation JSON
+    var companyInfo = newUserInformation.company_info
+    // get the array of employees from newUserInformation
+    var employeesToAdd = newUserInformation.employees
+
+    // Set the manager company name and company phone number
+    // A filled in company name is checked for on the front end
+    currentUser.set('company', company_info.company_name)
+    currentUser.set('phoneNumber', company_info.company_phone)
+
+    // Attempot to save new fields
+    currentUser.save(null, {
+      success: function()
+      {
+        console.log('Company information save successful.')
+      },
+
+      error: function(error)
+      {
+        console.error('Company information save failed.')
+        // Give an error of 500 to show that the save failed
+        callback(500)
+      }
+    }) 
+
+    // Loop through the array of employees and create new employees
+    for(var i = 0; i < employeesToAdd.length; ++i) {
+      /* { "name":, "email":, "password":, "assignedRole":, "phoneNumber":,
+           "isOnSignUp": } */
+      // each employeeToAdd item is a JSON object
+      Worker.create(employeesToAdd[i], function(err) {
+        if(err)
+          // An error occured adding workers, make the front end display an
+          // error message and stop trying to add users
+          callback(501)
+        }
+      })
+    }
+
+    // Successful add of company info and employees
+    callback(null)
+
+  }) // end of intro-manager-info-add
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password

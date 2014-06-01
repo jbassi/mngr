@@ -107,7 +107,6 @@ var Worker = Parse.User.extend({
     var password = userInfo.password === '' ? null : userInfo.password
     var assignedRole = userInfo.assignedRole === '' ? null : userInfo.assignedRole
     var phoneNumber = userInfo.phoneNumber === '' ? null : userInfo.phoneNumber
-
     var isOnSignUp = userInfo.isOnSignUp === '' ? null : userInfo.isOnSignUp
     var company 
 
