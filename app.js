@@ -24,14 +24,8 @@ app.configure(function()
     app.use(express.static(path.join(__dirname, 'public')))
 })
 
-// Configure socket.io settings
-// io.configure(function()
-// { 
-//   io.set("transports", ["xhr-polling"])
-//   io.set("polling duration", 10)
-// })
-
-// io.set('log level', 1)
+// Set the console log level
+io.set('log level', 1)
 
 // Development specific items go here
 if ('development' == app.get('env')) {
@@ -171,13 +165,13 @@ io.sockets.on('connection', function(socket)
             console.log('Company information save successful.')
             // Loop through the array of employees and create new employees
             for(var i = 0; i < employeesToAdd.length; ++i) {
-              /* { "name":, "email":, "password":, "assignedRole":, "phoneNumber":,
-                   "isOnSignUp": } */
+              /* { "name":, "email":, "password":, "assignedRole":, 
+                   "phoneNumber":, "isOnSignUp": } */
               // each employeeToAdd item is a JSON object
               Worker.create(employeesToAdd[i], function(err) {
                 if(err) {
-                  // An error occured adding workers, make the front end display an
-                  // error message and stop trying to add users
+                  // An error occured adding workers, make the front end display
+                  // an error message and stop trying to add users
                   callback(err)
                 }
               }) // end of Worker.create()
@@ -188,7 +182,6 @@ io.sockets.on('connection', function(socket)
           {
 
             console.error('Company information save failed.')
-            // Give an error of 500 to show that the save failed
             callback(err)
           }
         }) // end of fetchedCompany.save()
