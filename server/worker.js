@@ -107,7 +107,6 @@ var Worker = Parse.User.extend({
     var password = userInfo.password === '' ? null : userInfo.password
     var assignedRole = userInfo.assignedRole === '' ? null : userInfo.assignedRole
     var phoneNumber = userInfo.phoneNumber === '' ? null : userInfo.phoneNumber
-
     var isOnSignUp = userInfo.isOnSignUp === '' ? null : userInfo.isOnSignUp
     var company 
 
@@ -145,9 +144,9 @@ var Worker = Parse.User.extend({
           callback(null, worker) 
         },
 
-        error: function(error)
+        error: function(user, error)
         {
-          console.error('couldn\'t save new user')  
+          console.error(error.message)  
           callback(error)
         }
       }) // save worker as employee
@@ -231,9 +230,9 @@ var Worker = Parse.User.extend({
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function attempts to reset a Parse user password with the given email.
   // A callback with an error from parse is provided.
-  resetPassword: function(email, callback)
+  resetPassword: function(args, callback)
   {
-    Parse.User.requestPasswordReset(email, {
+    Parse.User.requestPasswordReset(args.email, {
         success: function()
         {
           // Password reset request was successful

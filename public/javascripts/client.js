@@ -142,7 +142,7 @@ socket.on('sign-up-response', function(error, user)
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a password reset response 
-socket.on('password-reset-response', function(data)
+socket.on('reset-password-response', function(data)
 {
   if(data == null) { // Reset successful
     console.log('(+) Password reset successful.')
@@ -185,20 +185,20 @@ $(document).ready(function()
       emit_singUp()
   })
 
-  /*
+  
   //On button click
-  $('#forgetPassword-button').click(function() {
-    socket.emit('reset-password', [$('#signup-name').val()])
+  $('#send-button').click(function() {
+    emit_passwordReset()
   })
-  //On enter key
-  $('#forgetPassword-pass').keydown(function(e) {
-    if (e.keyCode == 13) {
-    socket.emit('reset-password', [$('#signup-name').val()])
-    }
-  });
-  */
-
+  
 }) // end of $(document)
+
+function emit_passwordReset()
+{
+  socket.emit('reset-password', {
+    "email" : $('#send-email').val()
+  })
+}
 
 function emit_login()
 {
