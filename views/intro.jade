@@ -4,13 +4,12 @@ block head
 block banner
   img#logo-nolink(src='../resources/logocolor.png')
   form#intro-form
-    form
-      //TODO get rid of username field in parse, extraneous
-      input#company(type='text' placeholder='COMPANY NAME')
-      input#phone(type='text' placeholder='PHONE NUMBER')
-      input#employee-name(type='text' placeholder='EMPLOYEE NAME')
-      input#employee-email(type='text' placeholder='EMAIL')
-      img#add-button(src='../resources/add.png')
+    input#company(type='text' placeholder='COMPANY NAME')
+    input#phone(type='text' placeholder='PHONE NUMBER')
+    input#position(type='text' placeholder='POSITIONS - IE CHEF, WAITER')
+    input#employee-name(type='text' placeholder='EMPLOYEE NAME')
+    input#employee-email(type='text' placeholder='EMAIL')
+    img#add-button(src='../resources/add.png')
 
-      input#next-button.button(type='button', value='NEXT')
+    input#next-button.button(type='button', value='NEXT')
 block content
