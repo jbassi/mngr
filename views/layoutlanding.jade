@@ -36,14 +36,13 @@ html
       a(href='/')
         img#logo(src='../resources/logocolor.png')
       form#signup-form
-        form
-          //TODO get rid of username field in parse, extraneous
-          input#signup-name(type='text' placeholder='NAME')
-          input#signup-email(type='text' placeholder='EMAIL')
-          //input#signup-company(type='text' placeholder='COMPANY NAME')
-          //input#signup-telephone(type='text' placeholder='TELPHONE NUMBER')
-          input#signup-pass(type='password' placeholder='PASSWORD')
-          input#signup-button.button(type='button', value='SIGN UP')
+        //TODO get rid of username field in parse, extraneous
+        input#signup-name(type='text' placeholder='NAME')
+        input#signup-email(type='text' placeholder='EMAIL')
+        //input#signup-company(type='text' placeholder='COMPANY NAME')
+        //input#signup-telephone(type='text' placeholder='TELPHONE NUMBER')
+        input#signup-pass(type='password' placeholder='PASSWORD')
+        input#signup-button.button(type='button', value='SIGN UP')
       block banner
     block header
   //login form

@@ -2,6 +2,12 @@
 This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
 to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 */
+//IMPORTANT
+//UNUSED
+//EDITED
+
+var rowheight = 0;
+
 (scheduler._temp_matrix_scope = function(){
 
 
@@ -31,10 +37,10 @@ scheduler.createTimelineView=function(obj){
       render:"cell",
       dx:200,
       dy:50,
-      event_dy: scheduler.xy.bar_height-5,
-      event_min_dy: scheduler.xy.bar_height-5,
-      resize_events: true,
-      fit_events: true,
+      event_dy: 'full',
+      event_min_dy: scheduler.xy.bar_height,
+      resize_events: false,
+      fit_events: false,
       show_unassigned: false,
       second_scale: false,
       round_position: false,
@@ -314,7 +320,8 @@ scheduler._get_timeline_event_height = function(ev, config){
 };
 scheduler._get_timeline_event_y = function(order, event_height){
    var sorder = order;
-   var y = 2+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
+   var y = 3;
+   //EDITED var y = 3+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
    if (scheduler.config.cascade_event_display) {
       y =2+sorder*scheduler.config.cascade_event_margin+(sorder?(sorder*2):0);
    }
@@ -328,12 +335,12 @@ scheduler.render_timeline_event = function(ev, attach){
 
    var sorder = ev._sorder;
 
-   var x_start = _getX(ev, false, this);
+   var x_start = _getX(ev, false, this)+2;
    var x_end = _getX(ev, true, this);
 
    var event_height = scheduler._get_timeline_event_height(ev, this);
 
-   var hb = event_height - 2;// takes into account css sizes (border/padding)
+   var hb = event_height - 1;// takes into account css sizes (border/padding)
    if (!ev._inner && this.event_dy == "full") {
       hb=(hb+2)*(ev._count-sorder)-2;
    }
@@ -646,7 +653,7 @@ function y_scale(d) {
       }
 
       // section 1
-      html+="<tr class='"+stats.tr_className+"' style='"+stats.style_height+"'><td class='"+stats.td_className+"' style='"+stats.style_width+" height:5px;'>"+stats.td_content+"</td>";
+      html+="<tr class='"+stats.tr_className+"' style='"+stats.style_height+"'><td class='"+stats.td_className+"' style='"+stats.style_width+" height:"+(stats.height-1)+"px;'>"+stats.td_content+"</td>";
 
       if (this.render == "cell"){
          for (var j=0; j < scheduler._cols.length; j++) {
@@ -674,6 +681,9 @@ function y_scale(d) {
          html+="</div></td>";
       }
       html+="</tr>";
+
+
+      rowheight = stats.height;
    }
    html += "</table>";
    this._matrix = evs;

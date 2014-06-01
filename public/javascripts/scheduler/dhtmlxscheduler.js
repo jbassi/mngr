@@ -2,6 +2,13 @@
 This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
 to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 */
+//IMPORTANT
+//UNUSED
+//EDITED
+
+var shifts = 0;
+
+
 
 if (!window.dhtmlx) {
    dhtmlx = function(obj){
@@ -2049,7 +2056,7 @@ scheduler.set_actions=function(){
       if (!scheduler._ignore_next_click)
          scheduler._on_mouse_up(e||event);
    };
-   this._obj.ondblclick=function(e){
+   this._obj.onclick=function(e){ //no longer dblclick
       scheduler._on_dbl_click(e||event);
    };
    this._obj.oncontextmenu = function(e) {
@@ -2123,8 +2130,8 @@ scheduler._click={
    dhx_cal_next_button:function(dummy,step){
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
-      scheduler.parse([
-      {id:2, start_date: "2009-07-01 09:00", end_date: "2009-07-01 12:00", text:"6ffufufckM", section_id:1}
+      scheduler.parse([ //IMPORTANT
+      {id:2, start_date: "2014-01-02 012:00", end_date: "2014-01-02 15:00", text:"6ffufufckM", employee_id:1, color:"#d5e15d"}
       ],"json");      
    },
    dhx_cal_today_button:function(){
@@ -2168,7 +2175,7 @@ scheduler.addEventNow=function(start,end,e){
       base = start;
       start = null;
    }
-   
+   console.log('add click event')
    var d = (this.config.event_duration||this.config.time_step)*60000;
    if (!start) start = base.start_date||Math.round((scheduler._currentDate()).valueOf()/d)*d;
    var start_date = new Date(start);
@@ -2314,7 +2321,7 @@ scheduler._close_not_saved=function(){
 scheduler._correct_shift=function(start, back){
    return start-=((new Date(scheduler._min_date)).getTimezoneOffset()-(new Date(start)).getTimezoneOffset())*60000*(back?-1:1);  
 };
-scheduler._on_mouse_move=function(e){
+scheduler._on_mouse_move=function(e){ //IMPORTANT drag mode
    if (this._drag_mode){
       var pos=this._mouse_coords(e);
       if (!this._drag_pos || pos.force_redraw || this._drag_pos.x!=pos.x || this._drag_pos.y!=pos.y ){
@@ -2343,7 +2350,7 @@ scheduler._on_mouse_move=function(e){
             end = start;
             if (end == this._drag_start) {
             }
-
+            console.log('add drag event')
             var start_date = new Date(this._drag_start);
             var end_date = new Date(end);
             if ( (this._mode == "day" || this._mode == "week")
@@ -2358,7 +2365,6 @@ scheduler._on_mouse_move=function(e){
             this.callEvent("onEventCreated",[this._drag_id,e]);
             this._loading=false;
             this._drag_mode="new-size";
-            
          } 
 
          var ev=this.getEvent(this._drag_id);
@@ -2864,6 +2870,20 @@ scheduler.getLabel = function(property, key) {
    }
    return "";
 };
+scheduler.getColor = function(property, key) {
+   var sections = this.config.lightbox.sections;
+   for (var i=0; i<sections.length; i++) {
+      if(sections[i].map_to == property) {
+         var options = sections[i].options;
+         for (var j=0; j<options.length; j++) {
+            if(options[j].key == key) {
+               return options[j].color;
+            }
+         }
+      }
+   }
+   return "";
+};
 scheduler.updateCollection = function(list_name, collection) {
    var list = scheduler.serverList(list_name);
    if (!list) return false;
@@ -3174,7 +3194,7 @@ scheduler.locale = {
       icon_delete:"Delete",
       confirm_closing:"",//Your changes will be lost, are your sure ?
       confirm_deleting:"Event will be deleted permanently, are you sure?",
-      section_description:"Description",
+      section_description:"Notes",
       section_time:"Time period",
       full_day:"Full day",
 
@@ -3232,7 +3252,7 @@ scheduler.config={
    xml_date: "%m/%d/%Y %H:%i",
    api_date: "%d-%m-%Y %H:%i",
    preserve_length:true,
-   time_step: 5,
+   time_step: 10,
 
    start_on_monday: 1,
    first_hour: 0,
@@ -3349,7 +3369,7 @@ scheduler.clearAll = function() {
    this.clear_view();
    this.callEvent("onClearAll", []);
 };
-scheduler.addEvent = function(start_date, end_date, text, id, extra_data) {
+scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IMPORTANT
    if (!arguments.length)
       return this.addEventNow();
    var ev = start_date;
@@ -3377,6 +3397,10 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) {
    this.event_updated(ev);
    if (!this._loading)
       this.callEvent(is_new ? "onEventAdded" : "onEventChanged", [ev.id, ev]);
+   //console.log('start_date: ' + start_date)
+   //console.log('end_date: ' + end_date)
+   //console.log(ev)
+   //console.log('fuck' + scheduler.getEvent(ev.id))
    return ev.id;
 };
 scheduler.deleteEvent = function(id, silent) {
@@ -4883,7 +4907,7 @@ scheduler.form_blocks={
       }
    }
 };
-scheduler.showCover=function(box){
+scheduler.showCover=function(box){ //UNUSED
    if (box){
       box.style.display="block";
 
@@ -4903,9 +4927,10 @@ scheduler.showCover=function(box){
       else // horizontal scroll on the body
          box.style.left=Math.round((document.body.offsetWidth-box.offsetWidth)/2)+"px";
    }
-    this.show_cover();
+    //this.show_cover();
 };
 scheduler.showLightbox=function(id){
+   //console.log('event: ' + this.getEvent(id))
    if (!id) return;
    if (!this.callEvent("onBeforeLightbox",[id])) {
       if (this._new_event)
@@ -4986,11 +5011,18 @@ scheduler.show_cover=function(){
    this._cover.style.height = Math.max(_document_height, _scroll_height) + 'px';
    document.body.appendChild(this._cover);
 };
-scheduler.save_lightbox=function(){
-   var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id)));
+scheduler.save_lightbox=function(){ //IMPORTANT
+
+//console.log('saved')
+   var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
+   data.color = scheduler.getColor("position_id", data.position_id);
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;
    this._empty_lightbox(data);
+   //console.log('wooow: ' + data.position_id)
+   //console.log('color: ' + data.color)
+   shifts++;
+   //console.log(shifts)
    this.hide_lightbox();
 };
 scheduler.startLightbox = function(id, box){
@@ -5510,7 +5542,7 @@ scheduler._skin_settings = {
 
 scheduler._skin_xy = {
    lightbox_additional_height: [90,50],
-   nav_height: [59,22],
+   nav_height: [59,22], //IMPORTANT
    bar_height: [24,20]
 };
 
