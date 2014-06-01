@@ -174,7 +174,7 @@ io.sockets.on('connection', function(socket)
            "isOnSignUp": } */
       // each employeeToAdd item is a JSON object
       Worker.create(employeesToAdd[i], function(err) {
-        if(err)
+        if(err) {
           // An error occured adding workers, make the front end display an
           // error message and stop trying to add users
           callback(501)
