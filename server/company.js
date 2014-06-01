@@ -26,6 +26,7 @@ var Company = Parse.Object.extend('Company', {
 
     // set company fields
     company.set('name', companyName)
+    company.set('phoneNumber', "")
     var calendars = [Calendar.create()]
     company.set('calendars', calendars)
     // TODO: set fields for company

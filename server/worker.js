@@ -144,9 +144,9 @@ var Worker = Parse.User.extend({
           callback(null, worker) 
         },
 
-        error: function(error)
+        error: function(user, error)
         {
-          console.error('couldn\'t save new user')  
+          console.error(error.message)  
           callback(error)
         }
       }) // save worker as employee
