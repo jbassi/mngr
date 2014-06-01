@@ -73,7 +73,7 @@ $(document).ready(function()
             //bool value to not insert empty forms
             var empty = false;
 
-            //not sure how to pass form+formCount to be serialized
+            //form id to be serialized
             var form_id = "#input"+readIn;
 
             //debug id form#
@@ -102,7 +102,6 @@ $(document).ready(function()
                 
                 //if field value is left blank, DO NOT PASS IT IN
                 if(field.value == "") {
-                  // console.log("YOU ARE DUMB. ENTER IN INFO BRO")
                    empty = true;
                 }
 
@@ -162,8 +161,8 @@ $(document).ready(function()
             incorrect_company_name = true;
         }
 
-        console.log(company.name)
-        console.log(company.phone)
+        //console.log(company.name)
+        //console.log(company.phone)
 
         //if company name is empty dont move on
         if( incorrect_company_name ) {
@@ -175,6 +174,7 @@ $(document).ready(function()
   
             $("#error_message").append("Please Enter A Company Name")
             $("#error_message").show()
+
             /* Cant get scroll top to work!!!!
             $('html,body').animate({
                 scrollTop: $("#company").offset().top
@@ -185,7 +185,7 @@ $(document).ready(function()
         //else we are ready to pass this object
         else {
 
-            //create new object to pas
+            //create new object to pass
             var company_employee = {
 
                 "companyInfo": company,
@@ -197,14 +197,15 @@ $(document).ready(function()
             //push to back end
             socket.emit('intro-manager-info-add', company_employee, function(error){
                 
-                //will return 500 if company name or phone number DID NOT SAVE IN PARSE
+                //will return error message as a string
                 if(error){
                     console.log(error.message)
                     $('#error_message').append(error.message)
                     $("#error_message").show();
                 }
-                else
+                else{
                     console.log("We did it!!! Ready to go to manager page");
+                }
                 
             });
                 
