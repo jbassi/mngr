@@ -304,7 +304,70 @@ var Worker = Parse.User.extend({
           console.error('login is failed')       
         }
       })
-  } // end of login()
+  }, // end of login()
+
+  initialManagerInformationCreation: function(newUserInformation, callback)
+  {
+    // Retireved JSON:
+    // { "company_info": { "company_name":, "company_phone":}, "employees": }
+    
+    var currentUser = Worker.current()
+
+    // allow master key if manager logs in
+    if(currentUser.get('assignedRole') === 'Manager') {
+      Parse.Cloud.useMasterKey()
+    } else {
+      callback({
+        "message" : "You are not manager"
+      })
+    }
+
+    // get the company info of the newUserInformation JSON
+    var companyInfo = newUserInformation.companyInfo
+    // get the array of employees from newUserInformation
+    var employeesToAdd = newUserInformation.employees
+    
+    // Set the manager company name and company phone number
+    // A filled in company name is checked for on the front end
+    currentUser.get('company').fetch({ // fetch current manager's company
+      success: function(fetchedCompany)
+      {
+        fetchedCompany.set('name', companyInfo.name)
+        fetchedCompany.set('phoneNumber', companyInfo.phone)
+        fetchedCompany.save({
+          success: function()
+          {
+            console.log('Company information save successful.')
+            // Loop through the array of employees and create new employees
+            for(var i = 0; i < employeesToAdd.length; ++i) {
+              /* { "name":, "email":, "password":, "assignedRole":, 
+                   "phoneNumber":, "isOnSignUp": } */
+              // each employeeToAdd item is a JSON object
+              Worker.create(employeesToAdd[i], function(err) {
+                if(err) {
+                  // An error occured adding workers, make the front end display
+                  // an error message and stop trying to add users
+                  callback(err)
+                }
+              }) // end of Worker.create()
+            }
+          },
+
+          error: function(error)
+          {
+
+            console.error('Company information save failed.')
+            callback(err)
+          }
+        }) // end of fetchedCompany.save()
+      }, 
+
+      error: function(error)
+      {
+        console.error('No such company can\'t be found')       
+      }
+    }) // end of company.fetch()
+  } // end of initialManagerInformationCreation
 }) // end of class definition
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
