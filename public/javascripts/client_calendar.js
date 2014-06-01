@@ -142,7 +142,7 @@ ClientCalendar.prototype.getWeek = function(index)
   for(var i = 0; i <= 6; i++, offset++) {
 
     //skips the 60th(29th of Feb) index on non-leap year years
-    if(!isLeapYear && index + offset == 60){
+    if(!isLeapYear && index + offset === 59){
       week[i] = this.days[index + offset + 1]
       offset++
     }
