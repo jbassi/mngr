@@ -14,6 +14,23 @@ display:none;
 display:none;
 }
 
+#form_container{
+margin: auto;
+width: 75%;
+
+}
+
+#dynamic_add{
+   /*width:100%*/
+   margin:auto;
+}
+
+form{
+
+   width:30em;
+   margin:auto;
+}
+
 #error_message{
 background: none repeat scroll 0% 0% #CCC;
 padding: 1em;
@@ -24,8 +41,8 @@ opacity: 0.8;
 border-radius: .4em;
 text-align: left;
 height: auto;
-width: 100%;
-margin-top:23px;
+width: 24em;
+margin:auto;
 }
 
 #logo-nolink {
@@ -34,9 +51,10 @@ margin-left: 30%;
 margin-right: 30%;
 width:40%;
 display: inline-block;
+padding-bottom: 15px;
 }
 
-#input0, #input1{
+#input0{
 position: relative;
 width:30em;
 margin:5% auto;
@@ -99,16 +117,7 @@ margin-bottom:-1px;
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;
 box-sizing:border-box;
--webkit-border-top-left-radius:.3em;
--moz-border-top-left-radius:.3em;
--ms-border-top-left-radius:.3em;
--o-border-top-left-radius:.3em;
-border-top-left-radius:.3em;
--webkit-border-bottom-left-radius:.3em;
--moz-border-bottom-left-radius:.3em;
--ms-border-bottom-left-radius:.3em;
--o-border-bottom-left-radius:.3em;
-border-bottom-left-radius:.3em;
+
 }
 
 #employee-email {
@@ -121,16 +130,7 @@ margin-bottom:-1px;
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;
 box-sizing:border-box;
--webkit-border-top-right-radius:.3em;
--moz-border-top-right-radius:.3em;
--ms-border-top-right-radius:.3em;
--o-border-top-right-radius:.3em;
-border-top-right-radius:.3em;
--webkit-border-bottom-right-radius:.3em;
--moz-border-bottom-right-radius:.3em;
--ms-border-bottom-right-radius:.3em;
--o-border-bottom-right-radius:.3em;
-border-bottom-right-radius:.3em;
+
 }
 
 #add-button{
@@ -148,7 +148,7 @@ width:1.5em;
 
 #next-button{
 margin: .75em auto 0;
-width:60%;
+width:50%;
 margin-bottom:100px;
 }
 
