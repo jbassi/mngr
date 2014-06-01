@@ -10,21 +10,34 @@ display:none;
 display:none;
 }
 
-#form_container{
-margin: auto;
-width: 75%;
-
-}
-
 #dynamic_add{
    /*width:100%*/
    margin:auto;
 }
 
-form{
+#form_container{
+margin: auto;
+width: 30em;
+position:relative;
 
+}
+
+form{
    width:30em;
    margin:auto;
+}
+
+#input1{
+-webkit-border-bottom-left-radius:.3em;
+-moz-border-bottom-left-radius:.3em;
+-ms-border-bottom-left-radius:.3em;
+-o-border-bottom-left-radius:.3em;
+border-bottom-left-radius:.3em;
+-webkit-border-bottom-right-radius:.3em;
+-moz-border-bottom-right-radius:.3em;
+-ms-border-bottom-right-radius:.3em;
+-o-border-bottom-right-radius:.3em;
+border-bottom-right-radius:.3em;
 }
 
 #error_message{
@@ -37,7 +50,6 @@ opacity: 0.8;
 border-radius: .4em;
 text-align: left;
 height: auto;
-width: 24em;
 margin:auto;
 }
 
@@ -53,7 +65,7 @@ padding-bottom: 15px;
 #input0{
 position: relative;
 width:30em;
-margin:5% auto;
+margin-top:2em;
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;
 box-sizing:border-box;
@@ -129,11 +141,36 @@ box-sizing:border-box;
 
 }
 
+#employee-name0 {
+display:inline;
+width:45%;
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+
+
+}
+
+#employee-email0 {
+margin-left:-1px;
+display:inline;
+width:calc(55% + 1px);
+width:-moz-calc(55% + 1px);
+width:-webkit-calc(55% + 1px);
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+
+}
+
 #add-button{
-position:absolute;
-bottom:1em;
-right:-2.2em;
-width:1.5em;
+
+width: 2.2em;
+position: absolute;
+bottom:4.4em;
+right: -3em;
 }
 
 #add-button:hover{
@@ -153,9 +190,7 @@ margin-bottom:100px;
    #logo-nolink {
    margin-top:15%;
    }
-   #input0{
-   margin-top: 15%;
-   }
+
 }
 
 /* mobile */
@@ -166,11 +201,29 @@ margin-bottom:100px;
    width:100%;
    display: inline-block;
    }   
-   #input0{
-   width:140%;
-   margin:10% -20%;
-   }
+
    #add-button{ /* TODO fix */
    bottom:5em;
    }
+
+   #form_container, form{
+   margin: auto;
+   width: 100%;
+   height:auto;
+
+   }
+
+   #input0{
+      margin-top:2em;
+      width:100%;
+   }
+
+   #next-button{
+   margin: .75em auto 0;
+   width:75%;
+   margin-bottom:100px;
+   }
+
+
+  
 }

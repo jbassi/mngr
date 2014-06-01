@@ -4,10 +4,10 @@ $(document).ready(function()
 {
     
     //hide error message
-    //$("#error_message").hide();
+    $("#error_message").hide()
 
     //gets rid of two scrollbars
-    $('html').css('overflow', 'hidden');
+    $('html').css('overflow', 'hidden')
 
     //clear top forms
     $("#company").val('')
@@ -30,15 +30,14 @@ $(document).ready(function()
         var start = '<form id=';
         var middle = start +'input'+formCount;
         var end = middle +'><input type="text" placeholder="NAME"  name="name" value="" id="employee-name"/><input type="text"  name="email" value="" placeholder="EMAIL" id="employee-email"/></form>';
-        console.log(end);
+        console.log(end)
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
 
-        
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
-            scrollTop: $("#next-button").offset().top
+            scrollTop: $('#error_message').offset().top
         }, 500);*/
 
          // end of signup click function()
@@ -50,6 +49,16 @@ $(document).ready(function()
     //once done adding employees and ready to submit
     $("#next-button").click(function()
     { 
+
+        //hide the error message in case we need to display new error message
+        $("#error_message").hide()
+        //then empty it
+        $("#error_message").empty()
+        //reset border on company name
+        $("#company").animate({
+                'borderWidth': '1px',
+                'borderColor': '#a7a7a7'
+        },100);
 
         //global array to save values incase failed login, no need to re-enter
         var array = [];
@@ -83,7 +92,7 @@ $(document).ready(function()
             };
 
 	        //serialize form data into JSON array and make JSON object after
-	        var x = $(form_id).serializeArray();
+	        var x = $(form_id).serializeArray()
 
             //variable to assign fields read in order of: name, email
             var j = 1;
@@ -114,7 +123,7 @@ $(document).ready(function()
                        
             //if information wasn't empty make the employee
             if(!empty) {  
-               array.push(Employee);
+               array.push(Employee)
             }
 	       	        
 	        //decrement amount of forms read in
@@ -153,8 +162,8 @@ $(document).ready(function()
             incorrect_company_name = true;
         }
 
-        console.log(company.name);
-        console.log(company.phone);
+        console.log(company.name)
+        console.log(company.phone)
 
         //if company name is empty dont move on
         if( incorrect_company_name ) {
@@ -163,9 +172,9 @@ $(document).ready(function()
                 'borderWidth': '.23em',
                 'borderColor': '#D80000 '
             },500);
-
-            console.log("read. fuck. you. restart.")
-
+  
+            $("#error_message").append("Please Enter A Comapny Name")
+            $("#error_message").show()
             /* Cant get scroll top to work!!!!
             $('html,body').animate({
                 scrollTop: $("#company").offset().top
@@ -192,7 +201,7 @@ $(document).ready(function()
                 if(error){
                     console.log(error.message)
                     $('#error_message').append(error.message)
-                    //$("#error_message").show();
+                    $("#error_message").show();
                 }
                 else
                     console.log("We did it!!! Ready to go to manager page");
@@ -203,7 +212,7 @@ $(document).ready(function()
         }
 
         //check if objects all processed correctly
-        var j = array.length;
+        /*var j = array.length;
         console.log(j);
 
         for( j = j-1 ;j >= 0 ; --j){
@@ -215,7 +224,7 @@ $(document).ready(function()
             console.log(tmp.password);
             console.log(tmp.assignedRole);
             console.log("\n");
-        }
+        }*/
 
 
     });
