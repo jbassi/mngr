@@ -90,7 +90,7 @@ function init()
         eventID.readonly = true;
     }
 
-    console.log('wooow' + scheduler.getEvent(2).position)
+    //console.log('wooow' + scheduler.getEvent(2).position)
 
     //disable click for read only events
     scheduler.attachEvent("onDblClick", function (id, e){
