@@ -4,6 +4,24 @@ This software is allowed to use under GPL or you need to obtain Commercial or En
 to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 */
 
+@font-face { /*BrandonLight font*/
+font-family: 'BrandonLight';
+src: url('../resources/brandonlight.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonlight.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face { /*BrandonBlack font*/
+font-family: 'BrandonBlack';
+src: url('../resources/brandonblack.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonblack.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face { /*BrandonRegular font*/
+font-family: 'BrandonRegular';
+src: url('../resources/brandonregular.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonregular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
 .dhtmlx_message_area{
    position:fixed;
    right:5px;
@@ -201,8 +219,11 @@ div.dhx_modal_cover {
 
 .dhx_cal_container{
    background-color:#C2D5FC;
-   font-family:Tahoma; 
-   font-size:8pt;
+   font-family:BrandonLight, sans-serif; /* edited event fonts */
+   font-weight:normal;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   font-size:1em;
    position:relative;
    overflow:hidden;
 }
@@ -1011,10 +1032,10 @@ div.icon_delete{
 }
 .dhx_cal_event_line .dhx_event_resize {
    cursor: w-resize;
-   background: url(./imgs/resize_dots.png) repeat-y;
+   /* background: url(./imgs/resize_dots.png) repeat-y; */
    position: absolute;
    top: 0;
-   width: 4px;
+   width: 15px;
 }
 .dhx_event_resize_start {
    left: 0;
@@ -1637,12 +1658,12 @@ div.dhx_menu_head, div.dhx_menu_icon {
    background-image: url(imgs_dhx_terrace/controls.png);
 }
 
-.dhx_cal_event_line { /* IMPORTANT */
+.dhx_cal_event_line { /* edited */
    background-color: #6b6b6c;
-   color: white;
+   color: rgba(255, 255, 255, 0.65);
    height: 50px;
-   line-height: 25px;
-   padding-left:10px;
+   line-height: 1.1em;
+   padding:2px 5px;
 }
 
 .dhx_cal_event_line.unavailability{ /* edited */
@@ -1673,8 +1694,11 @@ div.dhx_menu_head, div.dhx_menu_icon {
 }
 
 .dhx_cal_event .dhx_body, .dhx_cal_event_line {
-   font-size: 12px;
-   font-family: Arial, sans-serif;
+   font-family:BrandonBlack, sans-serif; /* edited event fonts */
+   font-weight:normal;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   font-size:1.2em;
 }
 
 /* event end */
@@ -1906,9 +1930,11 @@ div.dhx_menu_head, div.dhx_menu_icon {
 }
 .dhx_cal_light_wide .dhx_cal_lsection, .dhx_cal_light_wide .dhx_cal_lsection .dhx_fullday {
    font-size: 13px;
+   display:none;
 }
 .dhx_section_time {
    background-color: transparent;
+   display:none;
 }
 .dhx_save_btn, .dhx_cancel_btn, .dhx_delete_btn, .dhx_btn_set div:first-child {
    display: none;
@@ -2060,7 +2086,7 @@ div.dhx_menu_head, div.dhx_menu_icon {
 
 /* timeline */
 .dhx_cal_event_line .dhx_event_resize {
-   background: url(./imgs_dhx_terrace/resize_dots.png) repeat-y;
+   /* background: url(./imgs_dhx_terrace/resize_dots.png) repeat-y; */
 }
 .dhx_matrix_scell, .dhx_matrix_cell {
    border-bottom: 1px solid #e7e7e7;
@@ -2255,7 +2281,6 @@ div.dhx_menu_head, div.dhx_menu_icon {
 }
 
 .dhx_cal_navline{
-
   width:100%;
   height:59px;
   left:0px;

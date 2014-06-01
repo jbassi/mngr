@@ -340,9 +340,9 @@ scheduler.render_timeline_event = function(ev, attach){
 
    var event_height = scheduler._get_timeline_event_height(ev, this);
 
-   var hb = event_height - 1;// takes into account css sizes (border/padding)
+   var hb = event_height - 5;// takes into account css sizes (border/padding)
    if (!ev._inner && this.event_dy == "full") {
-      hb=(hb+2)*(ev._count-sorder)-2;
+      //hb=(hb+2)*(ev._count-sorder)-2;
    }
 
    var y = scheduler._get_timeline_event_y(ev._sorder, event_height);
@@ -356,13 +356,17 @@ scheduler.render_timeline_event = function(ev, attach){
    cs = "dhx_cal_event_line "+(cs||"");
 
    var bg_color = (ev.color?("background:"+ev.color+";"):"");
-   var color = (ev.textColor?("color:"+ev.textColor+";"):"");
+   //var color = (ev.textColor?("color:"+ev.textColor+";"):"");
+   var color = "color: rgba(255, 255, 255, 0.65);"
+   if((x_end-x_start) < 75) {
+      color = "color: rgba(255, 255, 255, 0);"
+   }
    var text = scheduler.templates.event_bar_text(ev.start_date,ev.end_date,ev);
 
    var html='<div event_id="'+ev.id+'" class="'+cs+'" style="'+bg_color+''+color+'position:absolute; top:'+y+'px; height: '+hb+'px; left:'+x_start+'px; width:'+Math.max(0,x_end-x_start)+'px;'+(ev._text_style||"")+'">';
    if (scheduler.config.drag_resize && !scheduler.config.readonly) {
       var dhx_event_resize = 'dhx_event_resize';
-      html += ("<div class='"+dhx_event_resize+" "+dhx_event_resize+"_start' style='height: "+hb+"px;'></div><div class='"+dhx_event_resize+" "+dhx_event_resize+"_end' style='height: "+hb+"px;'></div>");
+      html += ("<div class='"+dhx_event_resize+" "+dhx_event_resize+"_start' style='height: 100%;'></div><div class='"+dhx_event_resize+" "+dhx_event_resize+"_end' style='height: 100%;'></div>");
    }
    html += (text+'</div>');
 
@@ -566,7 +570,7 @@ function get_events_html(evs) {
    
 
 function y_scale(d) {
-   var html = "<table style='table-layout:fixed;' cellspacing='0' cellpadding='0'>";
+   var html = "<table style='table-layout:fixed;width:100%;' cellspacing='0' cellpadding='0'>";
    var evs=[];
    if(scheduler._load_mode)
       scheduler._load();

@@ -6,7 +6,23 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //UNUSED
 //EDITED
 
+var calendr
+
 var shifts = 0;
+
+var time_format = function(date){
+   var hour = date.getHours();
+   var minutes = date.getMinutes();
+   var period = "AM";
+   if(hour > 12) {
+      hour -= 12;
+      period = "PM";
+   }
+   if(minutes < 10) {
+      minutes = "0" + minutes;
+   }
+   return hour + ":" + minutes + period;
+}
 
 
 
@@ -2368,6 +2384,8 @@ scheduler._on_mouse_move=function(e){ //IMPORTANT drag mode
          } 
 
          var ev=this.getEvent(this._drag_id);
+
+         ev.text = (time_format(ev.start_date) + " - " + time_format(ev.end_date)) //EDITED, display the time range
 
          if (this._drag_mode=="move"){
             start = this._min_date.valueOf()+(pos.y*this.config.time_step+pos.x*24*60 -(scheduler._move_pos_shift||0) )*60000;
@@ -5013,16 +5031,24 @@ scheduler.show_cover=function(){
 };
 scheduler.save_lightbox=function(){ //IMPORTANT
 
-//console.log('saved')
-   var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
+   //var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id)));
+   var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
+
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;
    this._empty_lightbox(data);
-   //console.log('wooow: ' + data.position_id)
-   //console.log('color: ' + data.color)
+   console.log('id: ' + data.id)
+   console.log('shift number: ' + shifts)
+   console.log('position id: ' + data.position_id)
+   console.log('start date: ' + data.start_date)
+   console.log('end date: ' + data.end_date)
+   console.log('employee id: ' + data.employee_id)
+   //save to temp database
+   console.log('scheduler state: ' + scheduler.getState().date)
+   writeToCalendar(data);
+   //    {id:5, start_date: "2014-01-01 08:00", end_date: "2014-01-01 11:20", text:"8:00AM - 11:20AM", employee_id:4, position_id:3, color:"#63b7e6"}
    shifts++;
-   //console.log(shifts)
    this.hide_lightbox();
 };
 scheduler.startLightbox = function(id, box){
@@ -5191,6 +5217,7 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
       
       var sns=this.config.lightbox.sections;
       html="";
+       var string = "";
       for (var i=0; i < sns.length; i++) {
          var block=this.form_blocks[sns[i].type];
          if (!block) continue; //ignore incorrect blocks
@@ -5199,12 +5226,14 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
          if (sns[i].button){
             button = "<div class='dhx_custom_button' index='"+i+"'><div class='dhx_custom_button_"+sns[i].button+"'></div><div>"+this.locale.labels["button_"+sns[i].button]+"</div></div>";
           }
-         
+
+
          if (this.config.wide_form){
             html+="<div class='dhx_wrap_section'>";
          }
          html+="<div id='"+sns[i].id+"' class='dhx_cal_lsection'>"+button+this.locale.labels["section_"+sns[i].name]+"</div>"+block.render.call(this,sns[i]);
          html+="</div>"
+         
       }
 
       var ds=d.getElementsByTagName("div");
@@ -5215,13 +5244,15 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
             break;
          }
       }
-
+      
       //sizes
       this.setLightboxSize();
 
       this._init_lightbox_events(this);
       d.style.display="none";
       d.style.visibility="visible";
+
+
    }
    return this._lightbox;
 };

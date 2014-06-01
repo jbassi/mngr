@@ -1,22 +1,46 @@
+var socket = io.connect()
+var calendars = []
+
+socket.emit('retrieve-calendar', function(error, companyCalendars) {
+    if(!companyCalendars) { // if the calendars are not retrieved
+        console.log('(-) Calendar initialization failed.')
+    }
+    else { // Calendar successfully passed
+    // Loop through companyCalendar and make ClientCalendars 
+    // We want to create ClientCalendars because, 
+    // we can't call methods with Parse objects
+        for(var i=0; i<companyCalendars.length; ++i) {
+            calendars.push(new ClientCalendar(companyCalendars[i]))
+        }
+    }
+})
+
+var writeToCalendar = function(data) {
+    
+}
+
 function init()
 { //initliaze the calendar
 
-    //color:"#d5e15d"
-    //color:"#c85248"
     //getshifts and shit
     //get employees
 
 
     scheduler.locale.labels.timeline_tab = "Timeline";
-    scheduler.locale.labels.section_custom="Positions";
+    scheduler.locale.labels.section_custom="Position";
     scheduler.config.details_on_create=true;
     scheduler.config.details_on_dblclick=true;
     scheduler.config.xml_date="%Y-%m-%d %H:%i";
     scheduler.config.wide_form = false;
 
+
+
     //css for unavailability
     scheduler.templates.event_class = function (start, end, event) {
-        if (event.color == '#e7e7e7') return "unavailability"
+        if (event.color == '#e7e7e7') {
+            //event.text = "UNAVAILABLE";
+            return "unavailability"
+        }
         return "shifts"
     }
 
@@ -43,12 +67,14 @@ function init()
     ];
 
     var shifts=[
-    {id:1, start_date: "2014-01-01 09:00", end_date: "2014-01-01 12:00", text:"Chef", employee_id:1, position_id:1, color:"#c85248"}
+    {id:1, start_date: "2014-01-01 09:10", end_date: "2014-01-01 12:00", text:"9:10AM - 12:00PM", employee_id:1, position_id:1, color:"#c85248"},
+    {id:3, start_date: "2014-01-01 11:30", end_date: "2014-01-01 16:00", text:"11:30AM - 4:00PM", employee_id:2, position_id:2, color:"#d5e15d"},
+    {id:5, start_date: "2014-01-01 08:00", end_date: "2014-01-01 11:20", text:"8:00AM - 11:20AM", employee_id:4, position_id:3, color:"#63b7e6"}
     ];
 
     var unavailability=[
     {id:2, start_date: "2014-01-01 05:00", end_date: "2014-01-01 8:00", employee_id:1, color:"#e7e7e7"},
-    {id:4, start_date: "2014-01-01 12:00", end_date: "2014-01-01 19:00", employee_id:2, color:"#e7e7e7"},
+    {id:4, start_date: "2014-01-01 16:00", end_date: "2014-01-01 19:00", employee_id:2, color:"#e7e7e7"},
     {id:6, start_date: "2014-01-01 05:00", end_date: "2014-01-01 10:00", employee_id:3, color:"#e7e7e7"}
     ];
 
@@ -74,23 +100,19 @@ function init()
     //{name:"custom", height:200, options:positions, map_to:"position_id", type:"radio", vertical:true },
     //{name:"time", height:72, type:"time", map_to:"auto"}
     ];
-
-    //var test = scheduler.getLabel("position_id", 1);;
-    var shifts=[
-    {id:1, start_date: "2014-01-01 09:00", end_date: "2014-01-01 12:00", text:"Chef", employee_id:1, position_id:1, color:"#c85248"}
-    ];
         
     scheduler.init('scheduler_here',new Date(2014,0,01),"timeline");
 
     scheduler.parse(unavailability,"json");
     scheduler.parse(shifts,"json");
 
+    //make unavailability read only
     for(var i = 0;i<unavailability.length;i++) {
         var eventID = scheduler.getEvent(unavailability[i].id);
         eventID.readonly = true;
     }
 
-    //console.log('wooow' + scheduler.getEvent(2).position)
+    //console.log("print: " + scheduler.getEvent(1).start_date.getHours());
 
     //disable click for read only events
     scheduler.attachEvent("onDblClick", function (id, e){
