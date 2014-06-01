@@ -1,10 +1,16 @@
 /*
  * Summary:      ClientCalendar provides a way for the frontend to interface 
- *               with Parse and the backend. Functions are included that make
- *               it easy to get specific calendar information to display to the
- *               screen. This function is a JavaScript object constructor.
+ *               with Parse and the backend.
  *
- * Inst. vars:   days -- an array that holds day objects (for more information 
+ * Functions:    getAvaliableShiftsAtDayIndex()
+ *               getCurrentDayAsIndex()
+ *               getWeek()
+ *               indexToDate()
+ *               dateToIndex()
+ *               addShiftAtDayIndex()
+ *               goingToChange()
+ *
+ * Inst. vars:   days -- an array that holds Day objects (for more information 
  *                       see Day object documentation)
  *               availabilities -- an array that holds day objects 
  *                       (for more information see Day object documentation)
@@ -12,7 +18,7 @@
  *               changed -- boolean; a calendar instance knows if it needs to 
  *                       be updated on the backend
  *
- * Parameters:   Calendar -- a calendar object that is sent in from the backend.
+ * Parameters:   calendar -- a Calendar object that is sent in from the backend.
  * Return:       None.
  */
 var ClientCalendar = function(calendar)
