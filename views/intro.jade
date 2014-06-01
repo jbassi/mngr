@@ -5,16 +5,22 @@ block head
 block banner
 
   img#logo-nolink(src='../resources/logocolor.png')
-  form#input0
+
+    
+  #form_container
+    #error_message
+    form#input0
       //TODO get rid of username field in parse, extraneous
       input#company(type='text' ,placeholder='COMPANY NAME', name='company_name' ,value='')
       input#phone(type='text' ,placeholder='PHONE NUMBER', name='company_phone' ,value='')
-  form#input1
+
+    form#input1
       input#employee-name(type='text', placeholder='NAME', name='name', value='')
       input#employee-email(type='text', name='email', value='', placeholder='EMAIL')
-      img#add-button(src='../resources/add.png')
+      
+    img#add-button(src='../resources/add.png')
 
-  //seperate button from form since dynamically adding will mess this up
-  input#next-button.button(type='button', value='NEXT')
+    //seperate button from form since dynamically adding will mess this up
+    input#next-button.button(type='button', value='NEXT')
   
 block content
