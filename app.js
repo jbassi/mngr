@@ -140,6 +140,20 @@ io.sockets.on('connection', function(socket)
   }) // end of intro-manager-info-add
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempt to retrieve all employees at the current signed in users company
+  socket.on('retrieve-all-employees', function(callback)
+  {
+    Worker.retrieveAllEmployeesAtCompany(function(err, employees) 
+    {
+      if(!err) {
+        callback(null, employees)
+      } else {
+        callback(err)
+      }
+    })
+  })
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
   socket.on('update-calendar', function(clientCalendars, callback)
   {
