@@ -45,17 +45,6 @@ socket.on('login-response', function(error, user)
     //        may retrieve calendar when getting onto schedule page 
     // Get users calendar
     // Retrieve calendar with company name
-
-// socket.emit('update-calendar', calendars, function(error)
-// {
-//   if(error) {
-//     //TODO: There was error while updating calendar. Let the user know
-//     console.log('there was an error while updating the calendars')
-//   } else {
-//     //TODO: The update was done successfully. Let the user know
-//     console.log('the calendars was updated successfully')
-//   }
-// }) // end of calendar-update 
     window.location.href = '/home'
   } 
 }) // end of login-response

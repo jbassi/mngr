@@ -6,7 +6,6 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //UNUSED
 //EDITED
 
-var calendr
 
 var shifts = 0;
 
@@ -2147,7 +2146,7 @@ scheduler._click={
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
       scheduler.parse([ //IMPORTANT
-      {id:2, start_date: "2014-01-02 012:00", end_date: "2014-01-02 15:00", text:"6ffufufckM", employee_id:1, color:"#d5e15d"}
+      {id:2, start_date: "2014-01-02 012:00", end_date: "2014-01-02 15:00", text:"6ffufufckM", employee_id:1, position_id:1}
       ],"json");      
    },
    dhx_cal_today_button:function(){
@@ -5034,10 +5033,21 @@ scheduler.save_lightbox=function(){ //IMPORTANT
    //var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id)));
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
+   calendars[0].days[0].addShift(data);//HARDCODED
+   calendars[0].goingToChange();
+
+   //shifts.push(data);
+   //console.log("add this event " + JSON.stringify(shifts[shifts.length-1]))
+   console.log("add this event " + shifts[shifts.length-1].start_date)
 
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;
    this._empty_lightbox(data);
+
+
+
+
+
    console.log('id: ' + data.id)
    console.log('shift number: ' + shifts)
    console.log('position id: ' + data.position_id)
@@ -5046,8 +5056,7 @@ scheduler.save_lightbox=function(){ //IMPORTANT
    console.log('employee id: ' + data.employee_id)
    //save to temp database
    console.log('scheduler state: ' + scheduler.getState().date)
-   writeToCalendar(data);
-   //    {id:5, start_date: "2014-01-01 08:00", end_date: "2014-01-01 11:20", text:"8:00AM - 11:20AM", employee_id:4, position_id:3, color:"#63b7e6"}
+
    shifts++;
    this.hide_lightbox();
 };

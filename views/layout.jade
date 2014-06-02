@@ -16,57 +16,7 @@ html
     //script(src='javascripts/jquery.touchSwipe.js') //script for touch events
     script(src='javascripts/sidr/sidrhome.js') //scripts for sidr menu
     script(src='javascripts/scheduler/dhtmlxscheduler.js')
-    script.
-      $(document).ready(function() {
-        $('#menu').sidr({
-        name: 'sidr-left',
-        side: 'left',
-        body: '#container',
-        displace: true,
-        resize: true,
-        speed: 100
-        });
-        $('#profile').sidr({
-        name: 'sidr-right',
-        side: 'right',
-        body: '#profile',
-        displace: true,
-        speed: 200     
-        });
-        $(window).resize(function () {
-          $.sidr('close', 'sidr-left');
-          $.sidr('close', 'sidr-right');
-        });
-        /* Make signup login appear once header has been clicked. 
-         * Will also scroll to top of page if button at the bottom
-         * is clicked */
-        $(".signup").click(function() {
-          $.sidr('close', 'sidr-left');
-          $( "#calendar" ).fadeOut( "slow", function() {
-          });
-        });
-      });
 
   block head
   body
-  #header
-    #menu
-      img#menuimage(src='../resources/menulight.png')
-      navtext MENU
-    #profile
-      navtext PROFILE
-      img#loginimage(src='../resources/loginlight.png')
-    a(href='/')
-      img#logo(src='../resources/logocolor.png')
-  #sidr-left
-      ul
-        li.active
-          a(href='/') HOME
-        li
-          a(href='#') FEATURES
-        li
-          a(href='#') ABOUT
-        li
-          a.signup SIGN UP
-  #container
     block container

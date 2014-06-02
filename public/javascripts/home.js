@@ -1,6 +1,45 @@
 var socket = io.connect()
 var calendars = []
 
+//===============
+//Configuration
+//===============
+var employees=[
+{key:1, label:"Jeremy Bassi"},
+{key:2, label:"Nick Ardecky"},
+{key:3, label:"Christian Carreon"},
+{key:4, label:"Cole Stipe"},
+{key:5, label:"James Lee"},
+{key:6, label:"Colby Harrison"},
+{key:7, label:"Jonathan Trinh"},
+{key:8, label:"Richard Ying"},
+{key:9, label:"Joe Kang"},
+{key:10, label:"Yutang Lin"}
+];
+
+var positions=[
+{key:1, label:"Chef", color:"#c85248"},
+{key:2, label:"Server", color:"#d5e15d"},
+{key:3, label:"Bartender", color:"#63b7e6"}
+];
+
+
+var shifts
+
+var hardshifts=[
+{id:3, start_date: "2014-01-01 11:30", end_date: "2014-01-01 16:00", text:"11:30AM - 4:00PM", employee_id:2, position_id:2},
+{id:5, start_date: "2014-01-01 08:00", end_date: "2014-01-01 11:20", text:"8:00AM - 11:20AM", employee_id:4, position_id:3}
+];
+
+
+var unavailability=[
+{id:2, start_date: "2014-01-01 05:00", end_date: "2014-01-01 8:00", employee_id:1, color:"#e7e7e7"},
+{id:4, start_date: "2014-01-01 16:00", end_date: "2014-01-01 19:00", employee_id:2, color:"#e7e7e7"},
+{id:6, start_date: "2014-01-01 05:00", end_date: "2014-01-01 10:00", employee_id:3, color:"#e7e7e7"}
+];
+
+
+
 socket.emit('retrieve-calendar', function(error, companyCalendars) {
     if(!companyCalendars) { // if the calendars are not retrieved
         console.log('(-) Calendar initialization failed.')
@@ -12,12 +51,15 @@ socket.emit('retrieve-calendar', function(error, companyCalendars) {
         for(var i=0; i<companyCalendars.length; ++i) {
             calendars.push(new ClientCalendar(companyCalendars[i]))
         }
+
+
+        shifts=calendars[0].days[0].shifts;//HARDCODED
+        console.log("our shifts" + calendars[0].days[0].shifts[0].start_date)
+        console.log("hard shifts" + hardshifts[0].start_date)
     }
 })
 
-var writeToCalendar = function(data) {
-    console.log(calendars[0])
-}
+
 
 function init()
 { //initliaze the calendar
@@ -32,51 +74,27 @@ function init()
     scheduler.config.details_on_dblclick=true;
     scheduler.config.xml_date="%Y-%m-%d %H:%i";
     scheduler.config.wide_form = false;
+    // scheduler.addMarkedTimespan({  
+    //     days:  [3], 
+    //     zones: "fullday",
+    //     type:  "dhx_time_block", 
+    //     css:   "gray_section", 
+    //     //sections: { timeline: 2} 
+    // });
 
 
 
-    //css for unavailability
+    //render the colors
     scheduler.templates.event_class = function (start, end, event) {
-        if (event.color == '#e7e7e7') {
+        if (event.color == "#e7e7e7") {
             //event.text = "UNAVAILABLE";
             return "unavailability"
         }
-        return "shifts"
+        else {
+            event.color = scheduler.getColor("position_id", event.position_id);
+            return "shifts"
+        }
     }
-
-    //===============
-    //Configuration
-    //===============
-    var employees=[
-    {key:1, label:"Jeremy Bassi"},
-    {key:2, label:"Nick Ardecky"},
-    {key:3, label:"Christian Carreon"},
-    {key:4, label:"Cole Stipe"},
-    {key:5, label:"James Lee"},
-    {key:6, label:"Colby Harrison"},
-    {key:7, label:"Jonathan Trinh"},
-    {key:8, label:"Richard Ying"},
-    {key:9, label:"Joe Kang"},
-    {key:10, label:"Yutang Lin"}
-    ];
-
-    var positions=[
-    {key:1, label:"Chef", color:"#c85248"},
-    {key:2, label:"Server", color:"#d5e15d"},
-    {key:3, label:"Bartender", color:"#63b7e6"}
-    ];
-
-    var shifts=[
-    {id:1, start_date: "2014-01-01 09:10", end_date: "2014-01-01 12:00", text:"9:10AM - 12:00PM", employee_id:1, position_id:1, color:"#c85248"},
-    {id:3, start_date: "2014-01-01 11:30", end_date: "2014-01-01 16:00", text:"11:30AM - 4:00PM", employee_id:2, position_id:2, color:"#d5e15d"},
-    {id:5, start_date: "2014-01-01 08:00", end_date: "2014-01-01 11:20", text:"8:00AM - 11:20AM", employee_id:4, position_id:3, color:"#63b7e6"}
-    ];
-
-    var unavailability=[
-    {id:2, start_date: "2014-01-01 05:00", end_date: "2014-01-01 8:00", employee_id:1, color:"#e7e7e7"},
-    {id:4, start_date: "2014-01-01 16:00", end_date: "2014-01-01 19:00", employee_id:2, color:"#e7e7e7"},
-    {id:6, start_date: "2014-01-01 05:00", end_date: "2014-01-01 10:00", employee_id:3, color:"#e7e7e7"}
-    ];
 
     scheduler.createTimelineView({
     name: "timeline",
@@ -130,6 +148,13 @@ function init()
             if(eventID.readonly)
                 return false;
         return true;
+    });
+
+    //drag boundaries
+    scheduler.attachEvent("onBeforeEventChanged", function(ev, e, is_new){
+        //any custom logic here
+        return true;
+
     });
 
 }

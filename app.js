@@ -160,7 +160,6 @@ io.sockets.on('connection', function(socket)
   socket.on('update-calendar', function(clientCalendars, callback)
   {
     // update calendar in database
-   /* 
     Worker.current().updateCalendar(clientCalendars, function(error) {
       if(error) { // if there was error while updating calendars
         callback(error)
@@ -169,6 +168,5 @@ io.sockets.on('connection', function(socket)
         callback(null)
       }
     })
-   */ 
   }) // end of update-calendar 
 }) // end of io.socket.on

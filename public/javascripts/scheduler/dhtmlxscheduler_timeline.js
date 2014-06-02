@@ -1056,6 +1056,7 @@ scheduler.attachEvent("onBeforeDrag", function (event_id, mode, native_event_obj
 });
 scheduler.attachEvent("onEventChanged", function(id, ev) {
    ev._timed = this.isOneDayEvent(ev);
+   console.log("changed " + JSON.stringify(ev)) //IMPORTANT
 });
 var old_render_marked_timespan = scheduler._render_marked_timespan;
 scheduler._render_marked_timespan = function(options, area, unit_id, min_date, max_date) {
