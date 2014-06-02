@@ -5,32 +5,32 @@
  *
  * Functions:    getEmployee()
  *               getPosition()
- *               getShiftTimeRange()
- *               getBreakTime()
+ *               getEvents()
  *
  *               setEmployee()
  *               setPosition()
- *               setTimeRange()
- *               setBreakTime()
+ *               setEvents()
  *
  * Inst. vars:   employee -- Parse.Worker object that has employee informaiton
  *               position -- string; the position assigned by the manager
- *               time_range -- array JSON; [{"start":, "end":}]
- *               break_time -- JSON; {"start":, "end":}
+ *               events -- array of JSON events; 
  *
- * Parameters:   shiftInfo -- JSON;
- *                                    { "employee":,"position":,"time_range":,
- *                                      "break_time": }
+ * Parameters:   shiftInfo -- JSON; {"employee":,"position":,"events":}
+ *
  * Return:       None.
  */
 var Shift = function(shiftInfo)
 {
-  this.employee = shiftInfo.employee
-  this.position = shiftInfo.position
-  this.time_range = shiftInfo.time_range
-  this.break_time = shiftInfo.break_time
+  this.id = shiftInfo.id
+  this.text = shiftInfo.text
+  this.start_date = shiftInfo.start_date
+  this.end_date = shiftInfo.end_date
+  this.employee_id = shiftInfo.employee_id
+  this.position_id = shiftInfo.position_id
+  this.color = shiftInfo.color
 }
 
+/*
 /*
  * Summary:      getEmployee returns the current Parse.Worker object.
  *
@@ -38,6 +38,7 @@ var Shift = function(shiftInfo)
  *
  * Return:       The current Parse.Worker object.
  */
+/*
 Shift.prototype.getEmployee = function()
 {
   return this.employee
@@ -50,33 +51,23 @@ Shift.prototype.getEmployee = function()
  *
  * Return:       The current workers position as a string.
  */
+/*
 Shift.prototype.getPosition = function()
 {
   return this.position
 }
 
 /*
- * Summary:      getShiftTimeRange returns the current workers Shift time range.
+ * Summary:      getEvents returns array of events for calendar
  *
  * Parameters:   None.
  *
- * Return:       An array of JSON time ranges; [{"start":, "end":}]
+ * Return:       An erray events 
  */
-Shift.prototype.getShiftTimeRange = function()
-{
-  return this.time_range
-}
-
 /*
- * Summary:      getBreakTime returns the current workers break time range.
- *
- * Parameters:   None.
- *
- * Return:       A JSON time range; {"start":, "end":}
- */
-Shift.prototype.getBreakTime = function()
+Shift.prototype.getEvents = function()
 {
-  return this.break_time
+  return this.events
 }
 
 /*
@@ -86,6 +77,7 @@ Shift.prototype.getBreakTime = function()
  *
  * Return:       None.
  */
+/*
 Shift.prototype.setEmployee = function(employee)
 {
   this.employee = employee
@@ -98,31 +90,22 @@ Shift.prototype.setEmployee = function(employee)
  *
  * Return:       None.
  */
+/*
 Shift.prototype.setPosition = function(position)
 {
   this.position = position
 }
 
 /*
- * Summary:      setTimeRange sets the current employees time range JSON.
+ * Summary:      setEvents sets the current events with new events 
  *
- * Parameters:   time_range -- JSON; the time range to set; [{"start":, "end":}]
+ * Parameters:   events -- array of events 
  *
  * Return:       None.
  */
-Shift.prototype.setTimeRange = function(time_range)
-{
-  this.time_range = time_range
-}
-
 /*
- * Summary:      setBreakTime sets the current employees break time range.
- *
- * Parameters:   break_time -- JSON; the time range to set; {"start":, "end":}
- *
- * Return:       None.
- */
-Shift.prototype.setBreakTime = function(break_time)
+Shift.prototype.setEvents = function(events)
 {
-  this.break_time = break_time
+  this.events = events
 }
+*/
