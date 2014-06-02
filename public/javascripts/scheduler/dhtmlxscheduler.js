@@ -2027,7 +2027,7 @@ scheduler.set_sizes=function(){
    if (actual_height > 0) this.xy.nav_height = actual_height;
    
    var data_y=this.xy.scale_height+this.xy.nav_height+(this._quirks?-2:0);
-   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y+2),0,data_y+2);
+   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y),0,data_y+10); //IMPORTANT CAL_DATA SIZE
 };
 scheduler.set_xy=function(node,w,h,x,y){
    node.style.width=Math.max(0,w)+"px";

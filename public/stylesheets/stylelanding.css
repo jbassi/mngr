@@ -176,8 +176,9 @@ height:1.1em;
 #login {
 position:absolute;
 top:2em;
+padding-left: 2em;
 right:0;
-width:10em;
+width:8em;
 }
 
 #login:hover {
