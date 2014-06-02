@@ -29,7 +29,7 @@ var Company = Parse.Object.extend('Company', {
     company.set('phoneNumber', "")
     var calendars = [Calendar.create()]
     company.set('calendars', calendars)
-    // TODO: set fields for company
+    company.set('positions', [])
 
     company.save(null, {
       success: function(res)

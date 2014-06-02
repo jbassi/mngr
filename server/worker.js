@@ -25,10 +25,15 @@ var Worker = Parse.User.extend({
         getAllCalendars(calendars, allCalendars, function(error)
         {
           // send array of calendars to front-end using callback
-          if(error)
+          if(error) {
             callback(error) // error occurred when getting all calendars
-          else 
-            callback(null, allCalendars) // send all calendars to client
+          }
+          else {
+            // get array of positions 
+            var positions = returnedCompany.get('positions')
+            // send all calendars to client and positions to the client
+            callback(null, allCalendars, positions)
+          }
         })
       }, // end of success, fetching company
 

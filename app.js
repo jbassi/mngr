@@ -116,12 +116,12 @@ io.sockets.on('connection', function(socket)
     // Emit result of password reset, err is null if no error exists
     var currentUser = Worker.current()
 
-    currentUser.retrieveCalendar( function(error, companyCalendars)
+    currentUser.retrieveCalendar(function(error, companyCalendars, positions)
     {
       if(error) { // if there was error while retrieving calendars
         sendCalendarsToClient(error) 
       } else { // send array of calendar objects
-        sendCalendarsToClient(null, companyCalendars) 
+        sendCalendarsToClient(null, companyCalendars, positions)
       }
     })
 
