@@ -1,5 +1,6 @@
 var socket = io.connect()
 var calendars = []
+var positions = []
 
 //===============
 //Configuration
@@ -40,22 +41,24 @@ var unavailability=[
 
 
 
-socket.emit('retrieve-calendar', function(error, companyCalendars) {
-    if(!companyCalendars) { // if the calendars are not retrieved
+socket.emit('retrieve-calendar', function(err, companyCalendars, 
+        companyPositions) {
+    if(!companyCalendars || !companyPositions) { // if the calendars are not retrieved
         console.log('(-) Calendar initialization failed.')
     }
-    else { // Calendar successfully passed
-    // Loop through companyCalendar and make ClientCalendars 
-    // We want to create ClientCalendars because, 
-    // we can't call methods with Parse objects
-        for(var i=0; i<companyCalendars.length; ++i) {
+    else { 
+        // Calendar successfully passed
+        // Loop through companyCalendar and make ClientCalendars 
+        // We want to create ClientCalendars because, 
+        // we can't call methods with Parse objects
+        for(var i = 0; i < companyCalendars.length; ++i) {
             calendars.push(new ClientCalendar(companyCalendars[i]))
         }
-
-
         shifts=calendars[0].days[0].shifts;//HARDCODED
         console.log("our shifts" + calendars[0].days[0].shifts[0].start_date)
         console.log("hard shifts" + hardshifts[0].start_date)
+        // Set the passed in company positions to the global array
+        positions = companyPositions
     }
 })
 
