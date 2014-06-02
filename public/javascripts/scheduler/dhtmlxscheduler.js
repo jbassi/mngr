@@ -3316,7 +3316,7 @@ scheduler.templates={};
 scheduler.init_templates=function(){
    var labels = scheduler.locale.labels;
    labels.dhx_save_btn  = labels.icon_save;
-   labels.dhx_cancel_btn   = labels.icon_cancel;
+   labels.dhx_cancel_btn   = "X"; //edited cancel button
    labels.dhx_delete_btn   = labels.icon_delete;
 
 
@@ -5093,13 +5093,16 @@ scheduler._init_lightbox_events=function(){
                scheduler.save_lightbox();
                break;
             case "dhx_delete_btn":
-               var c=scheduler.locale.labels.confirm_deleting;
-
-               scheduler._dhtmlx_confirm(c, scheduler.locale.labels.title_confirm_deleting, function(){
+               var c=scheduler.locale.labels.confirm_deleting; //EDITED NO CONFIRM
                   scheduler.deleteEvent(scheduler._lightbox_id);
                   scheduler._new_event = null; //clear flag, if it was unsaved event
                   scheduler.hide_lightbox();
-               });
+
+               // scheduler._dhtmlx_confirm(c, scheduler.locale.labels.title_confirm_deleting, function(){
+               //    scheduler.deleteEvent(scheduler._lightbox_id);
+               //    scheduler._new_event = null; //clear flag, if it was unsaved event
+               //    scheduler.hide_lightbox();
+               // });
 
                break;
             case "dhx_cancel_btn":
@@ -5150,7 +5153,8 @@ scheduler.setLightboxSize=function(){
    var con = d.childNodes[1];
    con.style.height="0px";
    con.style.height=con.scrollHeight+"px";
-   d.style.height=con.scrollHeight+scheduler.xy.lightbox_additional_height+"px";
+   d.style.height="140px";
+   //d.style.height=con.scrollHeight+scheduler.xy.lightbox_additional_height+"px"; //edited lightbox height
    con.style.height=con.scrollHeight+"px"; //it is incredible , how ugly IE can be
 };
 
