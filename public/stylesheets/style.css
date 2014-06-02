@@ -199,7 +199,7 @@ position: absolute;
 left: 0;
 right: 0;
 margin:.5em auto;
-height: 4em;
+height: 5em;
 }
 
 #container {
@@ -210,18 +210,6 @@ height:calc(100% - 6.5em);
 height:-moz-calc(100% - 6.5em);
 height:-webkit-calc(100% - 6.5em);
 padding:0 1.5em 1.5em;
-}
-
-#calendar {
--webkit-box-sizing:border-box;
--moz-box-sizing:border-box;
-box-sizing:border-box;
--webkit-border-radius:.3em;
--moz-border-radius:.3em;
--ms-border-radius:.3em;
--o-border-radius:.3em;
-border-radius:.3em;
-background-color:#fff;
 }
 
 #scheduler_here{

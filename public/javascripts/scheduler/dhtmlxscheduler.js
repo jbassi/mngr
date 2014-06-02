@@ -7,8 +7,6 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //EDITED
 
 
-var shifts = 0;
-
 var time_format = function(date){
    var hour = date.getHours();
    var minutes = date.getMinutes();
@@ -4624,7 +4622,7 @@ scheduler.ical={
          name="text";
       else if (name=="dtstart"){
          name = "start_date";
-         value = this.parse_date(value,0,0);
+         value = this.parse_date(value,0,0); //REALLY IMPORTANT
       }
       else if (name=="dtend"){
          name = "end_date";
@@ -5028,38 +5026,33 @@ scheduler.show_cover=function(){
    this._cover.style.height = Math.max(_document_height, _scroll_height) + 'px';
    document.body.appendChild(this._cover);
 };
-scheduler.save_lightbox=function(){ //IMPORTANT
+scheduler.save_lightbox=function(){ //IMPORTANT SAVE
 
    //var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id)));
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
-   calendars[0].days[0].addShift(data);//HARDCODED
-   calendars[0].goingToChange();
 
-   //shifts.push(data);
-   //console.log("add this event " + JSON.stringify(shifts[shifts.length-1]))
-   console.log("add this event " + shifts[shifts.length-1].start_date)
+   //TODO HARDCODED
+   calendars[0].days[0].addShift(data);
+   calendars[0].goingToChange();
 
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;
+      
    this._empty_lightbox(data);
 
+   // console.log('id: ' + data.id)
+   // console.log('shift number: ' + shifts)
+   // console.log('position id: ' + data.position_id)
+   // console.log('ref start date: ' + data.start_date)
+   // console.log('ref end date: ' + data.end_date)
+   // console.log('employee id: ' + data.employee_id)
+   // //save to temp database
+   // console.log('scheduler state: ' + scheduler.getState().date)
 
-
-
-
-   console.log('id: ' + data.id)
-   console.log('shift number: ' + shifts)
-   console.log('position id: ' + data.position_id)
-   console.log('start date: ' + data.start_date)
-   console.log('end date: ' + data.end_date)
-   console.log('employee id: ' + data.employee_id)
-   //save to temp database
-   console.log('scheduler state: ' + scheduler.getState().date)
-
-   shifts++;
    this.hide_lightbox();
 };
+
 scheduler.startLightbox = function(id, box){
    this._lightbox_id = id;
    this._custom_lightbox = true;
