@@ -737,7 +737,6 @@ div.icon_delete{
    background-image:url('./imgs/controls.gif');
    background-position:-63px 0px;
    width:20px;
-   display:none; /* edited */
 }
 .dhx_delete_btn{
    background-image:url('./imgs/controls.gif');
@@ -1760,10 +1759,10 @@ div.dhx_menu_head, div.dhx_menu_icon {
 
 /* navigation start */
 .dhx_cal_navline div {
-  top: 14px;
+  top: 4px;
 }
 .dhx_cal_tab, .dhx_cal_date, .dhx_cal_today_button, .dhx_cal_prev_button, .dhx_cal_next_button {
-  color: #454544;
+  color: #ffffff;
   height: 30px;
   line-height: 30px;
   background: none;
@@ -1772,14 +1771,16 @@ div.dhx_menu_head, div.dhx_menu_icon {
 
 .dhx_cal_navline .dhx_cal_date {
   border: 0;
-  font-size: 18px;
-  font-weight: normal;
-  font-family: arial;
-  width: 100%;
-  top: 14px;
-  text-align: center;
+  font-family:BrandonRegular, sans-serif; /* edited event fonts */
+  font-weight:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size:20px;
+  top: 6px;
+  text-align: right;
+  text-transform:uppercase;
   position: absolute;
-  left: 0;
+  right:125px;
   z-index: -1;
 }
 .dhx_cal_today_button {
@@ -1796,7 +1797,9 @@ div.dhx_menu_head, div.dhx_menu_icon {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  display:none; /* edited */
 }
+
 .dhx_cal_prev_button, .dhx_cal_next_button {
   left: auto;
   width: 46px;
@@ -1804,6 +1807,7 @@ div.dhx_menu_head, div.dhx_menu_icon {
 .dhx_cal_prev_button {
   right: 61px;
   background: url(../resources/arrow_left.png) no-repeat center center;
+  background-color: #e7e7e7;
   -webkit-border-top-left-radius:5px;
   -webkit-border-bottom-left-radius:5px;
   -moz-border-radius-topleft:5px;
@@ -1814,6 +1818,7 @@ div.dhx_menu_head, div.dhx_menu_icon {
 .dhx_cal_next_button {
   right: 14px;
   background: url(../resources/arrow_right.png) no-repeat center center;
+  background-color: #e7e7e7;
   -webkit-border-top-right-radius:5px;
   -webkit-border-bottom-right-radius:5px;
   -moz-border-radius-topright:5px;
@@ -1832,6 +1837,7 @@ div.dhx_menu_head, div.dhx_menu_icon {
   font-weight: bold;
   font-family: arial;
   font-size: 12px;
+  display:none; /* edited */
 }
 .dhx_cal_tab.active {
   background-color: #F0EDE7;

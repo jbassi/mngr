@@ -320,8 +320,8 @@ scheduler._get_timeline_event_height = function(ev, config){
 };
 scheduler._get_timeline_event_y = function(order, event_height){
    var sorder = order;
-   var y = 3;
-   //EDITED var y = 3+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
+   //var y = 3;
+   var y = 3+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
    if (scheduler.config.cascade_event_display) {
       y =2+sorder*scheduler.config.cascade_event_margin+(sorder?(sorder*2):0);
    }
@@ -720,7 +720,7 @@ function x_scale(h){
    var header = scheduler._els['dhx_cal_header'][0];
    header.style.width = (left[0]+summ)+'px';
    header.style.height = '30px';
-   header.style.top = '50px';
+   header.style.top = '40px';
 
    scheduler._min_date_timeline = scheduler._min_date;
 

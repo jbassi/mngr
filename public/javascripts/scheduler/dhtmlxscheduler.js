@@ -2069,7 +2069,7 @@ scheduler.set_actions=function(){
       if (!scheduler._ignore_next_click)
          scheduler._on_mouse_up(e||event);
    };
-   this._obj.onclick=function(e){ //no longer dblclick
+   this._obj.ondblclick=function(e){ //EDITED no longer dblclick
       scheduler._on_dbl_click(e||event);
    };
    this._obj.oncontextmenu = function(e) {
@@ -3418,7 +3418,7 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IM
    //console.log('fuck' + scheduler.getEvent(ev.id))
    return ev.id;
 };
-scheduler.deleteEvent = function(id, silent) {
+scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    var ev = this._events[id];
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
@@ -3709,7 +3709,7 @@ scheduler._pre_render_events = function(evs, hold) {
                   used_multi_day_height_css = used_multi_day_height + "px";
                }
 
-               data.style.top = (this._els["dhx_cal_navline"][0].offsetHeight + this._els["dhx_cal_header"][0].offsetHeight + used_multi_day_height ) + 'px';
+               data.style.top = (this._els["dhx_cal_navline"][0].offsetHeight + this._els["dhx_cal_header"][0].offsetHeight + used_multi_day_height ) + 'px'; //IMPORTANT DATA STYLE
                data.style.height = (this._obj.offsetHeight - parseInt(data.style.top, 10) - (this.xy.margin_top || 0)) + 'px';
 
                var multi_day_section = this._els["dhx_multi_day"][0];
@@ -5575,7 +5575,7 @@ scheduler._skin_settings = {
 
 scheduler._skin_xy = {
    lightbox_additional_height: [90,50],
-   nav_height: [59,22], //IMPORTANT
+   nav_height: [47,22], //IMPORTANT
    bar_height: [24,20]
 };
 
@@ -5636,7 +5636,7 @@ scheduler._skin_init = function(){
          }
       };
 
-      if (scheduler.config.fix_tab_position){
+      if (scheduler.config.fix_tab_position){ //IMPORTANT
          var navline_divs = scheduler._els["dhx_cal_navline"][0].getElementsByTagName('div');
          var tabs = [];
          var last = 211;
@@ -5694,7 +5694,7 @@ if (window.jQuery){
                         scheduler.config[key] = config[key];
 
                   if (!this.getElementsByTagName("div").length){
-                     this.innerHTML = '<div class="dhx_cal_navline"><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_date"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div>';
+                     this.innerHTML = '<div class="dhx_cal_navline"><div class="dhx_cal_date"></div><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div>';
                      this.className += " dhx_cal_container";
                   }
                   scheduler.init(this, scheduler.config.date, scheduler.config.mode);
