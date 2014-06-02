@@ -4945,7 +4945,7 @@ scheduler.showCover=function(box){ //UNUSED
       else // horizontal scroll on the body
          box.style.left=Math.round((document.body.offsetWidth-box.offsetWidth)/2)+"px";
    }
-    //this.show_cover();
+    this.show_cover();
 };
 scheduler.showLightbox=function(id){
    //console.log('event: ' + this.getEvent(id))

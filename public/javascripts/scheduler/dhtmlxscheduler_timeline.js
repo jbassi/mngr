@@ -570,7 +570,7 @@ function get_events_html(evs) {
    
 
 function y_scale(d) {
-   var html = "<table style='table-layout:fixed;width:100%;' cellspacing='0' cellpadding='0'>";
+   var html = "<table style='table-layout:fixed;' cellspacing='0' cellpadding='0'>";
    var evs=[];
    if(scheduler._load_mode)
       scheduler._load();
@@ -714,7 +714,8 @@ function x_scale(h){
    scheduler._cols=[];  //store for data section, each column width
    scheduler._colsS={height:0}; // heights of the y sections
    this._trace_x =[]; // list of dates per cells
-   var summ = scheduler._x - this.dx - scheduler.xy.scroll_width; //border delta, whole width
+   //var summ = scheduler._x - this.dx - scheduler.xy.scroll_width; //border delta, whole width
+   var summ = scheduler._x - this.dx;
    var left = [this.dx]; // left margins, initial left margin
    var header = scheduler._els['dhx_cal_header'][0];
    header.style.width = (left[0]+summ)+'px';

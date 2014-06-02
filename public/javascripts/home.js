@@ -16,7 +16,7 @@ socket.emit('retrieve-calendar', function(error, companyCalendars) {
 })
 
 var writeToCalendar = function(data) {
-    
+    console.log(calendars[0])
 }
 
 function init()
