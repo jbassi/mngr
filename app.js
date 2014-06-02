@@ -146,8 +146,10 @@ io.sockets.on('connection', function(socket)
     Worker.retrieveAllEmployeesAtCompany(function(err, employees) 
     {
       if(!err) {
+        // If there is no error, send employees array through callback
         callback(null, employees)
       } else {
+        // If there is an error send the Parse error
         callback(err)
       }
     })
