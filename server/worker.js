@@ -306,6 +306,49 @@ var Worker = Parse.User.extend({
       })
   }, // end of login()
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+  retrieveAllEmployeesAtCompany: function(callback) 
+  {
+    var currentUser = Worker.current()
+    // Array to return
+    var allEmployees = []
+    // Give current user full access for Parse query
+    Parse.Cloud.useMasterKey()
+
+    // Find company of current logged in user
+    currentUser.get('company').fetch({
+      success: function(fetchedCompany)
+      {
+        var userQuery = new Parse.Query(Parse.User)
+        userQuery.equalTo('company', fetchedCompany)
+        // Find all Workers that have the same company id
+        userQuery.find({
+          success: function(queredUsers) 
+          {
+            // Loop through returned users and add each name to the array
+            for(var i = 0; i < queredUsers.length; ++i) {
+              var userName = queredUsers[i].get('name')
+              allEmployees.push(userName)
+            }
+            callback(null, allEmployees)
+          },
+          error: function(err)
+          {
+            console.log('Error getting users: ' + err.message)
+            callback(err)
+          }
+        })
+      },
+
+      error: function(err)
+      {
+        console.log('Error getting company: ' + err.message)
+        callback(err)
+      }
+    })
+
+  }, // end of retrieveAllEmployeesAtCompany()
+
   initialManagerInformationCreation: function(newUserInformation, callback)
   {
     // Retireved JSON:
