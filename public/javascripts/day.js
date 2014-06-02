@@ -13,6 +13,7 @@
  *                       see Shift object documentation)
  *
  * Parameters:   day -- a Day object
+ *
  * Return:       None.
  */
 var Day = function(day)
@@ -34,23 +35,14 @@ var Day = function(day)
  * Summary:      addShift creates a new Shift object from the passed in JSON 
  *               and pushes the newly created object to the array of Shifts.
  *
- * Parameters:   employeeShiftInfo -- JSON;
- *                                    { "employee":,"position":,"time_range":,
- *                                      "break_time": }
+ * Parameters:   shiftInfo -- JSON; { "employee":,"position":,"events"}
  *
  * Return:       None.
  */
-Day.prototype.addShift = function(employeeShiftInfo)
+Day.prototype.addShift = function(shiftInfo)
 {
-  var shiftInfo = {
-
-    "employee" : employeeShiftInfo.employee,
-    "position" : employeeShiftInfo.position, 
-    "time_range" : employeeShiftInfo.time_range,
-    "break_time" : employeeShiftInfo.break_time
-  }
-
-  this.shifts.push(new Shift(shiftInfo))
+   //this.shifts.push(new Shift(shiftInfo))
+   this.shifts.push(shiftInfo)
 }
 
 /*
@@ -60,8 +52,7 @@ Day.prototype.addShift = function(employeeShiftInfo)
  * Parameters:   shiftIndex -- int; the shift[] array index of the employee to 
  *                             change  
  *
- *               newInfo -- JSON; { "employee":,"position":,"time_range":,
- *                                  "break_time": }
+ *               newInfo -- JSON; { "employee":,"position":,"events":}
  *
  * Return:       None.
  */
