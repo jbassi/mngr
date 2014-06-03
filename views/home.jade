@@ -33,7 +33,7 @@ block head
          * Will also scroll to top of page if button at the bottom
          * is clicked */
         $(".signup").click(function() {
-           console.log("date date " + JSON.stringify(calendars[0].days[0].shifts))
+          console.log("date date " + JSON.stringify(calendars[0].days[0].shifts[3]))
           
           socket.emit('update-calendar', calendars, function(error)
           {
@@ -73,7 +73,7 @@ block container
         .dhx_cal_navline
           #tab.published
             img#tab-left(src='../resources/tableft.png')
-            tab-mid PUBLISHED
+            #tab-mid.published PUBLISHED
             img#tab-right(src='../resources/tabright.png')
           .dhx_cal_prev_button  
           .dhx_cal_next_button  
