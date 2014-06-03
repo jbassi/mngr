@@ -12,7 +12,7 @@
  *
  * Inst. vars:   days -- an array that holds Day objects (for more information 
  *                       see Day object documentation)
- *               unavailabilities -- an array that holds day objects 
+ *               availabilities -- an array that holds day objects 
  *                       (for more information see Day object documentation)
  *               year -- an int; the current year
  *               changed -- boolean; a calendar instance knows if it needs to 
@@ -25,19 +25,19 @@ var ClientCalendar = function(calendar)
 {
   //this.days = calendar.Days
   this.days = []
-  this.unavailabilities = []
+  this.availabilities = []
   this.year = calendar.Year
   // tells whether this calendar has been chagned, thus should be updated
   this.changed = false 
 
   // creating Days on client side
-  for(var i = 0; i < calendar.Days.length; ++i) {
+  for(var i=0; i<calendar.Days.length; ++i) {
     this.days.push(new Day(calendar.Days[i]))
   }
 
-  // creating Unavailabilities on client side
-  for(var i = 0; i < calendar.Unavailabilities.length; ++i) {
-    this.unavailabilities.push(new Day(calendar.Unavailabilities[i]))
+  // creating Availabilities on client side
+  for(var i=0; i<calendar.Availabilities.length; ++i) {
+    this.availabilities.push(new Day(calendar.Availabilities[i]))
   }
 }
 
