@@ -97,6 +97,15 @@ io.sockets.on('connection', function(socket)
   }) // end of socket login
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Log out current Parse user
+  socket.on('logout', function(callback)
+  {
+    Worker.logoutCurrentUser()
+    // null value means no error occured
+    callback(null)
+  }) // end of socket login
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(args)
   {

@@ -415,7 +415,13 @@ var Worker = Parse.User.extend({
         console.error('No such company can\'t be found')       
       }
     }) // end of company.fetch()
-  } // end of initialManagerInformationCreation
+  }, // end of initialManagerInformationCreation
+
+  logoutCurrentUser: function()
+  {
+    var currentUser = Worker.current()
+    currentUser.logOut()
+  }
 }) // end of class definition
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
