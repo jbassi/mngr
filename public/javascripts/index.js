@@ -5,12 +5,14 @@
 $(document).ready(function()
 {
   // help scroll to info once get started has been clicked 
-  $("#scroll").click(function()
+  $("#scroll, .features").click(function()
   {
+    $.sidr('close', 'sidr-left')
     $('html, body').animate({
       scrollTop: $("#info").offset().top
     }, 500);
   })
+
 
   /*
    * Make signup login appear once header has been clicked. 
@@ -19,13 +21,15 @@ $(document).ready(function()
    */
   $(".signup").click(function()
   {
-     $.sidr('close', 'sidr-left')
-     $( "#tagline" ).fadeOut( "slow", function() {})
-     $( "#signup-form" ).fadeIn( "slow", function() {})
+    $(".home").parent().removeClass('active')
+    $(this).parent().addClass('active')
+    $.sidr('close', 'sidr-left')
+    $( "#tagline" ).fadeOut( "slow", function() {})
+    $( "#signup-form" ).fadeIn( "slow", function() {})
  
-      $('html, body').animate({
+    $('html, body').animate({
       scrollTop: $("#header").offset().top
-     }, 500)
+    }, 500)
   }) // end of signup click function()
 }) // end of document ready 
 

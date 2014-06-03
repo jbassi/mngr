@@ -202,7 +202,10 @@ height: 5em;
 }
 
 #tab {
+  position: relative;
+  display: inline;
   height:40px;
+  cursor: pointer;
 }
 
 #tab-left {
@@ -213,9 +216,8 @@ height: 5em;
 #tab-mid {
   position: relative;
   display: inline-block;
-  margin-left: -50px;
-  margin-right: 50px;
   margin-top:-32px;
+  padding:0 15px;
   height:40px;
   line-height:40px;
   background-color:#e7e7e7;
@@ -235,6 +237,11 @@ height: 5em;
 
 .published {
   left:50px;
+  opacity: .25;
+}
+
+.draft {
+  left:25px;
 }
 
 #container {
