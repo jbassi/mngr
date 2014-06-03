@@ -112,7 +112,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         //render the colors
         scheduler.templates.event_class = function (start, end, event) 
         {
-          hideEvents()
           //event.start_date = correctDates(event.start_date);
           //event.end_date = correctDates(event.end_date);
           if (event.color == "#e7e7e7") {
@@ -313,7 +312,7 @@ function correctDates(event_date)
 function hideEvents()
 {
   if(draft_view) {
-    console.log("show draft")
+    //console.log("show draft")
     //show unavailable
     var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
     for(var i = 0;i<un_events.length;i++) {
@@ -331,6 +330,7 @@ function hideEvents()
     var old_events = document.getElementsByClassName("dhx_cal_event_line old")
     for(var i = 0;i<old_events.length;i++) {
       old_events[i].style.display="none"
+      console.log("hide old")
     }
 
     //change cursor for shifts
@@ -341,7 +341,7 @@ function hideEvents()
   }
   else {
 
-    console.log("show published")
+    //console.log("show published")
     //hide unavailable
     var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
     for(var i = 0;i<un_events.length;i++) {
@@ -359,6 +359,7 @@ function hideEvents()
     for(var i = 0;i<old_events.length;i++) {
       old_events[i].style.display="block"
       old_events[i].style.cursor="auto"
+      console.log("show old")
     }
 
 

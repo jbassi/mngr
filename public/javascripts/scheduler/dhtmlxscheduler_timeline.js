@@ -1042,7 +1042,7 @@ scheduler._isRender = function(mode){
 
 scheduler.attachEvent("onCellDblClick", function (x, y, a, b, event){
    if (this.config.readonly|| (event.type == "dblclick" && !this.config.dblclick_create)) return;
-   //  IMPORTANT EDITED TOOK OUT CLICK ADD
+   //  IMPORTANT EDITED TOOK OUT CLICK ADD UNUSED
    // var obj = scheduler.matrix[scheduler._mode];
    // var event_options = {};
    // event_options.start_date = obj._trace_x[x];
@@ -1060,9 +1060,8 @@ scheduler.attachEvent("onCellDblClick", function (x, y, a, b, event){
 scheduler.attachEvent("onBeforeDrag", function (event_id, mode, native_event_object){
    return !scheduler._isRender("cell");
 });
-scheduler.attachEvent("onEventChanged", function(id, ev) {
+scheduler.attachEvent("onEventChanged", function(id, ev) { //IMPORTANT
    ev._timed = this.isOneDayEvent(ev);
-   console.log("changed " + JSON.stringify(ev)) //IMPORTANT
 });
 var old_render_marked_timespan = scheduler._render_marked_timespan;
 scheduler._render_marked_timespan = function(options, area, unit_id, min_date, max_date) {
