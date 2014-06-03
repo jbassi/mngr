@@ -171,6 +171,12 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
           un_events[i].style.display="none"
         }
 
+        //correct shifts pointer for initial published view
+        var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
+        for(var i = 0;i<shift_events.length;i++) {
+          shift_events[i].style.cursor="auto"
+        }
+
         //disable click for read only events
         scheduler.attachEvent("onDblClick", function (id, e)
         {
