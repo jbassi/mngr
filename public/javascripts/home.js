@@ -173,7 +173,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         //correct shifts pointer for initial published view
         var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
         for(var i = 0;i<shift_events.length;i++) {
-          shift_events[i].style.cursor="auto"
+          shift_events[i].style.cursor="default"
         }
 
         //disable click for read only events
@@ -358,7 +358,7 @@ function hideEvents()
     var old_events = document.getElementsByClassName("dhx_cal_event_line old")
     for(var i = 0;i<old_events.length;i++) {
       old_events[i].style.display="block"
-      old_events[i].style.cursor="auto"
+      old_events[i].style.cursor="default"
       console.log("show old")
     }
 
