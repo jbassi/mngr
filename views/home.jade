@@ -33,7 +33,7 @@ block head
          * Will also scroll to top of page if button at the bottom
          * is clicked */
         $(".signup").click(function() {
-          console.log("date date " + JSON.stringify(calendars[0].days[0].shifts[3]))
+           console.log("date date " + JSON.stringify(calendars[0].days[0].shifts))
           
           socket.emit('update-calendar', calendars, function(error)
           {

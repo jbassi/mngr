@@ -56,6 +56,8 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
     }
 
     shifts=calendars[0].days[0].shifts//TODO HARDCODED
+    calendars[0].goingToChange();
+ 
     for(var i = 0;i<shifts.length;i++) {
       shifts[i].start_date = correctDates(shifts[i].start_date)
       shifts[i].end_date = correctDates(shifts[i].end_date)
@@ -122,6 +124,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         render:"bar",
         resize_events: false,
         fit_events: false,
+
         round_position: false,
         })
 
@@ -192,6 +195,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
     }) // end of socket emit for retrieve-all-employees
   }
 }) // end of callback function
+
 } // end of init()
 
 function correctDates(event_date) 

@@ -79,18 +79,28 @@ Day.prototype.editShiftAtIndex = function(shiftIndex, newInfo)
 }
 
 /*
- * Summary:      deleteShiftAtIndex deletes a Shift at the given shifts array 
- *               index
+ * Summary:      deleteShift deletes a Shift passed id
  *
- * Parameters:   shiftIndex -- int; the shift[] array index of the employee to 
- *                             remove
+ *
+ * Parameters:   id -- int; id is unique to each shifts
  *
  *
  * Return:       None.
  */
-Day.prototype.deleteShiftAtIndex = function(shiftIndex)
+Day.prototype.deleteShift = function(id)
 {
-  delete this.shifts[shiftIndex]
+  // loop through shift to find the one with the passed id
+  var deleted = false
+  var i = 0
+
+  while(!deleted) 
+  {
+    if(this.shifts[i].id == id) {
+      this.shifts.splice(i, 1)
+      deleted = true 
+    }
+    i++
+  }
 }
 
 /*
