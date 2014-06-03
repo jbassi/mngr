@@ -7,6 +7,7 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //EDITED
 
 var rowheight = 0;
+var isWeek = false;
 
 (scheduler._temp_matrix_scope = function(){
 
@@ -314,14 +315,17 @@ scheduler._get_timeline_event_height = function(ev, config){
    }
 
    if (config.resize_events) {
+      isWeek = true; //edited
       event_height = Math.max(Math.floor(event_height / ev._count), config.event_min_dy);
    }
    return event_height;
 };
 scheduler._get_timeline_event_y = function(order, event_height){
    var sorder = order;
-   var y = 3;
-   //EDITED var y = 3+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
+   if(isWeek) //IMPORTANT RESIZE EDITED
+      var y = 3+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
+   else
+      var y = 3;
    if (scheduler.config.cascade_event_display) {
       y =2+sorder*scheduler.config.cascade_event_margin+(sorder?(sorder*2):0);
    }
@@ -718,9 +722,9 @@ function x_scale(h){
    var summ = scheduler._x - this.dx;
    var left = [this.dx]; // left margins, initial left margin
    var header = scheduler._els['dhx_cal_header'][0];
-   header.style.width = (left[0]+summ)+'px';
+   header.style.width = (left[0]+summ+1)+'px';
    header.style.height = '30px';
-   header.style.top = '50px';
+   header.style.top = '41px';
 
    scheduler._min_date_timeline = scheduler._min_date;
 

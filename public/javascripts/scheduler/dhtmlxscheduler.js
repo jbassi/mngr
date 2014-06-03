@@ -2027,7 +2027,7 @@ scheduler.set_sizes=function(){
    if (actual_height > 0) this.xy.nav_height = actual_height;
    
    var data_y=this.xy.scale_height+this.xy.nav_height+(this._quirks?-2:0);
-   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y+2),0,data_y+2);
+   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y),0,data_y+9); //IMPORTANT CAL_DATA SIZE
 };
 scheduler.set_xy=function(node,w,h,x,y){
    node.style.width=Math.max(0,w)+"px";
@@ -2069,7 +2069,7 @@ scheduler.set_actions=function(){
       if (!scheduler._ignore_next_click)
          scheduler._on_mouse_up(e||event);
    };
-   this._obj.onclick=function(e){ //no longer dblclick
+   this._obj.ondblclick=function(e){ //EDITED no longer dblclick
       scheduler._on_dbl_click(e||event);
    };
    this._obj.oncontextmenu = function(e) {
@@ -3316,7 +3316,7 @@ scheduler.templates={};
 scheduler.init_templates=function(){
    var labels = scheduler.locale.labels;
    labels.dhx_save_btn  = labels.icon_save;
-   labels.dhx_cancel_btn   = labels.icon_cancel;
+   labels.dhx_cancel_btn   = "X"; //edited cancel button
    labels.dhx_delete_btn   = labels.icon_delete;
 
 
@@ -3418,7 +3418,7 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IM
    //console.log('fuck' + scheduler.getEvent(ev.id))
    return ev.id;
 };
-scheduler.deleteEvent = function(id, silent) {
+scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    var ev = this._events[id];
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
@@ -3712,7 +3712,7 @@ scheduler._pre_render_events = function(evs, hold) {
                   used_multi_day_height_css = used_multi_day_height + "px";
                }
 
-               data.style.top = (this._els["dhx_cal_navline"][0].offsetHeight + this._els["dhx_cal_header"][0].offsetHeight + used_multi_day_height ) + 'px';
+               data.style.top = (this._els["dhx_cal_navline"][0].offsetHeight + this._els["dhx_cal_header"][0].offsetHeight + used_multi_day_height ) + 'px'; //IMPORTANT DATA STYLE
                data.style.height = (this._obj.offsetHeight - parseInt(data.style.top, 10) - (this.xy.margin_top || 0)) + 'px';
 
                var multi_day_section = this._els["dhx_multi_day"][0];
@@ -5096,13 +5096,16 @@ scheduler._init_lightbox_events=function(){
                scheduler.save_lightbox();
                break;
             case "dhx_delete_btn":
-               var c=scheduler.locale.labels.confirm_deleting;
-
-               scheduler._dhtmlx_confirm(c, scheduler.locale.labels.title_confirm_deleting, function(){
+               var c=scheduler.locale.labels.confirm_deleting; //EDITED NO CONFIRM
                   scheduler.deleteEvent(scheduler._lightbox_id);
                   scheduler._new_event = null; //clear flag, if it was unsaved event
                   scheduler.hide_lightbox();
-               });
+
+               // scheduler._dhtmlx_confirm(c, scheduler.locale.labels.title_confirm_deleting, function(){
+               //    scheduler.deleteEvent(scheduler._lightbox_id);
+               //    scheduler._new_event = null; //clear flag, if it was unsaved event
+               //    scheduler.hide_lightbox();
+               // });
 
                break;
             case "dhx_cancel_btn":
@@ -5153,7 +5156,8 @@ scheduler.setLightboxSize=function(){
    var con = d.childNodes[1];
    con.style.height="0px";
    con.style.height=con.scrollHeight+"px";
-   d.style.height=con.scrollHeight+scheduler.xy.lightbox_additional_height+"px";
+   d.style.height="140px";
+   //d.style.height=con.scrollHeight+scheduler.xy.lightbox_additional_height+"px"; //edited lightbox height
    con.style.height=con.scrollHeight+"px"; //it is incredible , how ugly IE can be
 };
 
@@ -5578,7 +5582,7 @@ scheduler._skin_settings = {
 
 scheduler._skin_xy = {
    lightbox_additional_height: [90,50],
-   nav_height: [59,22], //IMPORTANT
+   nav_height: [47,22], //IMPORTANT
    bar_height: [24,20]
 };
 
@@ -5639,7 +5643,7 @@ scheduler._skin_init = function(){
          }
       };
 
-      if (scheduler.config.fix_tab_position){
+      if (scheduler.config.fix_tab_position){ //IMPORTANT
          var navline_divs = scheduler._els["dhx_cal_navline"][0].getElementsByTagName('div');
          var tabs = [];
          var last = 211;
@@ -5697,7 +5701,7 @@ if (window.jQuery){
                         scheduler.config[key] = config[key];
 
                   if (!this.getElementsByTagName("div").length){
-                     this.innerHTML = '<div class="dhx_cal_navline"><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_date"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div>';
+                     this.innerHTML = '<div class="dhx_cal_navline"><div class="dhx_cal_date"></div><div class="dhx_cal_prev_button">&nbsp;</div><div class="dhx_cal_next_button">&nbsp;</div><div class="dhx_cal_today_button"></div><div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div><div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div><div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div>';
                      this.className += " dhx_cal_container";
                   }
                   scheduler.init(this, scheduler.config.date, scheduler.config.mode);

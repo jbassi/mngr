@@ -108,7 +108,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
           }
         }
 
-        //create timeline
+        //create timeline day
         scheduler.createTimelineView({
         name: "timeline",
         x_unit:  "minute",
@@ -119,8 +119,28 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         x_length: 24,
         y_unit:  employees,
         y_property: "employee_id",
-        render:"tree"
+        render:"bar",
+        resize_events: false,
+        fit_events: false,
+        round_position: false,
         })
+
+        // //create timeline week
+        // scheduler.createTimelineView({
+        // name: "timeline",
+        // x_unit:  "day",
+        // x_date:  "%l", //24hr "%H:%i"
+        // x_step:  1, //must be dynamic
+        // x_size: 7, //HARDCODED
+        // x_start: 0,
+        // x_length: 7,
+        // y_unit:  employees,
+        // y_property: "employee_id",
+        // render:"bar",
+        // resize_events: true,
+        // fit_events: true,
+        // round_position: true,
+        // })
 
         //lightbox
         scheduler.config.lightbox.sections=[
