@@ -84,6 +84,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         console.error('(-) All employees retrieval failed: ' + err.message)
 
       } else {
+        allEmployees.sort()
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({

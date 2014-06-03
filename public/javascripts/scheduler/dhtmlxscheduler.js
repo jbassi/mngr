@@ -3423,6 +3423,9 @@ scheduler.deleteEvent = function(id, silent) {
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
+     // HARDCODED
+     // calendars[0].days[0].deleteShift(id)
+
       delete this._events[id];
       this.unselect(id);
       this.event_updated(ev);
