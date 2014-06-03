@@ -118,7 +118,6 @@ font-size:1.2em;
 font-weight:normal;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
-
 -webkit-box-sizing:border-box;
 -moz-box-sizing:border-box;
 box-sizing:border-box;
@@ -200,6 +199,26 @@ left: 0;
 right: 0;
 margin:.5em auto;
 height: 5em;
+}
+
+#tab {
+  padding:0 25px;
+  height:40px;
+  line-height:40px;
+  background-color:#e7e7e7;
+  border-image: url(../resources/tab.png);
+  border:none;
+  font-family:BrandonBlack, sans-serif;
+  font-size:1.5em;
+  font-weight:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align:middle;
+  color:#424242;
+}
+
+.published {
+  left:50px;
 }
 
 #container {

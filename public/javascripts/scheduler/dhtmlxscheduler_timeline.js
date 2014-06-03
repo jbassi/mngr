@@ -724,7 +724,7 @@ function x_scale(h){
    var header = scheduler._els['dhx_cal_header'][0];
    header.style.width = (left[0]+summ+1)+'px';
    header.style.height = '30px';
-   header.style.top = '41px';
+   header.style.top = '40px';
 
    scheduler._min_date_timeline = scheduler._min_date;
 
