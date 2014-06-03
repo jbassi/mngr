@@ -18,19 +18,13 @@ block container
         img#loginimage(src='../resources/loginlight.png')
     #sidr-left
         ul
-          li.active
-            a(href='/') HOME
           li
-            a(href='#') FEATURES
-          li
-            a(href='#') ABOUT
-          li
-            a.signup PUBLISH
+            a.publish PUBLISH
   #container
     a(href='/')
       img#logo(src='../resources/logosmall.png')
     body(onload='init();')
-      #scheduler_here.dhx_cal_container(style='width: 100%; height: 100%;')
+      #scheduler.dhx_cal_container(style='width: 100%; height: 100%;')
         .dhx_cal_navline
           .tab#published
             img#tab-left(src='../resources/tableft.png')

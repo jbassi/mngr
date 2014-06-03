@@ -1042,19 +1042,19 @@ scheduler._isRender = function(mode){
 
 scheduler.attachEvent("onCellDblClick", function (x, y, a, b, event){
    if (this.config.readonly|| (event.type == "dblclick" && !this.config.dblclick_create)) return;
-   
-   var obj = scheduler.matrix[scheduler._mode];
-   var event_options = {};
-   event_options.start_date = obj._trace_x[x];
-   event_options.end_date = (obj._trace_x[x+1]) ? obj._trace_x[x+1] : scheduler.date.add(obj._trace_x[x], obj.x_step, obj.x_unit);
+   //  IMPORTANT EDITED TOOK OUT CLICK ADD
+   // var obj = scheduler.matrix[scheduler._mode];
+   // var event_options = {};
+   // event_options.start_date = obj._trace_x[x];
+   // event_options.end_date = (obj._trace_x[x+1]) ? obj._trace_x[x+1] : scheduler.date.add(obj._trace_x[x], obj.x_step, obj.x_unit);
 
-   if (obj._start_correction)
-      event_options.start_date = new Date(event_options.start_date*1 + obj._start_correction);
-   if (obj._end_correction)
-      event_options.end_date = new Date(event_options.end_date - obj._end_correction);
+   // if (obj._start_correction)
+   //    event_options.start_date = new Date(event_options.start_date*1 + obj._start_correction);
+   // if (obj._end_correction)
+   //    event_options.end_date = new Date(event_options.end_date - obj._end_correction);
 
-   event_options[obj.y_property] = obj.y_unit[y].key;
-   scheduler.addEventNow(event_options, null, event);
+   // event_options[obj.y_property] = obj.y_unit[y].key;
+   // scheduler.addEventNow(event_options, null, event);
 });   
 
 scheduler.attachEvent("onBeforeDrag", function (event_id, mode, native_event_object){
