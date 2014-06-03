@@ -65,7 +65,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
     // positions = companyPositions
 
     scheduler.locale.labels.timeline_tab = "Timeline"
-    scheduler.locale.labels.section_custom="POSITION"
+    scheduler.locale.labels.section_custom="Position"
     scheduler.config.details_on_create=true
     scheduler.config.details_on_dblclick=true
     scheduler.config.xml_date="%Y-%m-%d %H:%i"
