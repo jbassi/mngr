@@ -71,7 +71,10 @@ block container
     body(onload='init();')
       #scheduler_here.dhx_cal_container(style='width: 100%; height: 100%;')
         .dhx_cal_navline
-          #tab.published PUBLISHED
+          #tab.published
+            img#tab-left(src='../resources/tableft.png')
+            tab-mid PUBLISHED
+            img#tab-right(src='../resources/tabright.png')
           .dhx_cal_prev_button  
           .dhx_cal_next_button  
           //.dhx_cal_today_button

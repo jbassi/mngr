@@ -202,12 +202,9 @@ height: 5em;
 }
 
 #tab {
-  padding:0 25px;
   height:40px;
   line-height:40px;
-  background-color:#e7e7e7;
-  border-image: url(../resources/tab.png);
-  border:none;
+  background-color:#fff;
   font-family:BrandonBlack, sans-serif;
   font-size:1.5em;
   font-weight:normal;
@@ -215,6 +212,18 @@ height: 5em;
   -moz-osx-font-smoothing: grayscale;
   vertical-align:middle;
   color:#424242;
+}
+
+#tableft {
+  height:40px;
+  width:25px;
+}
+#tabmid {
+  height:40px;
+}
+#tabright {
+  height:40px;
+  width:25px;
 }
 
 .published {
