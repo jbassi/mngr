@@ -11,7 +11,7 @@ var Calendar = Parse.Object.extend('Calendar', {
   {
     // Stores an array of all the calendar year days
     this.days = []
-    this.availabilities = []
+    this.unavailabilities = []
   },
 
 }, {
@@ -56,15 +56,15 @@ var Calendar = Parse.Object.extend('Calendar', {
         calendar.days[59] = null
       }
 
-      // Create availability field
+      // Create unavailabilities field
       for(var i = 0; i < 7; i++) {
-        calendar.availabilities.push(new Day())
+        calendar.unavailabilities.push(new Day())
       }
 
       // Set the fields
       calendar.set('Year', currentDay.getFullYear())
       calendar.set('Days', calendar.days)
-      calendar.set('Availabilities', calendar.availabilities)
+      calendar.set('Unavailabilities', calendar.unavailabilities)
 
       return calendar // return calendar object
     } // end of createCalendar
