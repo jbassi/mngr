@@ -234,8 +234,10 @@ $(document).ready(function() {
     console.log("next button")
   });
 
-  $(".publish").click(function() //publish
+  //publish button
+  $(".publish").click(function()
   {
+    $.sidr('close', 'sidr-left');
     while(ref_shifts.length > 0) { //clear ref_shifts
       ref_shifts.pop();
     }
@@ -256,6 +258,18 @@ $(document).ready(function() {
         console.log('the calendars was updated successfully')
       }
     }) // end of calendar-update
+
+    //load published view
+    for(var i = 0;i<ref_shifts.length;i++) {
+      ref_shifts[i].type = "old"
+    }
+    scheduler.parse(ref_shifts,"json")
+    scheduler.config.readonly = true
+    document.getElementById("draft").style.opacity = ".25"
+    document.getElementById("published").style.opacity = "1"
+
+    draft_view = false;
+    hideEvents()
   });
 
   $("#draft").click(function()
@@ -264,7 +278,7 @@ $(document).ready(function() {
       if(this.style.opacity == 0.25 || !this.style.opacity) {
         if(initial) {
           $.sidr('open', 'sidr-left');
-          initial = false;       
+          initial = false;
         }
 
         for(var i = 0;i<shifts.length;i++) {
@@ -284,7 +298,7 @@ $(document).ready(function() {
     }
   });
 
-  $("#published, .publish").click(function()
+  $("#published").click(function()
   {
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
