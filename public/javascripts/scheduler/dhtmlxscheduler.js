@@ -2027,7 +2027,7 @@ scheduler.set_sizes=function(){
    if (actual_height > 0) this.xy.nav_height = actual_height;
    
    var data_y=this.xy.scale_height+this.xy.nav_height+(this._quirks?-2:0);
-   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y),0,data_y+9); //IMPORTANT CAL_DATA SIZE
+   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y),0,data_y+15); //IMPORTANT CAL_DATA SIZE
 };
 scheduler.set_xy=function(node,w,h,x,y){
    node.style.width=Math.max(0,w)+"px";
@@ -2143,9 +2143,6 @@ scheduler._click={
    dhx_cal_next_button:function(dummy,step){
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
-      scheduler.parse([ //IMPORTANT
-      {id:2, start_date: "2014-01-02 012:00", end_date: "2014-01-02 15:00", text:"6ffufufckM", employee_id:1, position_id:1}
-      ],"json");      
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
@@ -5017,17 +5014,22 @@ scheduler.hideCover=function(box){
    this.hide_cover();
 };
 scheduler.hide_cover=function(){
-   if (this._cover) 
+   if (this._cover) {
       this._cover.parentNode.removeChild(this._cover);
+      this._cover2.parentNode.removeChild(this._cover2);
+   }
    this._cover=null;
 };
 scheduler.show_cover=function(){
    this._cover=document.createElement("DIV");
    this._cover.className="dhx_cal_cover";
+   this._cover2=document.createElement("DIV");
+   this._cover2.className="dhx_cal_cover";
    var _document_height = ((document.height !== undefined) ? document.height : document.body.offsetHeight);
    var _scroll_height = ((document.documentElement) ? document.documentElement.scrollHeight : 0);
    this._cover.style.height = Math.max(_document_height, _scroll_height) + 'px';
    document.body.appendChild(this._cover);
+   document.getElementById("sidr-left").appendChild(this._cover2);
 };
 scheduler.save_lightbox=function(){ //IMPORTANT SAVE
 
@@ -5581,7 +5583,7 @@ scheduler._skin_settings = {
 
 scheduler._skin_xy = {
    lightbox_additional_height: [90,50],
-   nav_height: [47,22], //IMPORTANT
+   nav_height: [40,22], //IMPORTANT
    bar_height: [24,20]
 };
 
