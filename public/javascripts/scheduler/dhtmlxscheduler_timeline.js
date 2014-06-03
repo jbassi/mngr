@@ -37,7 +37,7 @@ scheduler.createTimelineView=function(obj){
       y_size:  7,
       render:"cell",
       dx:200,
-      dy:50,
+      dy:30,
       event_dy: 'full',
       event_min_dy: scheduler.xy.bar_height,
       resize_events: false,
@@ -361,7 +361,7 @@ scheduler.render_timeline_event = function(ev, attach){
 
    var bg_color = (ev.color?("background:"+ev.color+";"):"");
    //var color = (ev.textColor?("color:"+ev.textColor+";"):"");
-   var color = "color: rgba(255, 255, 255, 0.65);"
+   var color = "color: rgba(255, 255, 255, 0.65);" //EDITED SHOW TIME
    if((x_end-x_start) < 75) {
       color = "color: rgba(255, 255, 255, 0);"
    }

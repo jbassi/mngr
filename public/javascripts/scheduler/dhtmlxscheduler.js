@@ -2003,7 +2003,7 @@ scheduler.init=function(id,date,mode){
 };
 
 scheduler.xy={
-   min_event_height:40,
+   min_event_height:20,
    scale_width:50,
    scroll_width:18,
    scale_height:30,
@@ -2385,7 +2385,7 @@ scheduler._on_mouse_move=function(e){ //IMPORTANT drag mode
 
          var ev=this.getEvent(this._drag_id);
 
-         ev.text = (time_format(ev.start_date) + " - " + time_format(ev.end_date)) //EDITED, display the time range
+         ev.text = (time_format(ev.start_date) + "-" + time_format(ev.end_date)) //EDITED, display the time range
 
          if (this._drag_mode=="move"){
             start = this._min_date.valueOf()+(pos.y*this.config.time_step+pos.x*24*60 -(scheduler._move_pos_shift||0) )*60000;

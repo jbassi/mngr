@@ -1017,6 +1017,7 @@ div.icon_delete{
   color:#424242;
   background-color: #ffffff;
   cursor:default;
+  text-align: left;
 }
 
 .dhx_matrix_cell, .dhx_matrix_scell{
@@ -1691,6 +1692,7 @@ div.dhx_menu_head, div.dhx_menu_icon {
 
 .dhx_cal_event_line.shifts{ /* edited */
   z-index:2;
+  cursor: pointer;
 }
 
 .dhx_cal_event_line.temp{ /* edited */
@@ -1719,12 +1721,19 @@ div.dhx_menu_head, div.dhx_menu_icon {
 }
 
 .dhx_cal_event .dhx_body, .dhx_cal_event_line {
-  font-family:BrandonBlack, sans-serif; /* edited event fonts */
+  font-family:BrandonBold, sans-serif; /* edited event fonts */
   font-weight:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size:18px;
   cursor:default;
+}
+
+@media (max-width:1024px) {
+  .dhx_cal_event .dhx_body, .dhx_cal_event_line {
+  font-family:BrandonRegular, sans-serif; /* edited event fonts */
+  font-size:12px;
+  }
 }
 
 /* event end */
