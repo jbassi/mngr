@@ -6,6 +6,7 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //UNUSED
 //EDITED
 
+var sched_loaded = false;
 
 var time_format = function(date){
    var hour = date.getHours();
@@ -1998,6 +1999,7 @@ scheduler.init=function(id,date,mode){
    this.set_sizes();
    scheduler.callEvent('onSchedulerReady', []);
    this.setCurrentView(date,mode);
+   sched_loaded = true;
 };
 
 scheduler.xy={
@@ -2142,6 +2144,7 @@ scheduler._click={
    },
    dhx_cal_prev_button:function(){
       scheduler._click.dhx_cal_next_button(0,-1);
+      //TODO PARSE DAYS SCHEDULE
    },
    dhx_cal_next_button:function(dummy,step){
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects

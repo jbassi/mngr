@@ -93,7 +93,7 @@ Day.prototype.deleteShift = function(id)
   var deleted = false
   var i = 0
 
-  while(!deleted) 
+  while(!deleted && i<this.shifts.length) 
   {
     if(this.shifts[i].id == id) {
       this.shifts.splice(i, 1)

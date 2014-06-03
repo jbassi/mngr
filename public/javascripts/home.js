@@ -34,6 +34,64 @@ var unavailability=[
   {id:3, start_date: "2014-1-1 6:0", end_date: "2014-1-1 14:0", employee_id:7, color:"#e7e7e7"}
 ]
 
+$(document).ready(function() {
+  $('#menu').sidr({
+  name: 'sidr-left',
+  side: 'left',
+  body: '#container',
+  displace: true,
+  resize: true,
+  speed: 100
+  });
+  $('#profile').sidr({
+  name: 'sidr-right',
+  side: 'right',
+  body: '#profile',
+  displace: true,
+  speed: 200     
+  });
+  $(window).resize(function ()
+  {
+    $.sidr('close', 'sidr-left');
+    $.sidr('close', 'sidr-right');
+  });
+  /* Make signup login appear once header has been clicked. 
+   * Will also scroll to top of page if button at the bottom
+   * is clicked */
+  $(".signup").click(function()
+  {
+    console.log("date date " + JSON.stringify(calendars[0].days[0].shifts[3]))
+    
+    socket.emit('update-calendar', calendars, function(error)
+    {
+      if(error) {
+        //TODO: There was error while updating calendar. Let the user know
+        console.log('there was an error while updating the calendars')
+      } else {
+        //TODO: The update was done successfully. Let the user know
+        console.log('the calendars was updated successfully')
+      }
+    }) // end of calendar-update 
+  });
+
+  $("#draft").click(function()
+  {
+    if(this.style.opacity == 0.25) {
+      document.getElementById("published").style.opacity = ".25"
+      this.style.opacity = "1"
+      console.log("reload draft")
+    }
+  });
+
+  $("#published").click(function()
+  {
+    if(this.style.opacity == 0.25 || !this.style.opacity) {
+      document.getElementById("draft").style.opacity = ".25"
+      this.style.opacity = "1"
+      console.log("reload published")
+    }
+  });
+});
 
 function init()
 { //initliaze the calendar
@@ -206,5 +264,3 @@ function correctDates(event_date)
            + date.getMinutes()
 
 }
-
-

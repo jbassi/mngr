@@ -201,9 +201,7 @@ margin:.5em auto;
 height: 5em;
 }
 
-#tab {
-  position: relative;
-  display: inline;
+.tab {
   height:40px;
   cursor: pointer;
 }
@@ -235,13 +233,18 @@ height: 5em;
   display: inline;
 }
 
-.published {
+#published {
+  position: relative;
+  display:inline;
   left:50px;
   opacity: .25;
 }
 
-.draft {
+#draft {
+  position: relative;
+  display:inline;
   left:25px;
+  opacity: 1;
 }
 
 #container {

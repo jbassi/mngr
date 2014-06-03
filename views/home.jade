@@ -8,45 +8,6 @@ block head
   script(src='javascripts/home.js', type='text/javascript', charset='utf-8')
   link(rel='stylesheet', type='text/css', href='/stylesheets/dhtmlxscheduler.css')
   link(rel='stylesheet', type='text/css', href='/stylesheets/home.css')
-  script.
-      $(document).ready(function() {
-        $('#menu').sidr({
-        name: 'sidr-left',
-        side: 'left',
-        body: '#container',
-        displace: true,
-        resize: true,
-        speed: 100
-        });
-        $('#profile').sidr({
-        name: 'sidr-right',
-        side: 'right',
-        body: '#profile',
-        displace: true,
-        speed: 200     
-        });
-        $(window).resize(function () {
-          $.sidr('close', 'sidr-left');
-          $.sidr('close', 'sidr-right');
-        });
-        /* Make signup login appear once header has been clicked. 
-         * Will also scroll to top of page if button at the bottom
-         * is clicked */
-        $(".signup").click(function() {
-          console.log("date date " + JSON.stringify(calendars[0].days[0].shifts[3]))
-          
-          socket.emit('update-calendar', calendars, function(error)
-          {
-            if(error) {
-              //TODO: There was error while updating calendar. Let the user know
-              console.log('there was an error while updating the calendars')
-            } else {
-              //TODO: The update was done successfully. Let the user know
-              console.log('the calendars was updated successfully')
-            }
-          }) // end of calendar-update 
-        });
-      });
 block container
   #header
       #menu
@@ -55,8 +16,6 @@ block container
       #profile
         navtext PROFILE
         img#loginimage(src='../resources/loginlight.png')
-      a(href='/')
-        img#logo(src='../resources/logosmall.png')
     #sidr-left
         ul
           li.active
@@ -68,14 +27,16 @@ block container
           li
             a.signup PUBLISH
   #container
+    a(href='/')
+      img#logo(src='../resources/logosmall.png')
     body(onload='init();')
       #scheduler_here.dhx_cal_container(style='width: 100%; height: 100%;')
         .dhx_cal_navline
-          #tab.published
+          .tab#published
             img#tab-left(src='../resources/tableft.png')
             #tab-mid PUBLISHED
             img#tab-right(src='../resources/tabright.png')
-          #tab.draft
+          .tab#draft
             img#tab-left(src='../resources/tableft.png')
             #tab-mid DRAFT
             img#tab-right(src='../resources/tabright.png')
