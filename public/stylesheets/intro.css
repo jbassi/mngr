@@ -101,6 +101,15 @@ margin-bottom:-1px;
 box-sizing:border-box;
 }
 
+#word-test{
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+width:100%;
+background:white;
+}
+
 #position{
 margin-bottom:1em;
 -webkit-box-sizing:border-box;
@@ -117,6 +126,7 @@ border-bottom-left-radius:.3em;
 -o-border-bottom-right-radius:.3em;
 border-bottom-right-radius:.3em;
 }
+
 
 #employee-name {
 display:inline;
@@ -141,29 +151,6 @@ box-sizing:border-box;
 
 }
 
-#employee-name0 {
-display:inline;
-width:45%;
-margin-bottom:-1px;
--webkit-box-sizing:border-box;
--moz-box-sizing:border-box;
-box-sizing:border-box;
-
-
-}
-
-#employee-email0 {
-margin-left:-1px;
-display:inline;
-width:calc(55% + 1px);
-width:-moz-calc(55% + 1px);
-width:-webkit-calc(55% + 1px);
-margin-bottom:-1px;
--webkit-box-sizing:border-box;
--moz-box-sizing:border-box;
-box-sizing:border-box;
-
-}
 
 #add-button{
 
@@ -174,15 +161,26 @@ right: -3em;
 }
 
 #add-button:hover{
-  opacity:.9;
 
-
+opacity:.9;
+-webkit-transform: translateY(-3px);
+-ms-transform: translateY(-3px);
+transform: translateY(-3px);
 }
 
 #next-button{
 margin: .75em auto 0;
 width:50%;
 margin-bottom:100px;
+}
+
+
+#next-button:hover{
+
+opacity:.9;
+-webkit-transform: translateY(-3px);
+-ms-transform: translateY(-3px);
+transform: translateY(-3px);
 }
 
 /* small screens */

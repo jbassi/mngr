@@ -1,0 +1,90 @@
+.token-field {
+  border: 1px solid #bdc6d7;
+  padding: 0 3px 3px 3px;
+  cursor: text;
+
+}
+.token-field .token {
+border: medium none;
+outline: 0px none;
+float: left;
+background-repeat: no-repeat;
+background-image: url(../resources/token.gif);
+white-space: nowrap;
+text-decoration: none;
+background-position: left top;
+margin-top: .5em;
+margin-right: 0.3em;
+margin-left: 0.3em;
+cursor: default;
+}
+.token-field .token span {
+  background-image: url(../resources/token.gif);
+  background-repeat: no-repeat;
+  background-position: top right;
+  display: block;
+}
+.token-field .token span span {
+  background-position: bottom right;
+}
+.token-field .token span span span {
+  background-position: bottom left;
+}
+.token-field .token span span span span {
+  background-image: none;
+  padding: 0.5em;
+}
+.token-field .token:hover {
+  background-image: url(../resources/highlighted-token.gif);
+}
+.token-field .token:hover span {
+  background-image: url(../resources/highlighted-token.gif);
+}
+.token-field .selected-token {
+  background-image: url(../resources/selected-token.gif);
+  color: #fff;
+}
+.token-field .selected-token span {
+  background-image: url(../resources/selected-token.gif);
+}
+.token-field .selected-token:hover {
+  background-image: url(../resources/selected-token.gif);
+}
+.token-field .selected-token:hover span {
+  background-image: url(../resources/selected-token.gif);
+}
+.token-field .token span.token-x {
+  background-image: url(../resources/transparent.gif);
+  padding: 0 2px 0 3px;
+  color: #acb9d3;
+  display: inline;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 11px;
+  height: 11px;
+  font-weight: bold;
+}
+.token-field .token:hover span.token-x {
+  background-image: url(../resources/transparent.gif);
+}
+.token-field .token-input {
+  float: left;
+  margin-top: 3px;
+}
+.token-field .token-input input {
+  font: 11px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+  border: 0 none;
+  outline: 0 none;
+  width: 100%;
+}
+.token-field .token-input-sizer {
+  font: 11px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+  left: 0;
+  position: relative;
+  top: 0;
+  display: block;
+  overflow: hidden;
+  height: 0;
+  line-height: 0;
+}
+
