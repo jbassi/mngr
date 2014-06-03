@@ -8,7 +8,7 @@ var day_length = day_end - day_start;
 var year = 2014;
 
 var draft_view = false;
-
+var initial = true;
 
 
 //===============
@@ -236,9 +236,14 @@ $(document).ready(function() {
 
   $(".publish").click(function() //publish
   {
-    //delete temp
+    while(ref_shifts.length > 0) { //clear ref_shifts
+      ref_shifts.pop();
+    }
     for(var i = 0;i<shifts.length;i++) {
-      delete shifts[i].type; //delete temp
+      if(shifts[i].type == "old")
+        delete shifts[i]
+      delete shifts[i].type //delete temp
+      ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
     }
           
     socket.emit('update-calendar', calendars, function(error)
@@ -250,14 +255,17 @@ $(document).ready(function() {
         //TODO: The update was done successfully. Let the user know
         console.log('the calendars was updated successfully')
       }
-    }) // end of calendar-update 
+    }) // end of calendar-update
   });
 
   $("#draft").click(function()
   {
     if(sched_loaded) {
       if(this.style.opacity == 0.25 || !this.style.opacity) {
-        $.sidr('open', 'sidr-left');
+        if(initial) {
+          $.sidr('open', 'sidr-left');
+          initial = false;       
+        }
 
         for(var i = 0;i<shifts.length;i++) {
           shifts[i].start_date = correctDates(shifts[i].start_date)
@@ -276,11 +284,11 @@ $(document).ready(function() {
     }
   });
 
-  $("#published").click(function()
+  $("#published, .publish").click(function()
   {
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
-        $.sidr('close', 'sidr-left');
+        //$.sidr('close', 'sidr-left');
 
         for(var i = 0;i<ref_shifts.length;i++) {
           ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
