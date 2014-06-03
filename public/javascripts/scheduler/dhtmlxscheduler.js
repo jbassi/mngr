@@ -11,8 +11,11 @@ var time_format = function(date){
    var hour = date.getHours();
    var minutes = date.getMinutes();
    var period = "AM";
-   if(hour > 12) {
-      hour -= 12;
+   if(hour == 0)
+      hour += 12;
+   else if(hour > 11) {
+      if(hour > 12)
+         hour -= 12;
       period = "PM";
    }
    if(minutes < 10) {
