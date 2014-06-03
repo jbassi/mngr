@@ -3420,9 +3420,12 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
-      delete this._events[id];
-      this.unselect(id);
-      this.event_updated(ev);
+     // HARDCODED
+     calendars[0].days[0].deleteShift(id)
+
+     delete this._events[id];
+     this.unselect(id);
+     this.event_updated(ev);
    }
 
    this.callEvent("onEventDeleted", [id, ev]);
@@ -5036,7 +5039,6 @@ scheduler.save_lightbox=function(){ //IMPORTANT SAVE
 
    //TODO HARDCODED
    calendars[0].days[0].addShift(data);
-   calendars[0].goingToChange();
 
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;
