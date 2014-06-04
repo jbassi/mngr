@@ -52,7 +52,7 @@ $(document).ready(function() {
      //hide inputs
      $("input").hide()
 
-     
+
    //on edit click
    $(".edit").click(function()
    {
@@ -62,8 +62,9 @@ $(document).ready(function() {
      var submit = "#"+id+".submit"
      var cancel = "#"+id+".cancel"
      var edit = "#"+id+".edit"
+     var form = "#"+id+" input"
      $(edit).hide()
-     $("input").show()
+     $(form).show()
      $(submit).show()
      $(cancel).show()
 
