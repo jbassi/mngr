@@ -1376,6 +1376,7 @@ div.icon_delete{
 .dhx_marked_timespan {
   position: absolute;
   width: 100%;
+  display:none;
 }
 .dhx_time_block {
   position:absolute;
@@ -1811,11 +1812,11 @@ div.dhx_menu_head, div.dhx_menu_icon {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size:1.25em;
-  top: 4px;
+  top: 3px;
   text-align: right;
   text-transform:uppercase;
   position: absolute;
-  right:60px;
+  right:190px;
   z-index: -1;
   cursor:default;
 }

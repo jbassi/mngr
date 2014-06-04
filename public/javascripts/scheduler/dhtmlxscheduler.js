@@ -7,6 +7,8 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //EDITED
 
 var sched_loaded = false;
+var calendars;
+var ref_calendar;
 
 var time_format = function(date){
    var hour = date.getHours();
@@ -24,8 +26,6 @@ var time_format = function(date){
    }
    return hour + ":" + minutes + period;
 }
-
-
 
 if (!window.dhtmlx) {
    dhtmlx = function(obj){
@@ -2143,12 +2143,18 @@ scheduler._click={
          scheduler._close_not_saved();
    },
    dhx_cal_prev_button:function(){
-      scheduler._click.dhx_cal_next_button(0,-1);
       //TODO PARSE DAYS SCHEDULE
+      scheduler._click.dhx_cal_next_button(0,-1);
    },
    dhx_cal_next_button:function(dummy,step){
+      //TODO PARSE DAYS SCHEDULE
+      console.log('before ' + scheduler._date.toDateString())
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      console.log('after ' + scheduler._date.toDateString())
+      getShifts(scheduler._date)
+      render()
+      hideEvents()
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
@@ -3388,7 +3394,7 @@ scheduler.clearAll = function() {
    this.clear_view();
    this.callEvent("onClearAll", []);
 };
-scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IMPORTANT
+scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IMPORTANT add event
    if (!arguments.length)
       return this.addEventNow();
    var ev = start_date;
@@ -3428,9 +3434,8 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
-      ev.type = "old" //append old type
-     // HARDCODED
-     calendars[0].days[0].deleteShift(id)
+     ev.type = "old" //append old type
+     calendars.getDay(scheduler._date).deleteShift(id)
 
      delete this._events[id];
      this.unselect(id);
@@ -5046,9 +5051,7 @@ scheduler.save_lightbox=function(){ //IMPORTANT SAVE
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
 
-
-   //TODO HARDCODED
-   calendars[0].days[0].addShift(data);
+   calendars.getDay(scheduler._date).addShift(data);
 
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;

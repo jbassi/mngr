@@ -27,8 +27,9 @@ var Company = Parse.Object.extend('Company', {
     // set company fields
     company.set('name', companyName)
     company.set('phoneNumber', "")
-    var calendars = [Calendar.create()]
-    company.set('calendars', calendars)
+
+    var calendar = Calendar.create()
+    company.set('calendars', calendar)
     company.set('positions', [])
 
     company.save(null, {
@@ -40,7 +41,7 @@ var Company = Parse.Object.extend('Company', {
 
       error: function(res, error)
       {
-        console.log('[-] Company not created. Error: ' + err.description)
+        console.log('[-] Company not created. Error: ' + error.message)
         callback(error) // this callback is called by whoever create a new company
 
       }

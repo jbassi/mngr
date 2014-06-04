@@ -16,13 +16,28 @@ var Worker = Parse.User.extend({
     currentUserCompany.fetch({
       success: function(returnedCompany)
       {
-        var allCalendars = []
+        var returnedCalendar
 
         // getting array of pointers to calendars from company
         var calendars = returnedCompany.get('calendars') 
+        console.log('before the calendars fetch')
+
+        calendars.fetch({
+          success: function(returnedCalendar)
+          {
+            console.log('im here in the success of retrieve calendar')
+            callback(null, returnedCalendar, returnedCompany.get('positions'))
+          },
+
+          error: function(error) 
+          {
+            callback(error) 
+          }
+        })
         
+        /*
         // get array of calendars objects from array of calendars pointers
-        getAllCalendars(calendars, allCalendars, function(error)
+        getCalendars(calendars, returnedCalendar, function(error)
         {
           // send array of calendars to front-end using callback
           if(error) {
@@ -32,9 +47,10 @@ var Worker = Parse.User.extend({
             // get array of positions 
             var positions = returnedCompany.get('positions')
             // send all calendars to client and positions to the client
-            callback(null, allCalendars, positions)
+            callback(null, returnedCalendar, positions)
           }
         })
+        */
       }, // end of success, fetching company
 
       error: function(error)
@@ -52,43 +68,32 @@ var Worker = Parse.User.extend({
     // retrieve calendar
     this.retrieveCalendar(function(error, companyCalendars)
     {
+      console.log('im here in the retrieve calendar callback')
       if(error) { // if there was error while retrieving calendars
+        console.log('im here in the update calendar error')      
         callback(error) 
 
       } else {
 
         // update the companyCalendars
-        for(var i=0; i<clientCalendars.length; ++i) {
-          if(clientCalendars[i].changed) { // if the calendar is changed, update
+        companyCalendars.set('Days', clientCalendars.days)
+        companyCalendars.set('Availabilities', 
+                                clientCalendars.availabilities)
 
-            /*
-            for(var index=0; index<366; ++index) {
-              companyCalendars[i].days[index] = clientCalendars[i].days[index] 
-            } // end of for() looping through days
-            */
-
-            companyCalendars[i].set('Days', clientCalendars[i].days)
-            companyCalendars[i].set('Availabilities', 
-                                    clientCalendars[i].availabilities)
-
-            companyCalendars[i].save(null, { 
-              success: function()
-              {
-                console.log('updated the calendars successfully')       
-              }, 
-              
-              error: function(error)
-              {
-                console.error('could not update the calendars')       
-                callback(error)
-              }
-
-            }) // end of save()
-          } // end of if
-
-          if(i+1 >= clientCalendars.length)
+        companyCalendars.save(null, { 
+          success: function()
+          {
+            console.log('updated the calendars successfully')       
             callback(null)
-        } // end of for() looping through calendars
+          }, 
+          
+          error: function(error)
+          {
+            console.error('could not update the calendars')       
+            callback(error)
+          }
+
+        }) // end of save()
       }
     }) // end of retrieveCalendar()
   } // end of updateCalendar()
@@ -455,33 +460,25 @@ function setRole(worker, assignedRole)
 } // end of setRole
 
 // helper function for retrieving calendars from worker's company
-function getAllCalendars(calendars, allCalendars, callback)
+function getCalendars(calendars, returnedCalendar, callback)
 {
   var calendarQuery = new Parse.Query('Calendar')
-  var getDone = false
 
   // loop through the array of pointers to calendars to get calendar objects
-  for(var i=0; i<calendars.length; i++) {
-    calendarQuery.get(calendars[i].id, {
-      success: function(returnedCalendar)
-      {
-        allCalendars.push(returnedCalendar) // push all the calendars objects to array
+  calendarQuery.get(calendars, {
+    success: function(returnedCalendar)
+    {
+      returnedCalendar = returnedCalendar // push all the calendars objects to array
+      callback(null)
+    },
 
-        // wait till all the calendars have been retrieved 
-        if(i+1 >= calendars.length) {
-         // no error, with allCalendars containing all calendar objects
-         callback(null) 
-        }
-      },
-
-      error: function(error)
-      { 
-        console.log('Failed calendar retrieval in worker.js.')
-        callback(error) // if error occurred during getting the calendar
-      } 
-    }) // end of get() for calendars
-  } // end for()
-} // end of getAllCalendars()
+    error: function(error)
+    { 
+      console.log('Failed calendar retrieval in worker.js.')
+      callback(error) // if error occurred during getting the calendar
+    } 
+  }) // end of get() for calendars
+} // end of getCalendars()
 
 // Allow all the functions in this file to be accessed 
 // when this file is required 

@@ -18,8 +18,12 @@
  */
 var Day = function(day)
 {
+ this.date = '' 
  this.shifts = []  
+
  if(day !== null && typeof day !== 'undefined') {
+    this.date = day.date
+
     // loop through all the shifts and create new javascript 
     // objects on client side
     for(var i=0; i<day.shifts.length; ++i) {
@@ -35,7 +39,7 @@ var Day = function(day)
  * Summary:      addShift creates a new Shift object from the passed in JSON 
  *               and pushes the newly created object to the array of Shifts.
  *
- * Parameters:   shiftInfo -- JSON; { "employee":,"position":,"events"}
+ * Parameters:   shiftInfo -- JSON; used in scheduler  
  *
  * Return:       None.
  */

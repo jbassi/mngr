@@ -24,15 +24,15 @@
 var ClientCalendar = function(calendar)
 {
   //this.days = calendar.Days
-  this.days = []
-  this.availabilities = []
-  this.year = calendar.Year
+  this.days = [] 
+  this.availabilities = [] 
+
   // tells whether this calendar has been chagned, thus should be updated
   this.changed = false 
 
   // creating Days on client side
   for(var i=0; i<calendar.Days.length; ++i) {
-    this.days.push(new Day(calendar.Days[i]))
+      this.days.push(new Day(calendar.Days[i]))
   }
 
   // creating Availabilities on client side
@@ -79,11 +79,13 @@ ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index)
  * Summary:      getCurrentDayAsIndex calculates the current day (determined
  *               by the JavaScript Date object) and returns the value as an int.
  *               This value can be used to directly access the array of days
- *               within a Calendar object.
+ *               within a Calendar object. 
  *
  * Parameters:   None.
  *
  * Return:       The calculated index of the current day.
+ *
+ *               
  */
 ClientCalendar.prototype.getCurrentDayAsIndex = function()
 {
@@ -94,19 +96,13 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function()
   var day = currentDay.getDate()
   //Get month of the year (from 0-11)
   var month = currentDay.getMonth()
-  //Get year (four digits)
-  var year = currentDay.getFullYear()
   //Index to be returned 
   var dayIndex 
   //Leap year array of months 
   var months = [0,31,60,91,121,152,182,213,244,274,305,335]
 
   //Grabs amount of days for the current month
-  for(var i = 0; i < months.length; ++i) {
-    if(i == month) {
-      dayIndex = months[i]  
-    }
-  }
+  dayIndex = months[month]
 
   //Day index is finalized by adding the amount of days
   dayIndex = dayIndex + day
@@ -254,6 +250,25 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, posi
 ClientCalendar.prototype.goingToChange = function()
 {
   this.changed = true
+}
+
+ClientCalendar.prototype.getDay = function(date) {
+  for(var i=0; i<this.days.length; ++i) {
+    console.log('im in for loop')
+    if(this.days[i].date == date.toDateString())
+      return this.days[i]
+  }
+
+
+  console.log('im here returning new day')
+  var newShifts = []
+
+  this.days.push(new Day({
+    "date" : date.toDateString(),
+    "shifts" : newShifts 
+  }))
+
+  return this.days[this.days.length-1]
 }
 
 ClientCalendar.prototype.writeSomething = function()

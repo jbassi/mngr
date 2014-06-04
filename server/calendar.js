@@ -35,6 +35,7 @@ var Calendar = Parse.Object.extend('Calendar', {
       calendar.setACL(calendarACL)
 
       // JavaScript provided Date class
+      /*
       var currentDay = new Date()
       var year = currentDay.getFullYear()
       var isLeapYear
@@ -55,6 +56,7 @@ var Calendar = Parse.Object.extend('Calendar', {
       if(isLeapYear) {
         calendar.days[59] = null
       }
+      */
 
       // Create availability field
       for(var i = 0; i < 7; i++) {
@@ -62,7 +64,7 @@ var Calendar = Parse.Object.extend('Calendar', {
       }
 
       // Set the fields
-      calendar.set('Year', currentDay.getFullYear())
+      //calendar.set('Year', currentDay.getFullYear())
       calendar.set('Days', calendar.days)
       calendar.set('Availabilities', calendar.availabilities)
 

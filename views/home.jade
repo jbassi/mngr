@@ -26,9 +26,21 @@ block container
     #sidr-left
         ul
           li
-            a.publish PUBLISH
+            #publish PUBLISH
+          li
+            .color#chef
+            #text Chef
+          li
+            .color#waiter
+            #text Waiter
+          li
+            .color#bartender
+            #text Bartender
+          li
+            .color#manager
+            #text Manager
   #container
-    a(href='/')
+    a(href='/home')
       img#logo(src='../resources/logosmall.png')
     body(onload='init();')
       #loading LOADING
@@ -45,9 +57,9 @@ block container
           .dhx_cal_prev_button  
           .dhx_cal_next_button  
           //.dhx_cal_today_button
-          .dhx_cal_date
           a#day DAY
           a#week WEEK
+          .dhx_cal_date
           //- .dhx_cal_tab(name='day_tab', style='right: 204px;')
           //- .dhx_cal_tab(name='week_tab', style='right: 140px;')
           //- .dhx_cal_tab(name='timeline_tab', style='right: 280px;')
