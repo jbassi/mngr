@@ -237,13 +237,16 @@ $(document).ready(function() {
   //publish button
   $(".publish").click(function()
   {
-    $.sidr('close', 'sidr-left');
+    //$('.dhx_cal_event_line old').remove() //remove old events div
+    $.sidr('close', 'sidr-left')
     while(ref_shifts.length > 0) { //clear ref_shifts
       ref_shifts.pop();
     }
     for(var i = 0;i<shifts.length;i++) {
-      if(shifts[i].type == "old")
+      if(shifts[i].type == "old") {
+        console.log("deleted old event " + shifts[i].text)
         delete shifts[i]
+      }
       delete shifts[i].type //delete temp
       ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
     }
@@ -268,7 +271,8 @@ $(document).ready(function() {
     document.getElementById("draft").style.opacity = ".25"
     document.getElementById("published").style.opacity = "1"
 
-    draft_view = false;
+    draft_view = false
+    initial = true
     hideEvents()
   });
 
@@ -351,7 +355,7 @@ function hideEvents()
     //hide old events
     var old_events = document.getElementsByClassName("dhx_cal_event_line old")
     for(var i = 0;i<old_events.length;i++) {
-      old_events[i].style.display="none"
+      old_events[i].remove()
       console.log("hide old")
     }
 

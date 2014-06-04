@@ -368,7 +368,7 @@ scheduler.render_timeline_event = function(ev, attach){
    var text = scheduler.templates.event_bar_text(ev.start_date,ev.end_date,ev);
 
    var html='<div event_id="'+ev.id+'" class="'+cs+'" style="'+bg_color+''+color+'position:absolute; top:'+y+'px; height: '+hb+'px; left:'+x_start+'px; width:'+Math.max(0,x_end-x_start)+'px;'+(ev._text_style||"")+'">';
-   if (scheduler.config.drag_resize && !scheduler.config.readonly) {
+   if (scheduler.config.drag_resize && !scheduler.config.readonly && ev.color != "#e7e7e7") { //EDITED hide drag for unavailability
       var dhx_event_resize = 'dhx_event_resize';
       html += ("<div class='"+dhx_event_resize+" "+dhx_event_resize+"_start' style='height: 100%;'></div><div class='"+dhx_event_resize+" "+dhx_event_resize+"_end' style='height: 100%;'></div>");
    }

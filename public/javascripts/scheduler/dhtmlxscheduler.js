@@ -2611,6 +2611,7 @@ scheduler.updateView = function(date, mode) {
 scheduler.setCurrentView = function(date, mode) {
    if (!this.callEvent("onBeforeViewChange", [this._mode, this._date, mode || this._mode, date || this._date])) return;
    this.updateView(date, mode);
+   hideEvents() //EDITED HIDE EVENTS
    this.callEvent("onViewChange", [this._mode, this._date]);
 };
 scheduler._render_x_header = function(i,left,d,h){
@@ -3427,6 +3428,7 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
+      ev.type = "old" //append old type
      // HARDCODED
      calendars[0].days[0].deleteShift(id)
 
