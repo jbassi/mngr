@@ -39,6 +39,8 @@ var ClientCalendar = function(calendar)
   for(var i=0; i<calendar.Availabilities.length; ++i) {
     this.availabilities.push(new Day(calendar.Availabilities[i]))
   }
+
+  console.log('when the clientcalendar is created')
 }
 
 /*
@@ -254,13 +256,10 @@ ClientCalendar.prototype.goingToChange = function()
 
 ClientCalendar.prototype.getDay = function(date) {
   for(var i=0; i<this.days.length; ++i) {
-    console.log('im in for loop')
     if(this.days[i].date == date.toDateString())
       return this.days[i]
   }
 
-
-  console.log('im here returning new day')
   var newShifts = []
 
   this.days.push(new Day({

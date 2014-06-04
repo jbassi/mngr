@@ -211,24 +211,41 @@ $(document).ready(function() {
   {
     //$('.dhx_cal_event_line old').remove() //remove old events div
     $.sidr('close', 'sidr-left')
-    
-    console.log('im here before popping all the ref_shifts')
 
     while(ref_shifts.length > 0) { //clear ref_shifts
       ref_shifts.pop();
     }
-    for(var i = 0;i<shifts.length;i++) {
-      if(shifts[i].type == "old") {
-        console.log("deleted old event " + shifts[i].text)
-        shifts.splice(i,1)
+    for(var j=0; j<calendars.days.length; ++j) {
+      shifts = calendars.days[j].shifts
+
+      for(var i = 0; i<shifts.length; i++) {
+        if(shifts[i].type == "old") {
+          shifts.splice(i,1)
+        }
+        else {
+          delete shifts[i].type //delete temp
+        }
+        //ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
       }
-      else
-        delete shifts[i].type //delete temp
-      ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
+
+      /*  
+      for(var i = 0;i<ref_shifts.length;i++) {
+        ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
+        ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
+        ref_shifts[i].type = "old"
+      }
+      */ 
     }
+
+    ref_calendar = new ClientCalendar({
+      "Days" : calendars.days,
+      "Availabilities" : calendars.availabilities
+    }) // update ref_calendar
+    ref_shifts = ref_calendar.getDay(scheduler._date).shifts // reload ref_shifts
+
     socket.emit('update-calendar', calendars, function(error)
     {
-      if(error) {
+      if(error) { 
         //TODO: There was error while updating calendar. Let the user know
         console.log('there was an error while updating the calendars')
       } else {
@@ -237,6 +254,7 @@ $(document).ready(function() {
       }
     }) // end of calendar-update
 
+    console.log('im suppose here all the way at the end')
     //load published view
     scheduler.parse(ref_shifts,"json")
     scheduler.config.readonly = true
@@ -246,7 +264,7 @@ $(document).ready(function() {
     draft_view = false
     initial = true
     hideEvents()
-  });
+  })
 
   $("#draft").click(function()
   {
