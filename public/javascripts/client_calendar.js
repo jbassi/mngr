@@ -79,11 +79,13 @@ ClientCalendar.prototype.getAvaliableShiftsAtDayIndex = function(day_index)
  * Summary:      getCurrentDayAsIndex calculates the current day (determined
  *               by the JavaScript Date object) and returns the value as an int.
  *               This value can be used to directly access the array of days
- *               within a Calendar object.
+ *               within a Calendar object. 
  *
  * Parameters:   None.
  *
  * Return:       The calculated index of the current day.
+ *
+ *               
  */
 ClientCalendar.prototype.getCurrentDayAsIndex = function()
 {
@@ -94,19 +96,13 @@ ClientCalendar.prototype.getCurrentDayAsIndex = function()
   var day = currentDay.getDate()
   //Get month of the year (from 0-11)
   var month = currentDay.getMonth()
-  //Get year (four digits)
-  var year = currentDay.getFullYear()
   //Index to be returned 
   var dayIndex 
   //Leap year array of months 
   var months = [0,31,60,91,121,152,182,213,244,274,305,335]
 
   //Grabs amount of days for the current month
-  for(var i = 0; i < months.length; ++i) {
-    if(i == month) {
-      dayIndex = months[i]  
-    }
-  }
+  dayIndex = months[month]
 
   //Day index is finalized by adding the amount of days
   dayIndex = dayIndex + day
