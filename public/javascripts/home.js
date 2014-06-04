@@ -140,7 +140,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         //{name:"time", height:72, type:"time", map_to:"auto"}
         ]
           
-        scheduler.init('scheduler',new Date(2014,0,01),"timeline") //init the calendar
+        scheduler.init('scheduler',new Date(2014,0,01),"timelineday") //init the calendar
         //loadWeek()
 
         //parse events
@@ -312,6 +312,7 @@ $(document).ready(function() {
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
         loadDay()
+        scheduler.init('scheduler',new Date(2014,0,01),"timelineday")
         scheduler.parse(unavailability,"json")
         scheduler.parse(shifts,"json")
         scheduler.config.readonly = false
@@ -334,7 +335,8 @@ $(document).ready(function() {
         scheduler.config.readonly = true
         document.getElementById("day").style.opacity = ".25"
         this.style.opacity = "1"
-
+        scheduler.init('scheduler',new Date(),"timelineweek")
+        scheduler.parse(shifts,"json")
       draft_view = false;
       hideEvents()
       }
@@ -346,7 +348,7 @@ $(document).ready(function() {
 function loadDay()
 {
   scheduler.createTimelineView({
-  name: "timeline",
+  name: "timelineday",
   x_unit:  "minute",
   x_date:  "%g %A", //24hr "%H:%i"
   x_step:  60,
@@ -366,7 +368,7 @@ function loadWeek()
 {
   //create timeline week
   scheduler.createTimelineView({
-  name: "timeline",
+  name: "timelineweek",
   x_unit:  "day",
   x_date:  "%l", //24hr "%H:%i"
   x_step:  1, //must be dynamic
