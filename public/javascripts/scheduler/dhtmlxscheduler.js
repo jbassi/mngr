@@ -2154,6 +2154,7 @@ scheduler._click={
       console.log('after ' + scheduler._date.toDateString())
       getShifts(scheduler._date)
       render()
+      hideEvents()
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
