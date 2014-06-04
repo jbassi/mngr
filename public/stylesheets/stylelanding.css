@@ -229,6 +229,10 @@ text-decoration:underline;
 cursor: pointer;
 }
 
+.features:hover{ /*TODO relocate to index??*/
+cursor: pointer;
+}
+
 #banner { /*banner container*/
 margin-left:auto;
 margin-right:auto;

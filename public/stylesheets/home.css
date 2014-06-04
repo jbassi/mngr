@@ -1,13 +1,33 @@
 #logo {
-position: absolute;
-top: .5em;
+margin: -4em auto 0em;
 left: 0;
 right: 0;
-margin:.5em auto;
 height: 6em;
 z-index: 5;
 }
 
-html{
-font-family: BrandonRegular,sans-serif;	
+
+table {
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-border-radius:.3em;
+-moz-border-radius:.3em;
+-ms-border-radius:.3em;
+-o-border-radius:.3em;
+border-radius:.3em;
+}
+
+/* small screens */
+@media (max-width:1024px) {
+   #logo {
+   margin-top:-4.5em;
+   height: 4em;
+   }
+}
+
+/* mobile */
+@media (orientation:portrait) and (max-width:1024px) {
+
+
 }

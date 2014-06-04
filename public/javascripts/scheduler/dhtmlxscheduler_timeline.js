@@ -37,7 +37,7 @@ scheduler.createTimelineView=function(obj){
       y_size:  7,
       render:"cell",
       dx:200,
-      dy:50,
+      dy:30,
       event_dy: 'full',
       event_min_dy: scheduler.xy.bar_height,
       resize_events: false,
@@ -361,14 +361,14 @@ scheduler.render_timeline_event = function(ev, attach){
 
    var bg_color = (ev.color?("background:"+ev.color+";"):"");
    //var color = (ev.textColor?("color:"+ev.textColor+";"):"");
-   var color = "color: rgba(255, 255, 255, 0.65);"
+   var color = "color: rgba(255, 255, 255, 0.65);" //EDITED SHOW TIME
    if((x_end-x_start) < 75) {
       color = "color: rgba(255, 255, 255, 0);"
    }
    var text = scheduler.templates.event_bar_text(ev.start_date,ev.end_date,ev);
 
    var html='<div event_id="'+ev.id+'" class="'+cs+'" style="'+bg_color+''+color+'position:absolute; top:'+y+'px; height: '+hb+'px; left:'+x_start+'px; width:'+Math.max(0,x_end-x_start)+'px;'+(ev._text_style||"")+'">';
-   if (scheduler.config.drag_resize && !scheduler.config.readonly) {
+   if (scheduler.config.drag_resize && !scheduler.config.readonly && ev.color != "#e7e7e7") { //EDITED hide drag for unavailability
       var dhx_event_resize = 'dhx_event_resize';
       html += ("<div class='"+dhx_event_resize+" "+dhx_event_resize+"_start' style='height: 100%;'></div><div class='"+dhx_event_resize+" "+dhx_event_resize+"_end' style='height: 100%;'></div>");
    }
@@ -1042,27 +1042,26 @@ scheduler._isRender = function(mode){
 
 scheduler.attachEvent("onCellDblClick", function (x, y, a, b, event){
    if (this.config.readonly|| (event.type == "dblclick" && !this.config.dblclick_create)) return;
-   
-   var obj = scheduler.matrix[scheduler._mode];
-   var event_options = {};
-   event_options.start_date = obj._trace_x[x];
-   event_options.end_date = (obj._trace_x[x+1]) ? obj._trace_x[x+1] : scheduler.date.add(obj._trace_x[x], obj.x_step, obj.x_unit);
+   //  IMPORTANT EDITED TOOK OUT CLICK ADD UNUSED
+   // var obj = scheduler.matrix[scheduler._mode];
+   // var event_options = {};
+   // event_options.start_date = obj._trace_x[x];
+   // event_options.end_date = (obj._trace_x[x+1]) ? obj._trace_x[x+1] : scheduler.date.add(obj._trace_x[x], obj.x_step, obj.x_unit);
 
-   if (obj._start_correction)
-      event_options.start_date = new Date(event_options.start_date*1 + obj._start_correction);
-   if (obj._end_correction)
-      event_options.end_date = new Date(event_options.end_date - obj._end_correction);
+   // if (obj._start_correction)
+   //    event_options.start_date = new Date(event_options.start_date*1 + obj._start_correction);
+   // if (obj._end_correction)
+   //    event_options.end_date = new Date(event_options.end_date - obj._end_correction);
 
-   event_options[obj.y_property] = obj.y_unit[y].key;
-   scheduler.addEventNow(event_options, null, event);
+   // event_options[obj.y_property] = obj.y_unit[y].key;
+   // scheduler.addEventNow(event_options, null, event);
 });   
 
 scheduler.attachEvent("onBeforeDrag", function (event_id, mode, native_event_object){
    return !scheduler._isRender("cell");
 });
-scheduler.attachEvent("onEventChanged", function(id, ev) {
+scheduler.attachEvent("onEventChanged", function(id, ev) { //IMPORTANT
    ev._timed = this.isOneDayEvent(ev);
-   console.log("changed " + JSON.stringify(ev)) //IMPORTANT
 });
 var old_render_marked_timespan = scheduler._render_marked_timespan;
 scheduler._render_marked_timespan = function(options, area, unit_id, min_date, max_date) {

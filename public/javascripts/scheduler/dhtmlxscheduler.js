@@ -6,6 +6,7 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //UNUSED
 //EDITED
 
+var sched_loaded = false;
 
 var time_format = function(date){
    var hour = date.getHours();
@@ -1998,13 +1999,14 @@ scheduler.init=function(id,date,mode){
    this.set_sizes();
    scheduler.callEvent('onSchedulerReady', []);
    this.setCurrentView(date,mode);
+   sched_loaded = true;
 };
 
 scheduler.xy={
-   min_event_height:40,
+   min_event_height:20,
    scale_width:50,
    scroll_width:18,
-   scale_height:20,
+   scale_height:30,
    month_scale_height:20,
    menu_width:25,
    margin_top:0,
@@ -2030,7 +2032,7 @@ scheduler.set_sizes=function(){
    if (actual_height > 0) this.xy.nav_height = actual_height;
    
    var data_y=this.xy.scale_height+this.xy.nav_height+(this._quirks?-2:0);
-   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y),0,data_y+15); //IMPORTANT CAL_DATA SIZE
+   this.set_xy(this._els["dhx_cal_data"][0],w,h-(data_y),0,data_y+8); //IMPORTANT CAL_DATA SIZE
 };
 scheduler.set_xy=function(node,w,h,x,y){
    node.style.width=Math.max(0,w)+"px";
@@ -2142,6 +2144,7 @@ scheduler._click={
    },
    dhx_cal_prev_button:function(){
       scheduler._click.dhx_cal_next_button(0,-1);
+      //TODO PARSE DAYS SCHEDULE
    },
    dhx_cal_next_button:function(dummy,step){
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
@@ -2229,10 +2232,10 @@ scheduler._on_dbl_click=function(e,src){
       case "dhx_scale_holder_now":
       case "dhx_month_body":
       case "dhx_wa_day_data":
-      case "dhx_marked_timespan":
-         if (!scheduler.config.dblclick_create) break;
-         this.addEventNow(this.getActionData(e).date,null,e);
-         break;
+      // case "dhx_marked_timespan":
+      //    if (!scheduler.config.dblclick_create) break;
+      //    this.addEventNow(this.getActionData(e).date,null,e);
+      //    break;
       case "dhx_cal_event":
       case "dhx_wa_ev_body":
       case "dhx_agenda_line":
@@ -2382,7 +2385,7 @@ scheduler._on_mouse_move=function(e){ //IMPORTANT drag mode
 
          var ev=this.getEvent(this._drag_id);
 
-         ev.text = (time_format(ev.start_date) + " - " + time_format(ev.end_date)) //EDITED, display the time range
+         ev.text = (time_format(ev.start_date) + "-" + time_format(ev.end_date)) //EDITED, display the time range
 
          if (this._drag_mode=="move"){
             start = this._min_date.valueOf()+(pos.y*this.config.time_step+pos.x*24*60 -(scheduler._move_pos_shift||0) )*60000;
@@ -2608,6 +2611,7 @@ scheduler.updateView = function(date, mode) {
 scheduler.setCurrentView = function(date, mode) {
    if (!this.callEvent("onBeforeViewChange", [this._mode, this._date, mode || this._mode, date || this._date])) return;
    this.updateView(date, mode);
+   hideEvents() //EDITED HIDE EVENTS
    this.callEvent("onViewChange", [this._mode, this._date]);
 };
 scheduler._render_x_header = function(i,left,d,h){
@@ -3394,6 +3398,7 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IM
       ev.end_date = end_date;
       ev.text = text;
       ev.id = id;
+      ev.type = "temp"; //temp event tag
    }
    ev.id = ev.id || scheduler.uid();
    ev.text = ev.text || "";
@@ -3423,6 +3428,7 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
+      ev.type = "old" //append old type
      // HARDCODED
      calendars[0].days[0].deleteShift(id)
 
@@ -5040,6 +5046,7 @@ scheduler.save_lightbox=function(){ //IMPORTANT SAVE
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
 
+
    //TODO HARDCODED
    calendars[0].days[0].addShift(data);
 
@@ -5586,7 +5593,7 @@ scheduler._skin_settings = {
 
 scheduler._skin_xy = {
    lightbox_additional_height: [90,50],
-   nav_height: [40,22], //IMPORTANT
+   nav_height: [37,22], //IMPORTANT
    bar_height: [24,20]
 };
 

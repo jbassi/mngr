@@ -1,5 +1,6 @@
 html { /* applies to whole document */
 overflow:hidden;
+overflow: -moz-scrollbars-none;
 height: 100%; /* for header */
 margin: 0px auto;
 padding: 0;
@@ -18,6 +19,10 @@ user-select: none;
 -webkit-tap-hightlight-color: transparent;
 }
 
+::-webkit-scrollbar {
+display: none; 
+}
+
 body {
 font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 height: 100%; /* for header */
@@ -31,16 +36,22 @@ src: url('../resources/brandonlight.woff') format('woff'), /* Chrome 6+, Firefox
     url('../resources/brandonlight.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
-@font-face { /*BrandonBlack font*/
-font-family: 'BrandonBlack';
-src: url('../resources/brandonblack.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-    url('../resources/brandonblack.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
-}
-
 @font-face { /*BrandonRegular font*/
 font-family: 'BrandonRegular';
 src: url('../resources/brandonregular.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
     url('../resources/brandonregular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face { /*BrandonBold font*/
+font-family: 'BrandonBold';
+src: url('../resources/brandonbold.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonbold.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face { /*BrandonBlack font*/
+font-family: 'BrandonBlack';
+src: url('../resources/brandonblack.woff') format('woff'), /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url('../resources/brandonblack.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
 h1 { /*titles*/
@@ -201,8 +212,29 @@ margin:.5em auto;
 height: 5em;
 }
 
-#tab {
+#loading {
+position: absolute;
+top:40%;
+left: 0;
+right: 0;
+text-align: center;
+margin:.5em auto;
+font-family:BrandonBlack, sans-serif;
+font-size:3em;
+font-weight:normal;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+vertical-align:middle;
+color:#6b6b6c;
+}
+
+.publish {
+  cursor:pointer;
+}
+
+.tab {
   height:40px;
+  cursor: pointer;
 }
 
 #tab-left {
@@ -213,14 +245,13 @@ height: 5em;
 #tab-mid {
   position: relative;
   display: inline-block;
-  margin-left: -50px;
-  margin-right: 50px;
-  margin-top:-32px;
+  margin-top:-33px;
+  padding:0 15px;
   height:40px;
   line-height:40px;
   background-color:#e7e7e7;
   font-family:BrandonBlack, sans-serif;
-  font-size:1.5em;
+  font-size:1.25em;
   font-weight:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -233,8 +264,48 @@ height: 5em;
   display: inline;
 }
 
-.published {
+#published {
+  position: relative;
+  display:inline;
   left:50px;
+  opacity: 1;
+}
+
+#draft {
+  position: relative;
+  display:inline;
+  left:25px;
+  opacity: .25;
+}
+
+#day {
+  position: absolute;
+  right: 180px;
+  font-family: BrandonBlack, sans-serif;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.25em;
+  top: 5px;
+  text-align: right;
+  text-transform: uppercase;
+  color:#ffffff;
+  cursor: pointer;
+}
+
+#week {
+  position: absolute;
+  right: 250px;
+  font-family: BrandonBlack, sans-serif;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.25em;
+  top: 5px;
+  text-align: right;
+  text-transform: uppercase;
+  color:#ffffff;
+  cursor: pointer;
 }
 
 #container {
@@ -246,6 +317,7 @@ height:-moz-calc(100% - 6.5em);
 height:-webkit-calc(100% - 6.5em);
 padding:0 1.5em 1.5em;
 }
+
 
 #content{
 width:100%;
@@ -261,7 +333,9 @@ box-sizing:border-box;
 border-radius:.3em;
 }
 
-#scheduler_here{
+
+#scheduler{
+
 width:100%;
 height:100%;
 -webkit-box-sizing:border-box;
