@@ -1,6 +1,8 @@
 //TODO fix week day view fit events, week view resize events
 
 var socket = io.connect()
+var calendars = []
+var ref_calendars = []
 var positions = []
 var day_start = 6;
 var day_end = 22;
@@ -11,29 +13,8 @@ var draft_view = false;
 var day_view = true;
 var initial = true;
 
-
-// var employees=[
-// {key:1, label:"Jeremy Bassi"},
-// {key:2, label:"Nick Ardecky"},
-// {key:3, label:"Christian Carreon"},
-// {key:4, label:"Cole Stipe"},
-// {key:5, label:"James Lee"},
-// {key:6, label:"Colby Harrison"},
-// {key:7, label:"Jonathan Trinh"},
-// {key:8, label:"Richard Ying"},
-// {key:9, label:"Joe Kang"},
-// {key:10, label:"Yutang Lin"}
-// ]
-
-var positions=[
-{key:1, label:"Chef", color:"#c85248"},
-{key:2, label:"Server", color:"#d5e15d"},
-{key:3, label:"Bartender", color:"#63b7e6"},
-{key:4, label:"Manager", color:"#95b4af"}
-]
-
 var employees = []
-var shifts  
+var shifts
 var shifts_ref
 
 var unavailability=[
@@ -48,10 +29,10 @@ function init()
 
 //getshifts and shit
 //get employees
-socket.emit('retrieve-calendar', function(err, companyCalendar,
-  companyPosition) 
+socket.emit('retrieve-calendar', function(err, companyCalendars, 
+  companyPositions) 
 {
-  if(!companyCalendar || !companyPosition) { // if the calendars are not retrieved
+  if(!companyCalendars || !companyPositions) { // if the calendars are not retrieved
     console.log('(-) Calendar initialization failed.')
   } 
   else { 
@@ -59,20 +40,14 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     // Loop through companyCalendar and make ClientCalendars 
     // We want to create ClientCalendars because, 
     // we can't call methods with Parse objects
-    /*
     for(var i = 0; i < companyCalendars.length; ++i) {
       calendars.push(new ClientCalendar(companyCalendars[i]))
       ref_calendars.push(new ClientCalendar(companyCalendars[i]))
-      // calendar = ClientCalendar(companyCalendar)
     }
-    */
 
     var today = new Date()
+    var thisYear = today.getFullYear()
 
-    calendars = new ClientCalendar(companyCalendar)
-    ref_calendar = new ClientCalendar(companyCalendar)
-    
-    /*
     for(var i=0; i<calendars.length; ++i) {
       if(calendars[i].year == thisYear) {
         currentCalendar = calendars[i]
@@ -83,9 +58,14 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
         break;
       }
     }
-    */
 
-    getShifts(today)
+    shifts = currentCalendar.days[currentDay].shifts 
+    ref_shifts = ref_calendar.days[currentDay].shifts 
+ 
+    for(var i = 0;i<shifts.length;i++) {
+      shifts[i].start_date = correctDates(shifts[i].start_date)
+      shifts[i].end_date = correctDates(shifts[i].end_date)
+    }
 
     // Set the passed in company positions to the global array
     // positions = companyPositions
@@ -113,8 +93,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
       } else {
         allEmployees.sort()
-        
-        console.log('all employees: ' + JSON.stringify(allEmployees))
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
@@ -157,7 +135,43 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
         scheduler.init('scheduler', today,"timelineday") //init the calendar
         //loadWeek()
 
-        render()
+        //parse events
+        scheduler.parse(unavailability,"json")
+        scheduler.parse(shifts,"json")
+
+        //make unavailability read only and display none
+        var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
+        for(var i = 0;i<un_events.length;i++) {
+          var eventID = scheduler.getEvent(unavailability[i].id)
+          eventID.readonly = true
+          un_events[i].style.display="none"
+        }
+
+        //correct shifts pointer for initial published view
+        var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
+        for(var i = 0;i<shift_events.length;i++) {
+          shift_events[i].style.cursor="default"
+        }
+
+        //disable click for read only events
+        scheduler.attachEvent("onDblClick", function (id, e)
+        {
+          var eventID = scheduler.getEvent(id);
+          if(eventID != null)
+            if(eventID.readonly)
+              return false
+          return true
+          })
+
+        //disable drag for read only events
+        scheduler.attachEvent("onBeforeDrag", function (id, mode, e)
+        {
+          var eventID = scheduler.getEvent(id);
+          if(eventID != null)
+            if(eventID.readonly)
+              return false
+          return true
+        })
 
         //hide relevant events on window resize
         scheduler.attachEvent("onSchedulerResize", function(){
@@ -217,6 +231,7 @@ $(document).ready(function() {
         delete shifts[i].type //delete temp
       ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
     }
+          
     socket.emit('update-calendar', calendars, function(error)
     {
       if(error) {
@@ -225,6 +240,7 @@ $(document).ready(function() {
       } else {
         //TODO: The update was done successfully. Let the user know
         console.log('the calendars was updated successfully')
+        console.log('after the calendars was updated: ' + JSON.stringify(calendars[0].days[currentDay].shifts))
       }
     }) // end of calendar-update
 
@@ -323,60 +339,6 @@ $(document).ready(function() {
     }
   });
 });
-
-//function to get the shifts from database
-function getShifts(today)
-{
-  shifts = calendars.getDay(today).shifts 
-  ref_shifts = ref_calendar.getDay(today).shifts 
-
-  for(var i = 0;i<shifts.length;i++) {
-    shifts[i].start_date = correctDates(shifts[i].start_date)
-    shifts[i].end_date = correctDates(shifts[i].end_date)
-  }
-}
-
-//function to parse and render
-function render()
-{
-  //parse events
-  scheduler.parse(unavailability,"json")
-  scheduler.parse(shifts,"json")
-
-  //make unavailability read only and display none
-  var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  for(var i = 0;i<un_events.length;i++) {
-    var eventID = scheduler.getEvent(unavailability[i].id)
-    eventID.readonly = true
-    un_events[i].style.display="none"
-  }
-
-  //correct shifts pointer for initial published view
-  var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
-  for(var i = 0;i<shift_events.length;i++) {
-    shift_events[i].style.cursor="default"
-  }
-
-  //disable click for read only events
-  scheduler.attachEvent("onDblClick", function (id, e)
-  {
-    var eventID = scheduler.getEvent(id);
-    if(eventID != null)
-      if(eventID.readonly)
-        return false
-    return true
-    })
-
-  //disable drag for read only events
-  scheduler.attachEvent("onBeforeDrag", function (id, mode, e)
-  {
-    var eventID = scheduler.getEvent(id);
-    if(eventID != null)
-      if(eventID.readonly)
-        return false
-    return true
-  })
-}
 
 //function to load day view
 function loadDay()
