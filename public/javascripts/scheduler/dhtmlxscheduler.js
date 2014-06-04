@@ -7,6 +7,9 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //EDITED
 
 var sched_loaded = false;
+var currentDay;
+var currentCalendar;
+var ref_calendar;
 
 var time_format = function(date){
    var hour = date.getHours();
@@ -3428,9 +3431,8 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
-      ev.type = "old" //append old type
-     // HARDCODED
-     calendars[0].days[0].deleteShift(id)
+     ev.type = "old" //append old type
+     currentCalendar.days[currentDay].deleteShift(id)
 
      delete this._events[id];
      this.unselect(id);
@@ -5046,9 +5048,7 @@ scheduler.save_lightbox=function(){ //IMPORTANT SAVE
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
 
-
-   //TODO HARDCODED
-   calendars[0].days[0].addShift(data);
+   currentCalendar.days[currentDay].addShift(data);
 
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;

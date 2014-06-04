@@ -66,9 +66,22 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
       ref_calendars.push(new ClientCalendar(companyCalendars[i]))
     }
 
-    shifts=calendars[0].days[0].shifts//TODO HARDCODED
-    ref_shifts=ref_calendars[0].days[0].shifts
-    calendars[0].goingToChange();
+    var today = new Date()
+    var thisYear = today.getFullYear()
+
+    for(var i=0; i<calendars.length; ++i) {
+      if(calendars[i].year == thisYear) {
+        currentCalendar = calendars[i]
+        ref_calendar = ref_calendars[i]
+
+        currentDay = currentCalendar.getCurrentDayAsIndex()
+        currentCalendar.goingToChange()
+        break;
+      }
+    }
+
+    shifts = currentCalendar.days[currentDay].shifts 
+    ref_shifts = ref_calendar.days[currentDay].shifts 
  
     for(var i = 0;i<shifts.length;i++) {
       shifts[i].start_date = correctDates(shifts[i].start_date)
@@ -156,7 +169,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         //{name:"time", height:72, type:"time", map_to:"auto"}
         ]
           
-        scheduler.init('scheduler',new Date(2014,0,01),"timeline") //init the calendar
+        scheduler.init('scheduler', today,"timeline") //init the calendar
 
         //parse events
         scheduler.parse(unavailability,"json")
@@ -239,13 +252,16 @@ $(document).ready(function() {
   {
     //$('.dhx_cal_event_line old').remove() //remove old events div
     $.sidr('close', 'sidr-left')
+    
+    console.log('im here before popping all the ref_shifts')
+
     while(ref_shifts.length > 0) { //clear ref_shifts
       ref_shifts.pop();
     }
     for(var i = 0;i<shifts.length;i++) {
       if(shifts[i].type == "old") {
         console.log("deleted old event " + shifts[i].text)
-        delete shifts[i]
+        shifts.splice(i,1)
       }
       delete shifts[i].type //delete temp
       ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
@@ -259,6 +275,7 @@ $(document).ready(function() {
       } else {
         //TODO: The update was done successfully. Let the user know
         console.log('the calendars was updated successfully')
+        console.log('after the calendars was updated: ' + JSON.stringify(calendars[0].days[currentDay].shifts))
       }
     }) // end of calendar-update
 
@@ -355,7 +372,7 @@ function hideEvents()
     //hide old events
     var old_events = document.getElementsByClassName("dhx_cal_event_line old")
     for(var i = 0;i<old_events.length;i++) {
-      old_events[i].remove()
+      old_events[i].style.display="none"
       console.log("hide old")
     }
 
