@@ -2,7 +2,10 @@
 //when page has loaded
 $(document).ready(function()
 {
-    
+   
+
+    //initialize tokenfield
+    $('#word-test').tokenField({regex:/^[a-z][\w\-]+$/i});
     //hide error message
     $("#error_message").hide()
 
@@ -12,6 +15,7 @@ $(document).ready(function()
     //clear top forms
     $("#company").val('')
     $("#phone").val('')
+    //$("#tokenfield").val('')
 
     //initialize how many forms we have. We start with one initially
     var formCount = 1;
@@ -49,7 +53,7 @@ $(document).ready(function()
     //once done adding employees and ready to submit
     $("#next-button").click(function()
     { 
-
+      
         //hide the error message in case we need to display new error message
         $("#error_message").hide()
         //then empty it
@@ -213,7 +217,7 @@ $(document).ready(function()
         }
 
         //check if objects all processed correctly
-        /*var j = array.length;
+        var j = array.length;
         console.log(j);
 
         for( j = j-1 ;j >= 0 ; --j){
@@ -225,7 +229,7 @@ $(document).ready(function()
             console.log(tmp.password);
             console.log(tmp.assignedRole);
             console.log("\n");
-        }*/
+        }
 
 
     });
