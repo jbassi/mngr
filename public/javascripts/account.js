@@ -126,7 +126,7 @@ $(document).ready(function()
     		  	var empty_pass = false
 
     		  var validate = false
-            }
+        }
 
             if(j === 9)
               var new_password = tmp[j]
@@ -160,7 +160,9 @@ $(document).ready(function()
   		}
        
         if( company.name === ""){
-        	if( company.phone === ""){
+        	if( company.phone === "")
+            if( Employee.name === "" )
+              if( Employee.email ==="" ){
               //if employee fields are empty as well
               $("#error").append('No Information Entered')
               $("#error").show()
