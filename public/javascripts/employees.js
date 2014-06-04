@@ -28,9 +28,8 @@ $(document).ready(function() {
 
    })
 
-   //initally hid button divs
-   $(".submit").hide()
-   $(".cancel").hide()
+
+
    //on edit click
    $(".edit").click(function()
    {
@@ -41,8 +40,10 @@ $(document).ready(function() {
      var cancel = "#"+id+".cancel"
      var edit = "#"+id+".edit"
      $(edit).hide()
+     $("input").show()
      $(submit).show()
      $(cancel).show()
+
 
    })
 
@@ -56,25 +57,40 @@ $(document).ready(function() {
      var submit = "#"+id+".submit"
      var cancel = "#"+id+".cancel"
      var edit = "#"+id+".edit"
+     $("input").hide()
      $(cancel).hide()
      $(submit).hide()
      $(edit).show()
 
    })
 
-   
+    
    //need to grab all current emloyees
    socket.emit('retrieve-all-employees', function(err,employees)
    {
 
-    console.log(employees)
+   for( var i = 0; i < employees.length; ++i){
 
-    console.log("Made it back from retrieve  retrieve-all-employees")
+    var id = "id="+i;
+    var name = employees[i]
+      $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
+        </input><div class="email" '+id+' ><h2>email</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
+        <div class="role" '+id+'><h2>Employee</h2></div><div class="edit" '+id+'></div><div class="submit" '+id+' ></div><div class="cancel" '+id+'></div></form>')
+   }
+   
+    //initally hid button divs
+     $(".submit").hide()
+     $(".cancel").hide()
 
+     //hide inputs
+     $("input").hide()
 
-    for( var i = 0; i < employees.length; ++i)
-      console.log(employees[i].email)
    })
+
+
+
+   
+     
 
 
 });
