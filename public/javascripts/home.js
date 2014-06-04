@@ -1,3 +1,5 @@
+//TODO fix week day view fit events, week view resize events
+
 var socket = io.connect()
 var calendars = []
 var ref_calendars = []
@@ -11,9 +13,7 @@ var draft_view = false;
 var day_view = true;
 var initial = true;
 
-//===============
-//Configuration
-//===============
+
 // var employees=[
 // {key:1, label:"Jeremy Bassi"},
 // {key:2, label:"Nick Ardecky"},
@@ -291,8 +291,8 @@ $(document).ready(function() {
           shifts[i].end_date = correctDates(shifts[i].end_date)
         }
         scheduler.parse(shifts,"json")
-
-        scheduler.config.readonly = false
+        if(day_view)
+          scheduler.config.readonly = false
         document.getElementById("published").style.opacity = ".25"
         this.style.opacity = "1"
 
@@ -333,8 +333,8 @@ $(document).ready(function() {
       if(this.style.opacity == 0.25) {
 
         loadDay()
-        
-        scheduler.config.readonly = false
+        if(draft_view)
+          scheduler.config.readonly = false
         document.getElementById("week").style.opacity = ".25"
         this.style.opacity = "1"
 
