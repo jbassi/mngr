@@ -230,7 +230,7 @@ $(document).ready(function() {
     for(var i = 0;i<shifts.length;i++) {
       if(shifts[i].type == "old") {
         console.log("deleted old event " + shifts[i].text)
-        delete shifts[i]
+        shifts.splice(i,1)
       }
       else
         delete shifts[i].type //delete temp
@@ -249,9 +249,7 @@ $(document).ready(function() {
     }) // end of calendar-update
 
     //load published view
-    for(var i = 0;i<ref_shifts.length;i++) {
-      ref_shifts[i].type = "old"
-    }
+
     scheduler.parse(ref_shifts,"json")
     scheduler.config.readonly = true
     document.getElementById("draft").style.opacity = ".25"
@@ -265,9 +263,7 @@ $(document).ready(function() {
   $("#draft").click(function()
   {
     if(sched_loaded) {
-      console.log("sched loaded")
       if(this.style.opacity == 0.25 || !this.style.opacity) {
-        console.log("opacity draft")
         if(initial) {
           $.sidr('open', 'sidr-left');
           initial = false;
@@ -293,9 +289,7 @@ $(document).ready(function() {
   $("#published").click(function()
   {
     if(sched_loaded) {
-      console.log("sched loaded")
       if(this.style.opacity == 0.25) {
-      console.log("opacity published")
 
         for(var i = 0;i<ref_shifts.length;i++) {
           ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
@@ -418,7 +412,7 @@ function hideEvents()
     //hide old events
     var old_events = document.getElementsByClassName("dhx_cal_event_line old")
     for(var i = 0;i<old_events.length;i++) {
-      old_events[i].remove()
+      old_events[i].style.display="none"
       console.log("hide old")
     }
 
