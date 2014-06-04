@@ -1,3 +1,5 @@
+//TODO fix week day view fit events, week view resize events
+
 var socket = io.connect()
 var positions = []
 var day_start = 6;
@@ -6,12 +8,10 @@ var day_length = day_end - day_start;
 var year = 2014;
 
 var draft_view = false;
+var day_view = true;
 var initial = true;
 
 
-//===============
-//Configuration
-//===============
 // var employees=[
 // {key:1, label:"Jeremy Bassi"},
 // {key:2, label:"Nick Ardecky"},
@@ -37,10 +37,10 @@ var shifts
 var shifts_ref
 
 var unavailability=[
-  {id:1, start_date: "2014-1-1 6:0", end_date: "2014-1-1 10:0", employee_id:4, color:"#e7e7e7"},
-  {id:2, start_date: "2014-1-1 15:0", end_date: "2014-1-1 22:0", employee_id:5, color:"#e7e7e7"},
-  {id:3, start_date: "2014-1-1 6:0", end_date: "2014-1-1 14:0", employee_id:7, color:"#e7e7e7"},
-  {id:3, start_date: "2014-1-2 6:0", end_date: "2014-1-2 14:0", employee_id:7, color:"#e7e7e7"}
+  {id:1, start_date: "2014-6-4 6:0", end_date: "2014-6-4 10:0", employee_id:4, color:"#e7e7e7"},
+  {id:2, start_date: "2014-6-4 15:0", end_date: "2014-6-4 22:0", employee_id:5, color:"#e7e7e7"},
+  {id:3, start_date: "2014-6-4 6:0", end_date: "2014-6-4 14:0", employee_id:7, color:"#e7e7e7"},
+  {id:3, start_date: "2014-6-5 6:0", end_date: "2014-6-5 14:0", employee_id:7, color:"#e7e7e7"}
 ]
 
 function init()
@@ -240,7 +240,7 @@ $(document).ready(function() {
   });
 
   //publish button
-  $(".publish").click(function()
+  $("#publish").click(function()
   {
     //$('.dhx_cal_event_line old').remove() //remove old events div
     $.sidr('close', 'sidr-left')
@@ -271,7 +271,6 @@ $(document).ready(function() {
     }) // end of calendar-update
 
     //load published view
-
     scheduler.parse(ref_shifts,"json")
     scheduler.config.readonly = true
     document.getElementById("draft").style.opacity = ".25"
@@ -290,20 +289,20 @@ $(document).ready(function() {
           $.sidr('open', 'sidr-left');
           initial = false;
         }
-
+        if(document.getElementById("publish") != null)
+          document.getElementById("publish").style.display = "block"
         for(var i = 0;i<shifts.length;i++) {
           shifts[i].start_date = correctDates(shifts[i].start_date)
           shifts[i].end_date = correctDates(shifts[i].end_date)
         }
         scheduler.parse(shifts,"json")
-
-        scheduler.config.readonly = false
+        if(day_view)
+          scheduler.config.readonly = false
         document.getElementById("published").style.opacity = ".25"
         this.style.opacity = "1"
 
         draft_view = true;
         hideEvents()
-
       }
     }
   });
@@ -312,7 +311,8 @@ $(document).ready(function() {
   {
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
-
+        if(document.getElementById("publish") != null)
+          document.getElementById("publish").style.display="none"
         for(var i = 0;i<ref_shifts.length;i++) {
           ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
           ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
@@ -320,7 +320,7 @@ $(document).ready(function() {
         }
         scheduler.parse(ref_shifts,"json")
         scheduler.config.readonly = true
-        document.getElementById("draft").style.opacity = ".25"
+        document.getElementById("draft").style.opacity=".25"
         this.style.opacity = "1"
 
       draft_view = false;
@@ -331,18 +331,20 @@ $(document).ready(function() {
 
   $("#day").click(function()
   {
+    //redisplay the unavailability
+    scheduler.parse(unavailability,"json")
+
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
+
         loadDay()
-        scheduler.init('scheduler',new Date(2014,0,01),"timelineday")
-        scheduler.parse(unavailability,"json")
-        scheduler.parse(shifts,"json")
-        scheduler.config.readonly = false
+        if(draft_view)
+          scheduler.config.readonly = false
         document.getElementById("week").style.opacity = ".25"
         this.style.opacity = "1"
 
-      draft_view = false;
-      hideEvents()
+        day_view = true;
+        hideEvents()
       }
     }
   });
@@ -352,15 +354,13 @@ $(document).ready(function() {
     if(sched_loaded) {
       if(this.style.opacity == 0.25 || !this.style.opacity) {
         loadWeek()
-        scheduler.parse(unavailability,"json")
-        scheduler.parse(shifts,"json")
+        
         scheduler.config.readonly = true
         document.getElementById("day").style.opacity = ".25"
         this.style.opacity = "1"
-        scheduler.init('scheduler',new Date(),"timelineweek")
-        scheduler.parse(shifts,"json")
-      draft_view = false;
-      hideEvents()
+
+        day_view = false;
+        hideEvents()
       }
     }
   });
@@ -384,10 +384,15 @@ function loadDay()
   fit_events: false,
   round_position: false,
   })
+  scheduler.init('scheduler',new Date(),"timelineday")
 }
 
 function loadWeek()
 {
+  //don't show unavailability for week view
+  for(i=0;i<unavailability.length;i++){
+    scheduler.deleteEvent(unavailability[i].id, true)
+  }
   //create timeline week
   scheduler.createTimelineView({
   name: "timelineweek",
@@ -404,6 +409,7 @@ function loadWeek()
   fit_events: true,
   round_position: true,
   })
+  scheduler.init('scheduler',new Date(),"timelineweek")
 }
 
 //function to format the correct date when loading data
@@ -419,7 +425,6 @@ function correctDates(event_date)
 function hideEvents()
 {
   if(draft_view) {
-    //console.log("show draft")
     //show unavailable
     var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
     for(var i = 0;i<un_events.length;i++) {
