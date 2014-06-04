@@ -13,10 +13,11 @@ background-image: url(../resources/token.gif);
 white-space: nowrap;
 text-decoration: none;
 background-position: left top;
-margin-top: .5em;
+margin-top: 1.2em;
 margin-right: 0.3em;
 margin-left: 0.3em;
 cursor: default;
+font-family: BrandonRegular,sans-serif;
 }
 .token-field .token span {
   background-image: url(../resources/token.gif);
@@ -32,7 +33,7 @@ cursor: default;
 }
 .token-field .token span span span span {
   background-image: none;
-  padding: 0.5em;
+  padding: 0.6em;
 }
 .token-field .token:hover {
   background-image: url(../resources/highlighted-token.gif);
@@ -63,6 +64,7 @@ cursor: default;
   line-height: 11px;
   height: 11px;
   font-weight: bold;
+  font-family: BrandonRegular,sans-serif;
 }
 .token-field .token:hover span.token-x {
   background-image: url(../resources/transparent.gif);
@@ -72,13 +74,13 @@ cursor: default;
   margin-top: 3px;
 }
 .token-field .token-input input {
-  font: 11px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+ font-family: BrandonRegular,sans-serif;
   border: 0 none;
   outline: 0 none;
   width: 100%;
 }
 .token-field .token-input-sizer {
-  font: 11px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+font-family: BrandonRegular,sans-serif;
   left: 0;
   position: relative;
   top: 0;

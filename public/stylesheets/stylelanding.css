@@ -32,6 +32,11 @@ src: url('../resources/brandonregular.woff') format('woff'), /* Chrome 6+, Firef
     url('../resources/brandonregular.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
+input{
+font-family: BrandonRegular,sans-serif;
+
+}
+
 h1 { /*titles*/
 font-family:BrandonLight, sans-serif;
 font-weight:normal;

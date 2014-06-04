@@ -72,6 +72,7 @@
         // fix size when focus is returned
         .focus(function() {
           $(this).next('.token-input-sizer').html($(this).val()+'###');
+          console.log(this)
           return true;
         })
         // "parse" and insert token, then clear the input field
@@ -110,7 +111,9 @@
     function observeToken(token) {
       // select token when token clicked
       token.click(function() {
+        console.log("in token.click")
         $(this).focus();
+
         return false;
       })
       // remove token when selected and delete/backspace is clicked
