@@ -130,23 +130,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
           }
         }
 
-        //create timeline day
-        scheduler.createTimelineView({
-        name: "timeline",
-        x_unit:  "minute",
-        x_date:  "%g %A", //24hr "%H:%i"
-        x_step:  60,
-        x_size: day_length+1,
-        x_start: day_start,
-        x_length: 24,
-        y_unit:  employees,
-        y_property: "employee_id",
-        render:"bar",
-        resize_events: false,
-        fit_events: false,
-
-        round_position: false,
-        })
+        loadDay() //create timeline day
 
         //lightbox
         scheduler.config.lightbox.sections=[
@@ -157,6 +141,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         ]
           
         scheduler.init('scheduler',new Date(2014,0,01),"timeline") //init the calendar
+        //loadWeek()
 
         //parse events
         scheduler.parse(unavailability,"json")
@@ -247,7 +232,8 @@ $(document).ready(function() {
         console.log("deleted old event " + shifts[i].text)
         delete shifts[i]
       }
-      delete shifts[i].type //delete temp
+      else
+        delete shifts[i].type //delete temp
       ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
     }
           
@@ -279,7 +265,9 @@ $(document).ready(function() {
   $("#draft").click(function()
   {
     if(sched_loaded) {
+      console.log("sched loaded")
       if(this.style.opacity == 0.25 || !this.style.opacity) {
+        console.log("opacity draft")
         if(initial) {
           $.sidr('open', 'sidr-left');
           initial = false;
@@ -305,8 +293,9 @@ $(document).ready(function() {
   $("#published").click(function()
   {
     if(sched_loaded) {
+      console.log("sched loaded")
       if(this.style.opacity == 0.25) {
-        //$.sidr('close', 'sidr-left');
+      console.log("opacity published")
 
         for(var i = 0;i<ref_shifts.length;i++) {
           ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
@@ -323,7 +312,81 @@ $(document).ready(function() {
       }
     }
   });
+
+  $("#day").click(function()
+  {
+    if(sched_loaded) {
+      if(this.style.opacity == 0.25) {
+        loadDay()
+        scheduler.parse(unavailability,"json")
+        scheduler.parse(shifts,"json")
+        scheduler.config.readonly = false
+        document.getElementById("week").style.opacity = ".25"
+        this.style.opacity = "1"
+
+      draft_view = false;
+      hideEvents()
+      }
+    }
+  });
+
+  $("#week").click(function()
+  {
+    if(sched_loaded) {
+      if(this.style.opacity == 0.25 || !this.style.opacity) {
+        loadWeek()
+        scheduler.parse(unavailability,"json")
+        scheduler.parse(shifts,"json")
+        scheduler.config.readonly = true
+        document.getElementById("day").style.opacity = ".25"
+        this.style.opacity = "1"
+
+      draft_view = false;
+      hideEvents()
+      }
+    }
+  });
 });
+
+//function to load day view
+function loadDay()
+{
+  scheduler.createTimelineView({
+  name: "timeline",
+  x_unit:  "minute",
+  x_date:  "%g %A", //24hr "%H:%i"
+  x_step:  60,
+  x_size: day_length+1,
+  x_start: day_start,
+  x_length: 24,
+  y_unit:  employees,
+  y_property: "employee_id",
+  render:"bar",
+  resize_events: false,
+  fit_events: false,
+  round_position: false,
+  })
+}
+
+function loadWeek()
+{
+  //create timeline week
+  scheduler.createTimelineView({
+  name: "timeline",
+  x_unit:  "day",
+  x_date:  "%l", //24hr "%H:%i"
+  x_step:  1, //must be dynamic
+  x_size: 7, //HARDCODED
+  x_start: 0,
+  x_length: 7,
+  y_unit:  employees,
+  y_property: "employee_id",
+  render:"bar",
+  resize_events: true,
+  fit_events: true,
+  round_position: true,
+  })
+}
 
 //function to format the correct date when loading data
 function correctDates(event_date) 

@@ -3428,7 +3428,7 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
-      ev.type = "old" //append old type
+      ev.type = "old" //append old
      // HARDCODED
      calendars[0].days[0].deleteShift(id)
 
