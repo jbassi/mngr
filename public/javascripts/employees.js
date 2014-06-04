@@ -74,8 +74,8 @@ $(document).ready(function() {
     var id = "id="+i;
     var name = employees[i]
       $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
-        </input><div class="email" '+id+' ><h2>email</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
-        <div class="role" '+id+'><h2>Employee</h2></div><div class="edit" '+id+'></div><div class="submit" '+id+' ></div><div class="cancel" '+id+'></div></form>')
+        </input><div class="email" '+id+' ><h2>'+name+''+"@gmail.com"+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
+        <div class="role" '+id+'><h2>Employee</h2></div><div class="edit" '+id+'>EDIT</div><div class="submit" '+id+' ></div><div class="cancel" '+id+'></div></form>')
    }
    
     //initally hid button divs

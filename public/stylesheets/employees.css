@@ -177,33 +177,50 @@ background-color: #63B7E6;
 width: 4em;
 height: 2em;
 position: relative;
-float: right;
-margin-right: 1.5em;
 margin-right: 1em;
 border-radius: 0.3em;
-margin-top: .5em;
+text-align: center;
+padding-top: 0.6em;
+font-family: BrandonBlack,sans-serif;
+font-weight: normal;
+color: #424242;
+float: right;
+margin-top: 0.5em;
 }
 
 .cancel{
 background-color: #C85248;
+background-color: #63B7E6;
 width: 4em;
 height: 2em;
 position: relative;
-float: right;
 margin-right: 1em;
 border-radius: 0.3em;
-margin-top: .5em;
+text-align: center;
+padding-top: 0.6em;
+font-family: BrandonBlack,sans-serif;
+font-weight: normal;
+color: #424242;
+float: right;
+margin-top: 0.5em;
+
 }
 
 .submit{
 background-color: rgba(108, 183, 111, 1);
+background-color: #63B7E6;
 width: 4em;
 height: 2em;
 position: relative;
-float: right;
 margin-right: 1em;
 border-radius: 0.3em;
-margin-top: .5em;
+text-align: center;
+padding-top: 0.6em;
+font-family: BrandonBlack,sans-serif;
+font-weight: normal;
+color: #424242;
+float: right;
+margin-top: 0.5em;
 }
 
 input{
