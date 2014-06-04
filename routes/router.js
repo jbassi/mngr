@@ -29,4 +29,16 @@ module.exports = function(app) {
     res.render('about', { title: 'Mngr'})
   })
 
+  app.get('/account', function(req, res) {
+    res.render('account', { title: 'Mngr'})
+  })
+
+  app.get('/employees', function(req, res) {
+    res.render('employees', { title: 'Mngr'})
+  })
+
+  app.get('/schedule', function(req, res) {
+    res.render('schedule', { title: 'Mngr'})
+  })
+
 }

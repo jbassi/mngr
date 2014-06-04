@@ -1,7 +1,9 @@
 extends layoutlanding
 block head
   link(rel='stylesheet', href='/stylesheets/intro.css')
+  link(rel='stylesheet', href='/stylesheets/token-field.css')
   script(src='javascripts/intro.js')
+  script(src='javascripts/jquery.token-field.js')
 block banner
 
   img#logo-nolink(src='../resources/logocolor.png')
@@ -13,7 +15,8 @@ block banner
       //TODO get rid of username field in parse, extraneous
       input#company(type='text' ,placeholder='COMPANY NAME', name='company_name' ,value='')
       input#phone(type='text' ,placeholder='PHONE NUMBER', name='company_phone' ,value='')
-
+      input#word-test(type='text', name='words', value='Server')
+    <br>
     form#input1
       input#employee-name(type='text', placeholder='NAME', name='name', value='')
       input#employee-email(type='text', name='email', value='', placeholder='EMAIL')
