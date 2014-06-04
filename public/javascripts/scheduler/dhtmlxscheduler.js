@@ -7,8 +7,7 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //EDITED
 
 var sched_loaded = false;
-var currentDay;
-var currentCalendar;
+var calendars;
 var ref_calendar;
 
 var time_format = function(date){
@@ -27,8 +26,6 @@ var time_format = function(date){
    }
    return hour + ":" + minutes + period;
 }
-
-
 
 if (!window.dhtmlx) {
    dhtmlx = function(obj){
@@ -2146,12 +2143,16 @@ scheduler._click={
          scheduler._close_not_saved();
    },
    dhx_cal_prev_button:function(){
-      scheduler._click.dhx_cal_next_button(0,-1);
       //TODO PARSE DAYS SCHEDULE
+      scheduler._click.dhx_cal_next_button(0,-1);
    },
    dhx_cal_next_button:function(dummy,step){
+      //TODO PARSE DAYS SCHEDULE
+      console.log('before ' + scheduler._date.toDateString())
+
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      console.log('after ' + scheduler._date.toDateString())
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
@@ -3432,7 +3433,7 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
       return;
    if (ev) {
      ev.type = "old" //append old type
-     currentCalendar.days[currentDay].deleteShift(id)
+     calendars.getDay(scheduler._date).deleteShift(id)
 
      delete this._events[id];
      this.unselect(id);
@@ -5048,7 +5049,7 @@ scheduler.save_lightbox=function(){ //IMPORTANT SAVE
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
 
-   currentCalendar.days[currentDay].addShift(data);
+   calendars.getDay(scheduler._date).addShift(data);
 
    if (this.checkEvent("onEventSave") && !this.callEvent("onEventSave",[this._lightbox_id, data, this._new_event]))
       return;

@@ -24,15 +24,15 @@
 var ClientCalendar = function(calendar)
 {
   //this.days = calendar.Days
-  this.days = []
-  this.availabilities = []
-  this.year = calendar.Year
+  this.days = [] 
+  this.availabilities = [] 
+
   // tells whether this calendar has been chagned, thus should be updated
   this.changed = false 
 
   // creating Days on client side
   for(var i=0; i<calendar.Days.length; ++i) {
-    this.days.push(new Day(calendar.Days[i]))
+      this.days.push(new Day(calendar.Days[i]))
   }
 
   // creating Availabilities on client side
@@ -250,6 +250,25 @@ ClientCalendar.prototype.addShiftAtDayIndex = function(day_index, employee, posi
 ClientCalendar.prototype.goingToChange = function()
 {
   this.changed = true
+}
+
+ClientCalendar.prototype.getDay = function(date) {
+  for(var i=0; i<this.days.length; ++i) {
+    console.log('im in for loop')
+    if(this.days[i].date == date.toDateString())
+      return this.days[i]
+  }
+
+
+  console.log('im here returning new day')
+  var newShifts = []
+
+  this.days.push(new Day({
+    "date" : date.toDateString(),
+    "shifts" : newShifts 
+  }))
+
+  return this.days[this.days.length-1]
 }
 
 ClientCalendar.prototype.writeSomething = function()

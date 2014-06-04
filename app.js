@@ -120,17 +120,17 @@ io.sockets.on('connection', function(socket)
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempt to send the company calendar object to the frontend
-  socket.on('retrieve-calendar', function(sendCalendarsToClient)
+  socket.on('retrieve-calendar', function(sendCalendarToClient)
   {
     // Emit result of password reset, err is null if no error exists
     var currentUser = Worker.current()
 
-    currentUser.retrieveCalendar(function(error, companyCalendars, positions)
+    currentUser.retrieveCalendar(function(error, companyCalendar, positions)
     {
       if(error) { // if there was error while retrieving calendars
-        sendCalendarsToClient(error) 
+        sendCalendarToClient(error) 
       } else { // send array of calendar objects
-        sendCalendarsToClient(null, companyCalendars, positions)
+        sendCalendarToClient(null, companyCalendar, positions)
       }
     })
 

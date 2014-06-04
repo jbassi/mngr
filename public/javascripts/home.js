@@ -1,6 +1,4 @@
 var socket = io.connect()
-var calendars = []
-var ref_calendars = []
 var positions = []
 var day_start = 6;
 var day_end = 22;
@@ -35,7 +33,7 @@ var positions=[
 ]
 
 var employees = []
-var shifts
+var shifts  
 var shifts_ref
 
 var unavailability=[
@@ -50,10 +48,10 @@ function init()
 
 //getshifts and shit
 //get employees
-socket.emit('retrieve-calendar', function(err, companyCalendars, 
-  companyPositions) 
+socket.emit('retrieve-calendar', function(err, companyCalendar,
+  companyPosition) 
 {
-  if(!companyCalendars || !companyPositions) { // if the calendars are not retrieved
+  if(!companyCalendar || !companyPosition) { // if the calendars are not retrieved
     console.log('(-) Calendar initialization failed.')
   } 
   else { 
@@ -61,14 +59,20 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
     // Loop through companyCalendar and make ClientCalendars 
     // We want to create ClientCalendars because, 
     // we can't call methods with Parse objects
+    /*
     for(var i = 0; i < companyCalendars.length; ++i) {
       calendars.push(new ClientCalendar(companyCalendars[i]))
       ref_calendars.push(new ClientCalendar(companyCalendars[i]))
+      // calendar = ClientCalendar(companyCalendar)
     }
+    */
 
     var today = new Date()
-    var thisYear = today.getFullYear()
 
+    calendars = new ClientCalendar(companyCalendar)
+    ref_calendar = new ClientCalendar(companyCalendar)
+    
+    /*
     for(var i=0; i<calendars.length; ++i) {
       if(calendars[i].year == thisYear) {
         currentCalendar = calendars[i]
@@ -79,9 +83,10 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
         break;
       }
     }
+    */
 
-    shifts = currentCalendar.days[currentDay].shifts 
-    ref_shifts = ref_calendar.days[currentDay].shifts 
+    shifts = calendars.getDay(today).shifts 
+    ref_shifts = ref_calendar.getDay(today).shifts 
  
     for(var i = 0;i<shifts.length;i++) {
       shifts[i].start_date = correctDates(shifts[i].start_date)
@@ -114,6 +119,8 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
 
       } else {
         allEmployees.sort()
+        
+        console.log('all employees: ' + JSON.stringify(allEmployees))
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
@@ -252,7 +259,6 @@ $(document).ready(function() {
         delete shifts[i].type //delete temp
       ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
     }
-          
     socket.emit('update-calendar', calendars, function(error)
     {
       if(error) {
@@ -261,7 +267,6 @@ $(document).ready(function() {
       } else {
         //TODO: The update was done successfully. Let the user know
         console.log('the calendars was updated successfully')
-        console.log('after the calendars was updated: ' + JSON.stringify(calendars[0].days[currentDay].shifts))
       }
     }) // end of calendar-update
 

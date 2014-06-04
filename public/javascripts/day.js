@@ -18,8 +18,12 @@
  */
 var Day = function(day)
 {
+ this.date = '' 
  this.shifts = []  
+
  if(day !== null && typeof day !== 'undefined') {
+    this.date = day.date
+
     // loop through all the shifts and create new javascript 
     // objects on client side
     for(var i=0; i<day.shifts.length; ++i) {
