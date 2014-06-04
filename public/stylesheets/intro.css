@@ -169,11 +169,7 @@ right: -3em;
 }
 
 #add-button:hover{
-
-opacity:.9;
--webkit-transform: translateY(-3px);
--ms-transform: translateY(-3px);
-transform: translateY(-3px);
+opacity:.93;
 }
 
 #next-button{
@@ -184,11 +180,7 @@ margin-bottom:100px;
 
 
 #next-button:hover{
-
-opacity:.9;
--webkit-transform: translateY(-3px);
--ms-transform: translateY(-3px);
-transform: translateY(-3px);
+opacity:.93;
 }
 
 /* small screens */

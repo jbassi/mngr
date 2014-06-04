@@ -7,7 +7,7 @@ module.exports = function(app) {
 
   // Get index page
   app.get('/', function(req, res) {
-    res.render('index', { title: 'Mngr'})
+    res.render('layoutlanding', { title: 'Mngr'})
   })
 
   // Get sign up page

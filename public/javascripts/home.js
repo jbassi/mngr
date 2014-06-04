@@ -208,6 +208,22 @@ socket.emit('retrieve-calendar', function(err, companyCalendars,
 } // end of init()
 
 $(document).ready(function() {
+
+  //logout user
+  $(".n2 a").click(function()
+  {
+    console.log("Made it to on click")
+
+    socket.emit('logout',function(error)
+    {
+      //if(error)
+      //console.log(error)
+      console.log("Made it to logout User")
+      window.location.href = '/'
+    })
+
+  })
+
   $('#menu').sidr({
   name: 'sidr-left',
   side: 'left',
@@ -216,17 +232,10 @@ $(document).ready(function() {
   resize: true,
   speed: 100
   });
-  $('#profile').sidr({
-  name: 'sidr-right',
-  side: 'right',
-  body: '#profile',
-  displace: true,
-  speed: 200     
-  });
+
   $(window).resize(function ()
   {
     $.sidr('close', 'sidr-left');
-    $.sidr('close', 'sidr-right');
   });
 
   $(".dhx_cal_next_button").click(function()

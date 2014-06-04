@@ -93,27 +93,7 @@ function failedLogin() {
         'borderWidth': '.23em',
         'borderColor': '#D80000'
     }, 2000);
-/*
-    $("#login-user").animate({
-        'borderWidth': '.16em',
-        'borderColor': '#a7a7a7'
-    }, 500);
 
-    $("#login-user").animate({
-        'borderWidth': '.14em',
-        'borderColor': '#a7a7a7'
-    }, 400);
-
-    $("#login-user").animate({
-        'borderWidth': '.12em',
-        'borderColor': '#a7a7a7'
-    }, 400);
-
-    $("#login-user").animate({
-        'borderWidth': '.09em',
-        'borderColor': '#a7a7a7'
-    }, 400);
-*/
     $("#login-user").animate({
         'borderWidth': '.07em',
         'borderColor': '#a7a7a7'
@@ -130,27 +110,7 @@ function failedLogin() {
         'borderWidth': '.23em',
         'borderColor': '#D80000'
     }, 2000);
-/*
-    $("#login-pass").animate({
-        'borderWidth': '.16em',
-        'borderColor': '#a7a7a7'
-    }, 500);
 
-    $("#login-pass").animate({
-        'borderWidth': '.14em',
-        'borderColor': '#a7a7a7'
-    }, 400);
-
-    $("#login-pass").animate({
-        'borderWidth': '.12em',
-        'borderColor': '#a7a7a7'
-    }, 400);
-
-    $("#login-pass").animate({
-        'borderWidth': '.09em',
-        'borderColor': '#a7a7a7'
-    }, 400);
-*/
     $("#login-pass").animate({
         'borderWidth': '.07em',
         'borderColor': '#a7a7a7'

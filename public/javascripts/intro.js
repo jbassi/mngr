@@ -6,6 +6,7 @@ $(document).ready(function()
 
     //initialize tokenfield
     $('#word-test').tokenField({regex:/^[a-z][\w\-]+$/i});
+
     //hide error message
     $("#error_message").hide()
 
@@ -98,8 +99,6 @@ $(document).ready(function()
 	        //serialize form data into JSON array and make JSON object after
 	        var x = $(form_id).serializeArray()
 
-            //variable to assign fields read in order of: name, email
-            var j = 1;
 
             //loop to check fields
             $.each(x, function(i, field) {
@@ -110,13 +109,11 @@ $(document).ready(function()
                 }
 
                 //if first loop
-                if( j === 1)
+                if( i === 0)
                     Employee.name = field.value;
 
-                if( j === 2 )
-                    Employee.email = field.value;
-
-                ++j;              
+                if( i === 1)
+                    Employee.email = field.value;       
 
             });
 
@@ -134,7 +131,7 @@ $(document).ready(function()
          
     	} //end while readIn
 
-
+        
         //set if company name is empty
         var incorrect_company_name = false;
 
@@ -148,17 +145,16 @@ $(document).ready(function()
         //grab company name and phone number
         var m = $("#input0").serializeArray();
 
-        var k = 1;
 
         $.each(m, function(i, field) {
 
-            if( k === 1)
+            if( i === 0)
                 company.name = field.value;
 
-            if( k === 2)
+            if( i === 1)
                 company.phone = field.value;
-
-            ++k;
+            //if i === 2 assign position values
+            console.log(field.name + " : " + field.value)
         });
 
         if( company.name == "") {
@@ -178,6 +174,7 @@ $(document).ready(function()
   
             $("#error_message").append("Please Enter A Company Name")
             $("#error_message").show()
+            return;
 
             /* Cant get scroll top to work!!!!
             $('html,body').animate({
@@ -206,9 +203,13 @@ $(document).ready(function()
                     console.log(error.message)
                     $('#error_message').append(error.message)
                     $("#error_message").show();
+                    
                 }
                 else{
-                    console.log("We did it!!! Ready to go to manager page");
+                    console.log("We did it!!! Ready to go to manager page")
+                    window.location.href = '/home'
+
+                    
                 }
                 
             });
@@ -216,22 +217,7 @@ $(document).ready(function()
         
         }
 
-        //check if objects all processed correctly
-        var j = array.length;
-        console.log(j);
-
-        for( j = j-1 ;j >= 0 ; --j){
-
-            var tmp = array[j];
-
-            console.log(tmp.name);
-            console.log(tmp.email);
-            console.log(tmp.password);
-            console.log(tmp.assignedRole);
-            console.log("\n");
-        }
-
-
+        
     });
 
 

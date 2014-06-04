@@ -399,6 +399,7 @@ var Worker = Parse.User.extend({
                 }
               }) // end of Worker.create()
             }
+            callback(null)
           },
 
           error: function(error)
@@ -419,8 +420,10 @@ var Worker = Parse.User.extend({
 
   logoutCurrentUser: function()
   {
-    var currentUser = Worker.current()
-    currentUser.logOut()
+    //logout current user
+    Parse.User.logOut()
+
+
   }
 }) // end of class definition
 

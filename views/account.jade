@@ -8,18 +8,21 @@ block head
         img#menuimage(src='../resources/menulight.png')
         navtext MENU
       #profile
-        navtext PROFILE
-        img#loginimage(src='../resources/loginlight.png')
-      a(href='/')
-        img#logo(src='../resources/logosmall.png')
+        ul.navigation
+          a.main(href='#url')
+          navtext#nav_profile PROFILE
+          img#loginimage(src='../resources/loginlight.png')
+          li.n1
+            a(href='/home') HOME
+          li.n2
+            a(href='#') LOGOUT
     #sidr-left
         ul
           li.active
             a(href='/account') ACCOUNT
           li
             a(href='/employees') EMPLOYEES
-          li
-            a(href='/schedule') SCHEDULE
+          
 
   #container
     #content

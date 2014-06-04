@@ -1,6 +1,20 @@
 $(document).ready(function()
 {
     
+  //logout user
+  $(".n2 a").click(function()
+  {
+    console.log("Made it to on click")
+
+    socket.emit('logout',function(error)
+    {
+      //if(error)
+      //console.log(error)
+      console.log("Made it to logout User")
+      window.location.href = '/'
+    })
+
+  })
     //hide message divs
     $("#error").hide()
     $("#correct").hide()
@@ -18,20 +32,10 @@ $(document).ready(function()
 	    speed: 100
     });
 
-    //profile slider
-    $('#profile').sidr({
-	    name: 'sidr-right',
-	    side: 'right',
-	    body: '#profile',
-	    displace: true,
-	    speed: 200     
-    });
-
     //resize window for slider
     $(window).resize(function () {
 	      $.sidr('close', 'sidr-left');
-	      $.sidr('close', 'sidr-right');
-    });
+	  });
 
 	//if clicked save information users entered to change
 	$("#change-button").click(function()
@@ -165,8 +169,8 @@ $(document).ready(function()
     	
           
         //pass to backend and check to see nothing went wrong
-        $("#correct").append('Successfully Changed')
-        $("#correct").show()
+        //$("#correct").append('Successfully Changed')
+        //$("#correct").show()
         
 
 
