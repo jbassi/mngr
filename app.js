@@ -178,4 +178,4 @@ io.sockets.on('connection', function(socket)
       }
     })
   }) // end of update-calendar 
-}) // end of io.socket.on
+}) // end of io.socket.on6

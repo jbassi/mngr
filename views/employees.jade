@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 extends home
 block head
   script.
@@ -43,3 +44,46 @@ block container
 
   #container
     #content
+=======
+extends home
+block head
+  link(rel='stylesheet', type='text/css', href='/stylesheets/employees.css')
+  script(src='javascripts/employees.js')
+block container
+  #header
+      #menu
+        img#menuimage(src='../resources/menulight.png')
+        navtext MENU
+      #profile
+        ul.navigation
+          a.main(href='#url')
+          navtext#nav_profile PROFILE
+          img#loginimage(src='../resources/loginlight.png')
+          li.n1
+            a(href='/home') HOME
+          li.n2
+            a(href='#') LOGOUT
+    #sidr-left
+        ul
+          li
+            a(href='/account') ACCOUNT
+          li.active
+            a(href='/employees') EMPLOYEES
+         
+  #container
+    #content
+      
+      .row
+        h2#employees Employee Information
+        .box
+          #box1
+            .name
+              h2 NAME
+            .email
+              h2 EMAIL
+            .role
+              h2 STATUS
+         
+
+
+>>>>>>> d821728e9d6a8f8da3917fc732b073791a36ea66

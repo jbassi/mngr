@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 extends home
 block head
   link(rel='stylesheet', type='text/css', href='/stylesheets/account.css')
@@ -39,4 +40,50 @@ block head
         form#signup-form1
           input#signup-name(type='text' placeholder='CHANGE NAME' name='comapny_name' value='')
           input#signup-phone(type='text' placeholder='CHANGE PHONE' name='company_phone' value='')
+=======
+extends home
+block head
+  link(rel='stylesheet', type='text/css', href='/stylesheets/account.css')
+  script(src='javascripts/account.js')
+ block container
+  #header
+      #menu
+        img#menuimage(src='../resources/menulight.png')
+        navtext MENU
+      #profile
+        ul.navigation
+          a.main(href='#url')
+          navtext#nav_profile PROFILE
+          img#loginimage(src='../resources/loginlight.png')
+          li.n1
+            a(href='/home') HOME
+          li.n2
+            a(href='#') LOGOUT
+    #sidr-left
+        ul
+          li.active
+            a(href='/account') ACCOUNT
+          li
+            a(href='/employees') EMPLOYEES
+          
+
+  #container
+    #content
+      #left
+        h2#account-setting Profile Settings
+        form#signup-form
+          input#signup-name(type='text' placeholder='CHANGE NAME' name='name' value='')
+          input#signup-email(type='text' placeholder='CHANGE EMAIL' name='email' value='')
+          input#signup-phone(type='text' placeholder='CHANGE PHONE' name='phone' value='')
+          input#signup-pass(type='password' placeholder='ENTER CURRENT PASSWORD' name='cur_password' value='')
+          input#signup-pass(type='password' placeholder='ENTER NEW PASSWORD' name='new_password' value='')
+          input#signup-pass(type='password' placeholder='RE ENTER NEW PASSWORD' name='check_new_password' value='')
+        h1#error
+        h1#correct 
+      #right
+        h2#account-setting Company Settings
+        form#signup-form1
+          input#signup-name(type='text' placeholder='CHANGE NAME' name='comapny_name' value='')
+          input#signup-phone(type='text' placeholder='CHANGE PHONE' name='company_phone' value='')
+>>>>>>> d821728e9d6a8f8da3917fc732b073791a36ea66
       input#change-button.button(type='button', value='SAVE')

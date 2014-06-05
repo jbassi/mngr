@@ -14,8 +14,15 @@ block container
         img#menuimage(src='../resources/menulight.png')
         navtext MENU
       #profile
-        navtext PROFILE
-        img#loginimage(src='../resources/loginlight.png')
+        ul.navigation
+          a.main(href='#url')
+          navtext#nav_profile PROFILE
+          img#loginimage(src='../resources/loginlight.png')
+          li.n1
+            a(href='/account') ACCOUNT
+          li.n2
+            a(href='#') LOGOUT
+          
     #sidr-left
         ul
           li
@@ -25,7 +32,7 @@ block container
             #text Chef
           li
             .color#waiter
-            #text Waiter
+            #text Server
           li
             .color#bartender
             #text Bartender
