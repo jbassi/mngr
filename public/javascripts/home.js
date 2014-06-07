@@ -106,20 +106,27 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     //     //sections: { timeline: 2} 
     // });
 
+    // Used to sort username in allEmployees.sort() 
+    function propertyCompare(prop) {
+      return function(a, b) {
+          return a[prop] > b[prop]
+      }
+    }
+
     socket.emit('retrieve-all-employees', function(err, allEmployees)
     {
       if(err) {
         console.error('(-) All employees retrieval failed: ' + err.message)
 
       } else {
-        allEmployees.sort()
+        allEmployees.sort(propertyCompare('username'))
         
         console.log('all employees: ' + JSON.stringify(allEmployees))
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
             "key" : i+1,
-            "label" : allEmployees[i]
+            "label" : allEmployees[i].username
           })
         }
 
@@ -172,21 +179,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
 $(document).ready(function() {
 
-  //logout user
-  $(".n2 a").click(function()
-  {
-    console.log("Made it to on click")
-
-    socket.emit('logout',function(error)
-    {
-      //if(error)
-      //console.log(error)
-      console.log("Made it to logout User")
-      window.location.href = '/'
-    })
-
-  })
-
   $('#menu').sidr({
   name: 'sidr-left',
   side: 'left',
@@ -206,29 +198,69 @@ $(document).ready(function() {
     console.log("next button")
   });
 
+  //show dropdown
+  $("#profile").click(function()
+  {
+    if(document.getElementById("dropdown").style.display == "none" || !document.getElementById("dropdown").style.display)
+      document.getElementById("dropdown").style.display = "block"
+    else
+      document.getElementById("dropdown").style.display = "none"
+  })
+
+  //logout user
+  $("#d2 a").click(function()
+  {
+    console.log("Made it to on click")
+
+    socket.emit('logout',function(error)
+    {
+      //if(error)
+      //console.log(error)
+      console.log("Made it to logout User")
+      window.location.href = '/'
+    })
+  })
+
   //publish button
   $("#publish").click(function()
   {
     //$('.dhx_cal_event_line old').remove() //remove old events div
     $.sidr('close', 'sidr-left')
-    
-    console.log('im here before popping all the ref_shifts')
 
     while(ref_shifts.length > 0) { //clear ref_shifts
       ref_shifts.pop();
     }
-    for(var i = 0;i<shifts.length;i++) {
-      if(shifts[i].type == "old") {
-        console.log("deleted old event " + shifts[i].text)
-        shifts.splice(i,1)
+    for(var j=0; j<calendars.days.length; ++j) {
+      shifts = calendars.days[j].shifts
+
+      for(var i = 0; i<shifts.length; i++) {
+        if(shifts[i].type == "old") {
+          shifts.splice(i,1)
+        }
+        else {
+          delete shifts[i].type //delete temp
+        }
+        //ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
       }
-      else
-        delete shifts[i].type //delete temp
-      ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
+
+      /*  
+      for(var i = 0;i<ref_shifts.length;i++) {
+        ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
+        ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
+        ref_shifts[i].type = "old"
+      }
+      */ 
     }
+
+    ref_calendar = new ClientCalendar({
+      "Days" : calendars.days,
+      "Availabilities" : calendars.availabilities
+    }) // update ref_calendar
+    ref_shifts = ref_calendar.getDay(scheduler._date).shifts // reload ref_shifts
+
     socket.emit('update-calendar', calendars, function(error)
     {
-      if(error) {
+      if(error) { 
         //TODO: There was error while updating calendar. Let the user know
         console.log('there was an error while updating the calendars')
       } else {
@@ -237,6 +269,7 @@ $(document).ready(function() {
       }
     }) // end of calendar-update
 
+    console.log('im suppose here all the way at the end')
     //load published view
     scheduler.parse(ref_shifts,"json")
     scheduler.config.readonly = true
@@ -246,7 +279,7 @@ $(document).ready(function() {
     draft_view = false
     initial = true
     hideEvents()
-  });
+  })
 
   $("#draft").click(function()
   {

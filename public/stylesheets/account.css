@@ -125,7 +125,7 @@ border-radius:.3em;
 	}
 
 }
-
+/*
 .navigation a {
 display: block;
 text-decoration: none;
@@ -136,7 +136,6 @@ margin-top:13px;
 
 a:hover{color:#777;}
 
-/* NAVIGATION */
 .navigation {
 list-style: none outside none;
 padding: 0px;
@@ -240,6 +239,7 @@ margin-right:7px;
   -webkit-transition-delay: 0.8s;
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
+<<<<<<< HEAD
 }
 
 #logo{
@@ -250,3 +250,6 @@ margin: auto;
 height: 5em;
 top: 4px;
 }
+
+}*/
+

@@ -2148,10 +2148,8 @@ scheduler._click={
    },
    dhx_cal_next_button:function(dummy,step){
       //TODO PARSE DAYS SCHEDULE
-      console.log('before ' + scheduler._date.toDateString())
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
-      console.log('after ' + scheduler._date.toDateString())
       getShifts(scheduler._date)
       render()
       hideEvents()

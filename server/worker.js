@@ -320,7 +320,10 @@ var Worker = Parse.User.extend({
   retrieveAllEmployeesAtCompany: function(callback) 
   {
     var currentUser = Worker.current()
-    // Array to return
+
+    // employeeInfo = { "username" : userName, "phonenumber" : phoneNumber,
+    //                  "role" : role, "email" : email }
+    // Array of JSON objects to return
     var allEmployees = []
     // Give current user full access for Parse query
     Parse.Cloud.useMasterKey()
@@ -338,7 +341,20 @@ var Worker = Parse.User.extend({
             // Loop through returned users and add each name to the array
             for(var i = 0; i < queredUsers.length; ++i) {
               var userName = queredUsers[i].get('name')
-              allEmployees.push(userName)
+              var phoneNumber = queredUsers[i].get('phoneNumber')
+              var role = queredUsers[i].get('assignedRole')
+              var email = queredUsers[i].get('email')
+
+              // Construct JSON object and add to array
+              employeeInfo = {
+                "username" : userName,
+                "phonenumber" : phoneNumber,
+                "role" : role,
+                "email" : email
+              }
+
+              // console.log(JSON.stringify(employeeInfo))
+              allEmployees.push(employeeInfo)
             }
             callback(null, allEmployees)
           },

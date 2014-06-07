@@ -1,8 +1,16 @@
 $(document).ready(function()
 {
-    
+  //show dropdown
+  $("#profile").click(function()
+  {
+    if(document.getElementById("dropdown").style.display == "none" || !document.getElementById("dropdown").style.display)
+      document.getElementById("dropdown").style.display = "block"
+    else
+      document.getElementById("dropdown").style.display = "none"
+  })
+
   //logout user
-  $(".n2 a").click(function()
+  $("#d2 a").click(function()
   {
     console.log("Made it to on click")
 
