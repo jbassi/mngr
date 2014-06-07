@@ -2143,21 +2143,16 @@ scheduler._click={
          scheduler._close_not_saved();
    },
    dhx_cal_prev_button:function(){
+      //TODO PARSE DAYS SCHEDULE
       scheduler._click.dhx_cal_next_button(0,-1);
    },
    dhx_cal_next_button:function(dummy,step){
       //TODO PARSE DAYS SCHEDULE
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
-
-      if(day_view == true)
-        getShifts(scheduler._date)
-      else 
-        getShiftsForWeek(scheduler._date)
-
+      getShifts(scheduler._date)
       render()
-      console.log("render")
-      //hideEvents()
+      hideEvents()
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
@@ -3437,23 +3432,8 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
-   console.log("delete this shit")
-     ev.type = "delete" //append old type
-     //calendars.getDay(scheduler._date).deleteShift(id)
-
-     delete this._events[id];
-     this.unselect(id);
-     this.event_updated(ev);
-   }
-
-   this.callEvent("onEventDeleted", [id, ev]);
-};
-scheduler.hideEvent = function(id, silent) { //IMPORTANT DELETE
-   var ev = this._events[id];
-   if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
-      return;
-   if (ev) {
-     //calendars.getDay(scheduler._date).deleteShift(id)
+     ev.type = "old" //append old type
+     calendars.getDay(scheduler._date).deleteShift(id)
 
      delete this._events[id];
      this.unselect(id);

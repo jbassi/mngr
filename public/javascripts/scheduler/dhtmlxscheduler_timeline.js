@@ -7,7 +7,6 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //EDITED
 
 var rowheight = 0;
-var isWeek = false;
 
 (scheduler._temp_matrix_scope = function(){
 
@@ -314,15 +313,14 @@ scheduler._get_timeline_event_height = function(ev, config){
       }
    }
 
-   if (config.resize_events) {
-      isWeek = true; //edited
+   if (config.resize_events && !day_view) {
       event_height = Math.max(Math.floor(event_height / ev._count), config.event_min_dy);
    }
    return event_height;
 };
 scheduler._get_timeline_event_y = function(order, event_height){
    var sorder = order;
-   if(isWeek) //IMPORTANT RESIZE EDITED
+   if(!day_view) //IMPORTANT RESIZE EDITED
       var y = 3+sorder*event_height+(sorder?(sorder*2):0); // original top + number_of_events * event_dy + default event top/bottom borders
    else
       var y = 3;
@@ -653,7 +651,7 @@ function y_scale(d) {
       // generating events html in a temporary file, calculating their height
       var events_html = get_events_html.call(this, evs[i]);
 
-      if(this.fit_events){
+      if(this.fit_events && !day_view){
          var rendered_height = this._events_height[this.y_unit[i].key]||0;
          stats.height = (rendered_height>stats.height)?rendered_height:stats.height;
          stats.style_height = "height:"+stats.height+"px;";

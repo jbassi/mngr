@@ -11,6 +11,20 @@ var draft_view = false;
 var day_view = true;
 var initial = true;
 
+
+// var employees=[
+// {key:1, label:"Jeremy Bassi"},
+// {key:2, label:"Nick Ardecky"},
+// {key:3, label:"Christian Carreon"},
+// {key:4, label:"Cole Stipe"},
+// {key:5, label:"James Lee"},
+// {key:6, label:"Colby Harrison"},
+// {key:7, label:"Jonathan Trinh"},
+// {key:8, label:"Richard Ying"},
+// {key:9, label:"Joe Kang"},
+// {key:10, label:"Yutang Lin"}
+// ]
+
 var positions=[
 {key:1, label:"Chef", color:"#c85248"},
 {key:2, label:"Server", color:"#d5e15d"},
@@ -20,13 +34,13 @@ var positions=[
 
 var employees = []
 var shifts  
-var ref_shifts
+var shifts_ref
 
 var unavailability=[
-  {id:1, start_date: "2014-6-7 6:0", end_date: "2014-6-7 10:0", employee_id:1, color:"#e7e7e7"},
-  {id:2, start_date: "2014-6-7 15:0", end_date: "2014-6-7 22:0", employee_id:2, color:"#e7e7e7"},
-  {id:3, start_date: "2014-6-7 6:0", end_date: "2014-6-7 14:0", employee_id:3, color:"#e7e7e7"},
-  {id:4, start_date: "2014-6-8 6:0", end_date: "2014-6-8 14:0", employee_id:3, color:"#e7e7e7"}
+  {id:1, start_date: "2014-6-4 6:0", end_date: "2014-6-4 10:0", employee_id:4, color:"#e7e7e7"},
+  {id:2, start_date: "2014-6-4 15:0", end_date: "2014-6-4 22:0", employee_id:5, color:"#e7e7e7"},
+  {id:3, start_date: "2014-6-4 6:0", end_date: "2014-6-4 14:0", employee_id:7, color:"#e7e7e7"},
+  {id:3, start_date: "2014-6-5 6:0", end_date: "2014-6-5 14:0", employee_id:7, color:"#e7e7e7"}
 ]
 
 function init()
@@ -125,12 +139,12 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
             //event.text = "UNAVAILABLE";
             return "unavailability"
           }
-          // else if (event.type == "temp") {
-          //   return "temp"
-          // } 
-          // else if (event.type == "old") {
-          //   return "old"
-          // }
+          else if (event.type == "temp") {
+            return "temp"
+          } 
+          else if (event.type == "old") {
+            return "old"
+          }
           else {
             event.color = scheduler.getColor("position_id", event.position_id);
             return "shifts"
@@ -217,23 +231,14 @@ $(document).ready(function() {
       ref_shifts.pop();
     }
     for(var j=0; j<calendars.days.length; ++j) {
-
       shifts = calendars.days[j].shifts
 
-      var i = 0
-      var length = shifts.length
-      while(i<length) {
-        console.log(i + " " + length)
-        if(shifts[i].type == "delete") {
-          console.log("delete this one " + shifts[i].text)
+      for(var i = 0; i<shifts.length; i++) {
+        if(shifts[i].type == "old") {
           shifts.splice(i,1)
-          length--
         }
         else {
-          console.log("now at " + shifts[i].text + "at " + i)
           delete shifts[i].type //delete temp
-          console.log("dont delete this one " + shifts[i].text)
-          i++
         }
         //ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
       }
@@ -251,7 +256,7 @@ $(document).ready(function() {
       "Days" : calendars.days,
       "Availabilities" : calendars.availabilities
     }) // update ref_calendar
-    getShifts(scheduler._date) // reload shifts
+    ref_shifts = ref_calendar.getDay(scheduler._date).shifts // reload ref_shifts
 
     socket.emit('update-calendar', calendars, function(error)
     {
@@ -265,7 +270,6 @@ $(document).ready(function() {
     }) // end of calendar-update
 
     console.log('im suppose here all the way at the end')
-    
     //load published view
     scheduler.parse(ref_shifts,"json")
     scheduler.config.readonly = true
@@ -274,11 +278,9 @@ $(document).ready(function() {
 
     draft_view = false
     initial = true
-    //hideEvents()
+    hideEvents()
+  })
 
-  }) //end of publish function
-
-  //load draft view
   $("#draft").click(function()
   {
     if(sched_loaded) {
@@ -298,7 +300,9 @@ $(document).ready(function() {
           scheduler.config.readonly = false
         document.getElementById("published").style.opacity = ".25"
         this.style.opacity = "1"
-        loadDraft()
+
+        draft_view = true;
+        hideEvents()
       }
     }
   });
@@ -309,9 +313,18 @@ $(document).ready(function() {
       if(this.style.opacity == 0.25) {
         if(document.getElementById("publish") != null)
           document.getElementById("publish").style.display="none"
-          document.getElementById("draft").style.opacity=".25"
-          this.style.opacity = "1"
-          loadPublished()
+        for(var i = 0;i<ref_shifts.length;i++) {
+          ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
+          ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
+          ref_shifts[i].type = "old"
+        }
+        scheduler.parse(ref_shifts,"json")
+        scheduler.config.readonly = true
+        document.getElementById("draft").style.opacity=".25"
+        this.style.opacity = "1"
+
+      draft_view = false;
+      hideEvents()
       }
     }
   });
@@ -331,8 +344,7 @@ $(document).ready(function() {
         this.style.opacity = "1"
 
         day_view = true;
-        //hideEvents()
-        render()
+        hideEvents()
       }
     }
   });
@@ -348,11 +360,7 @@ $(document).ready(function() {
         this.style.opacity = "1"
 
         day_view = false;
-  
-        // display schedules
-        getShiftsForWeek(scheduler._date)
-        render()
-        //hideEvents()
+        hideEvents()
       }
     }
   });
@@ -370,137 +378,19 @@ function getShifts(today)
   }
 }
 
-function getShiftsForWeek(today) 
-{
-  console.log('im here suckers')
-  var week = calendars.getWeek(today)
-  var ref_week = ref_calendar.getWeek(today)
-
-  console.log('this is week in getshiftsweek' + JSON.stringify(week))
-  
-  shifts = []
-  ref_shifts = []
-
-  for(var i=0; i<6; ++i) {
-    shifts = shifts.concat(week[i].shifts)
-    ref_shifts = ref_shifts.concat(ref_week[i].shifts)
-    if(i==5) {
-      for(var j = 0;j<shifts.length;j++) {
-        shifts[j].start_date = correctDates(shifts[j].start_date)
-        shifts[j].end_date = correctDates(shifts[j].end_date)
-      }
-      console.log('this is shifts in getshiftsweek ' + JSON.stringify(shifts))
-    }
-  }
-}
-
 //function to parse and render
 function render()
 {
-  console.log('this is shifts in render ' + JSON.stringify(shifts))
   //parse events
   scheduler.parse(unavailability,"json")
   scheduler.parse(shifts,"json")
 
-  if(!day_view) {
-    //don't show unavailability
-    for(i=0;i<unavailability.length;i++){
-      scheduler.hideEvent(unavailability[i].id, true)
-    }
-  }
-
-  if(!draft_view)
-    loadPublished()
-  else
-    loadDraft()
-
-  //don't show deleted
-  for(var i = 0;i<shifts.length;i++) {
-    if(shifts[i].type == "delete") {
-      scheduler.hideEvent(shifts[i].id, true)
-      console.log("delete this " + shifts[i].text)
-    }
-  }
-
-}
-
-//function to load draft view
-function loadDraft()
-{
-  draft_view = true;
-  if(day_view) {
-    //show unavailability
-    for(i=0;i<unavailability.length;i++){
-      scheduler.addEvent(unavailability[i])
-    }
-
-    //make unavailability read only
-    var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-    for(var i = 0;i<un_events.length;i++) {
-      var eventID = scheduler.getEvent(unavailability[i].id)
-      eventID.readonly = true
-    }
-
-    //disable click for read only events
-    scheduler.attachEvent("onDblClick", function (id, e)
-    {
-      var eventID = scheduler.getEvent(id);
-      if(eventID != null)
-        if(eventID.readonly)
-          return false
-      return true
-      })
-
-    //disable drag for read only events
-    scheduler.attachEvent("onBeforeDrag", function (id, mode, e)
-    {
-      var eventID = scheduler.getEvent(id);
-      if(eventID != null)
-        if(eventID.readonly)
-          return false
-      return true
-    })
-  }
-  
-  //don't show published shifts
-  for(i=0;i<ref_shifts.length;i++){
-    scheduler.hideEvent(ref_shifts[i].id, true)
-  }
-
-  //show draft shifts but not deleted ones
-  for(i=0;i<shifts.length;i++){
-    if(shifts[i].type != "delete")
-      scheduler.addEvent(shifts[i])
-  }
-
-}
-
-function loadPublished()
-{
-
-  draft_view = false;
-  //parse correct date
-  for(var i = 0;i<ref_shifts.length;i++) {
-    ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
-    ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
-    //ref_shifts[i].type = "old"
-  }
-  scheduler.parse(ref_shifts,"json")
-  scheduler.config.readonly = true
-
-  //don't show unavailability
-  for(i=0;i<unavailability.length;i++){
-    scheduler.hideEvent(unavailability[i].id, true)
-  }
-
-  //don't show draft shifts
-  for(i=0;i<shifts.length;i++){
-    scheduler.hideEvent(shifts[i].id, true)
-  }
-
-  //show published shifts
-  for(i=0;i<ref_shifts.length;i++){
-    scheduler.addEvent(ref_shifts[i])
+  //make unavailability read only and display none
+  var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
+  for(var i = 0;i<un_events.length;i++) {
+    var eventID = scheduler.getEvent(unavailability[i].id)
+    eventID.readonly = true
+    un_events[i].style.display="none"
   }
 
   //correct shifts pointer for initial published view
@@ -508,8 +398,27 @@ function loadPublished()
   for(var i = 0;i<shift_events.length;i++) {
     shift_events[i].style.cursor="default"
   }
-}
 
+  //disable click for read only events
+  scheduler.attachEvent("onDblClick", function (id, e)
+  {
+    var eventID = scheduler.getEvent(id);
+    if(eventID != null)
+      if(eventID.readonly)
+        return false
+    return true
+    })
+
+  //disable drag for read only events
+  scheduler.attachEvent("onBeforeDrag", function (id, mode, e)
+  {
+    var eventID = scheduler.getEvent(id);
+    if(eventID != null)
+      if(eventID.readonly)
+        return false
+    return true
+  })
+}
 
 //function to load day view
 function loadDay()
@@ -529,7 +438,7 @@ function loadDay()
   fit_events: false,
   round_position: false,
   })
-  scheduler.init('scheduler',scheduler._date,"timelineday")
+  scheduler.init('scheduler',new Date(),"timelineday")
 }
 
 function loadWeek()
@@ -554,7 +463,7 @@ function loadWeek()
   fit_events: true,
   round_position: true,
   })
-  scheduler.init('scheduler', scheduler._date,"timelineweek")
+  scheduler.init('scheduler',new Date(),"timelineweek")
 }
 
 //function to format the correct date when loading data
@@ -569,56 +478,56 @@ function correctDates(event_date)
 //function to hide certain events based on published or draft view
 function hideEvents()
 {
-  // if(draft_view) {
-  //   //show unavailable
-  //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  //   for(var i = 0;i<un_events.length;i++) {
-  //     un_events[i].style.display="block"
-  //   }
+  if(draft_view) {
+    //show unavailable
+    var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
+    for(var i = 0;i<un_events.length;i++) {
+      un_events[i].style.display="block"
+    }
 
-  //   //show newly added events
-  //   var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
-  //   for(var i = 0;i<temp_events.length;i++) {
-  //     temp_events[i].style.display="block"
-  //     temp_events[i].style.cursor="pointer"
-  //   }
+    //show newly added events
+    var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
+    for(var i = 0;i<temp_events.length;i++) {
+      temp_events[i].style.display="block"
+      temp_events[i].style.cursor="pointer"
+    }
 
-  //   //hide old events
-  //   var old_events = document.getElementsByClassName("dhx_cal_event_line old")
-  //   for(var i = 0;i<old_events.length;i++) {
-  //     old_events[i].style.display="none"
-  //     console.log("hide old")
-  //   }
+    //hide old events
+    var old_events = document.getElementsByClassName("dhx_cal_event_line old")
+    for(var i = 0;i<old_events.length;i++) {
+      old_events[i].style.display="none"
+      console.log("hide old")
+    }
 
-  //   //change cursor for shifts
-  //   var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
-  //   for(var i = 0;i<shift_events.length;i++) {
-  //     shift_events[i].style.cursor="pointer"
-  //   }
-  // }
-  // else {
+    //change cursor for shifts
+    var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
+    for(var i = 0;i<shift_events.length;i++) {
+      shift_events[i].style.cursor="pointer"
+    }
+  }
+  else {
 
-  //   //console.log("show published")
-  //   //hide unavailable
-  //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  //   for(var i = 0;i<un_events.length;i++) {
-  //     un_events[i].style.display="none"
-  //   }
+    //console.log("show published")
+    //hide unavailable
+    var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
+    for(var i = 0;i<un_events.length;i++) {
+      un_events[i].style.display="none"
+    }
 
-  //   //hide newly added events
-  //   var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
-  //   for(var i = 0;i<temp_events.length;i++) {
-  //     temp_events[i].style.display="none"
-  //   }
+    //hide newly added events
+    var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
+    for(var i = 0;i<temp_events.length;i++) {
+      temp_events[i].style.display="none"
+    }
 
-  //   //show old events and change cursor
-  //   var old_events = document.getElementsByClassName("dhx_cal_event_line old")
-  //   for(var i = 0;i<old_events.length;i++) {
-  //     old_events[i].style.display="block"
-  //     old_events[i].style.cursor="default"
-  //     console.log("show old")
-  //   }
+    //show old events and change cursor
+    var old_events = document.getElementsByClassName("dhx_cal_event_line old")
+    for(var i = 0;i<old_events.length;i++) {
+      old_events[i].style.display="block"
+      old_events[i].style.cursor="default"
+      console.log("show old")
+    }
 
 
-  // }
+  }
 }
