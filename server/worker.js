@@ -55,7 +55,7 @@ var Worker = Parse.User.extend({
                 var phoneNumber = queredUsers[i].get('phoneNumber')
                 var role = queredUsers[i].get('assignedRole')
                 var email = queredUsers[i].get('email')
-                var id = queredUsers[i].get('id')
+                var id = queredUsers[i].id
 
                 // Construct JSON object and add to array
                 employeeInfo = {
@@ -374,6 +374,77 @@ var Worker = Parse.User.extend({
         }
     })
   }, // end of verifyLogin()
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // This function retrieves company that the current is related to
+  updateEmployeeInformation: function(employees, callback) 
+  {
+    // employeeInfo = { "id": , employeeName" : , 
+    //                  "email" : emailToChange, 
+    //                  "phoneNumber" : phoneNumber, "currentPassword" : "", 
+    //                  "newPassword" : "" }
+
+    Parse.Cloud.useMasterKey()
+
+    // console.log('Hello: ' + JSON.stringify(employees[i]))
+    var userQuery = new Parse.Query(Parse.User)
+    userQuery.equalTo('company', Worker.current().get('company'))
+    // console.log(JSON.stringify(Worker.current().get('company').get('name')))
+
+    userQuery.find({
+      success: function(userList)
+      {
+        for(var i = 0; i < employees.length; ++i) {
+
+          for(var j = 0; j < userList.length; ++j) {
+            // Search for user information to change
+            var userID = userList[j].id
+
+            if(userID === employees[i].id) {
+              // Check if the employee name needs to be changed
+              if(employees[i].employeeName !== '') {
+                userList[j].set('name', employees[i].employeeName)
+              }
+              // Check if the employee email needs to be changed
+              if(employees[i].email !== '') {
+                userList[j].set('email', employees[i].email)
+              }
+              // Check if the employee password needs to be changed
+              if(employees[i].currentPassword !== '') {
+                // Use new password to update
+                if(user.get('password') === employees[i].currentPassword) {
+                  userList[j].set('password', employees[i].newPassword)
+                }
+              }
+              // Check if the employee phone number needs to be changed
+              if(employees[i].phoneNumber !== '') {
+                userList[j].set('phoneNumber', employees[i].phoneNumber)
+              }
+
+              // Save changes
+              userList[j].save(null, {
+                success: function(savedUser) {
+                  console.log('Updated object with objectId: ' + savedUser.id)
+                  callback(null)
+
+                },
+                error: function(savedUser, err) {
+                  console.log('Failed updating object: ' + err.description)
+                  callback(err)
+                }
+              })
+            }
+          }
+        }
+      }, 
+
+      error: function(err)
+      {
+        // error occurred when querying the role object
+        console.error("[~] Error: " + err.code + error.message)
+      }
+    })
+  },
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function attempts to reset a Parse user password with the given email.

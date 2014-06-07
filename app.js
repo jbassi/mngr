@@ -13,6 +13,8 @@ var Company = require('./server/company').Company
 var worker
 var company
 
+var Parse = require('parse').Parse
+
 // Configure app settings 
 app.configure(function()
 {
@@ -199,5 +201,12 @@ io.sockets.on('connection', function(socket)
   socket.on('update-company', function(companyInfo, callback)
   {
     company.update(companyInfo, callback)
+  }) // end of update-calendar 
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts to reset given Parse user password
+  socket.on('update-employee-information', function(employees, callback)
+  {
+    Worker.updateEmployeeInformation(employees, callback)
   }) // end of update-calendar 
 }) // end of io.socket.on
