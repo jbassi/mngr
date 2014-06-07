@@ -48,142 +48,143 @@ $(document).ready(function()
 	//if clicked save information users entered to change
 	$("#change-button").click(function()
   {
-        //hide error message
-        $("#error").hide()
+    //hide error message
+    $("#error").hide()
 
-        //then empty error message
-        $("#error").empty()
+    //then empty error message
+    $("#error").empty()
 
-        //hide message div
-        $("#correct").hide()
+    //hide message div
+    $("#correct").hide()
 
-        //clear message div
-        $("#correct").empty()
+    //clear message div
+    $("#correct").empty()
 
-        //array of objects for backend to recieve
-        var new_info = [];
-        
-        //tmp array to get input values
-        var tmp = [];
+    //array of objects for backend to recieve
+    var new_info = []
+    
+    //tmp array to get input values
+    var tmp = []
 
-        //object one to insert into our array is for manager
-        var Employee = {
+    //object one to insert into our array is for manager
+    Employee = { 
+      "id" : "",
+      "employeeName" : "",
+      "email" : "",
+      "phoneNumber" : "",
+      "currentPassword" : "", 
+      "newPassword" : ""
+    }
 
-            "name":"",
-            "email":"",
-            "password":"",
-            "assignedRole": "Employee",
-            "phoneNumber": "",
-            "isOnSignUp": false
+    //company object
+    var company = {
 
-         };
-
-        //company object
-        var company = {
-
-            "name":"",
-            "phone":""
-        };
+        "name":"",
+        "phone":""
+    }
 
 
-        //get all profile information
-	    var x = $("#signup-form").serializeArray()
+    //get all profile information
+    var x = $("#signup-form").serializeArray()
 
-        //loop variable
-        var k = 0;
+      //loop variable
+      var k = 0;
 
-        //loop to check fields
-        $.each(x, function(i, field) {
+      //loop to check fields
+      $.each(x, function(i, field) {
+          tmp[k] = field.name;
+          tmp[++k] = field.value;  
+          ++k;    
+    	})
 
-            tmp[k] = field.name;
-            tmp[++k] = field.value;  
-            ++k;    
+  	//get company information
+  	var y = $("#signup-form1").serializeArray()
 
-    	});
+    //loop to check fields
+    $.each(y, function(i, field) {
+      
+      if( i === 0)
+        company.name = field.value;
+      if( i === 1)
+      	company.phone = field.value;
+  	})
 
-    	//get company information
-    	var y = $("#signup-form1").serializeArray()
+    //validation checks in form
+  	for( var j = 1; j < tmp.length; j=j+2) {
+  		if(j === 1) {
+	      Employee.employeeName = tmp[j]
+      }
 
-        //loop to check fields
-        $.each(y, function(i, field) {
-          
-          if( i === 0)
-            company.name = field.value;
-          if( i === 1)
-          	company.phone = field.value;
+  		if(j === 3) {
+  		  Employee.email = tmp[j]
+      }
 
-    	});
+  		if(j === 5) {
+  		  Employee.phoneNumber = tmp[j]
+      }
 
-      //validation checks in form
-    	for( var j = 1; j < tmp.length; j=j+2){
-
-    		if(j === 1)
-    	      Employee.name = tmp[j]
-
-    		if(j === 3)
-    		  Employee.email = tmp[j]
-
-    		if(j === 5)
-    		  Employee.phoneNumber = tmp[j]
-
-    		if(j === 7)	{
-    		  var current = tmp[j]
-    		  if( current === "")
-    		  	var empty_pass = false
-
-    		  var validate = false
+  		if(j === 7)	{
+  		  var current = tmp[j]
+  		  if( current === "") {
+  		  	var empty_pass = false
         }
 
-            if(j === 9)
-              var new_password = tmp[j]
+  		  var validate = false
+      }
 
-            if(j === 11){
+      if(j === 9) { 
+        var new_password = tmp[j]
+      }
 
-              var change_password = tmp[j]
+      if(j === 11){
+        var change_password = tmp[j]
 
-              if( validate ){
-                
-                if( new_password === change_password && new_password != "")
-                  Employee.password = change_password
-                else{
-                  $("#error").append('Password Does Not Match')
-                  $("#error").show()
-                } //set value to ''
-                  //highlight field?
-              } 
-              else{
-              	if( empty_pass){
-                  $("#error").append('Invalid Current Password')
-                  $("#error").show()
-                  //set value to ''
-                  //highlight field?
-                }
-              }
-            }
+        if(validate) {
+          if(new_password === change_password && new_password != "") {
+            Employee.newPassword = change_password
+          } else {
+            $("#error").append('Password Does Not Match')
+            $("#error").show()
+          } //set value to ''
+            //highlight field?
+        } else {
+        	if(empty_pass){
+            $("#error").append('Invalid Current Password')
+            $("#error").show()
+            //set value to ''
+            //highlight field?
+          }
+        }
+      }
+		}
 
-            //return;
-  		
-  		}
+    // employeeInfo = { "id": , employeeName" : , 
+    //                  "email" : emailToChange, 
+    //                  "phoneNumber" : phoneNumber, "currentPassword" : "", 
+    //                  "newPassword" : "" }
        
-        if( company.name === ""){
-        	if( company.phone === "")
-            if( Employee.name === "" )
-              if( Employee.email ==="" ){
-              //if employee fields are empty as well
-              $("#error").append('No Information Entered')
-              $("#error").show()
-        	}
-        }
+    if(company.name === "") {
+    	if(company.phone === "") {
+        if(Employee.employeeName === "") {
+          if(Employee.email === "") {
+            //if employee fields are empty as well
+            $("#error").append('No Information Entered')
+            $("#error").show()
+          }
+      	}
+      }
+    }
         //pass to backend and check to see nothing went wrong
         //$("#correct").append('Successfully Changed')
         //$("#correct").show()
+
+    // Update profile settings 
+    console.log(JSON.stringify(Employee))
+    // socket.emit('update-employee-information', )
+
+
+
     
-    // TODO: socket emit for updating employee settings 
     // TODO: socket emit for updating company info and positions
-  });
-
-});
-
-
-
-
+  })
+})
