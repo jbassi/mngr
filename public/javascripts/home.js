@@ -106,20 +106,27 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     //     //sections: { timeline: 2} 
     // });
 
+    // Used to sort username in allEmployees.sort() 
+    function propertyCompare(prop) {
+      return function(a, b) {
+          return a[prop] > b[prop]
+      }
+    }
+
     socket.emit('retrieve-all-employees', function(err, allEmployees)
     {
       if(err) {
         console.error('(-) All employees retrieval failed: ' + err.message)
 
       } else {
-        allEmployees.sort()
+        allEmployees.sort(propertyCompare('username'))
         
         console.log('all employees: ' + JSON.stringify(allEmployees))
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
             "key" : i+1,
-            "label" : allEmployees[i]
+            "label" : allEmployees[i].username
           })
         }
 
