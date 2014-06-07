@@ -2151,10 +2151,8 @@ scheduler._click={
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
       getShifts(scheduler._date)
-      console.log("got shifts")
       render()
-      console.log("render")
-      //hideEvents()
+      hideEvents()
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
@@ -3434,23 +3432,8 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
    if (ev) {
-   console.log("delete this shit")
-     ev.type = "delete" //append old type
-     //calendars.getDay(scheduler._date).deleteShift(id)
-
-     delete this._events[id];
-     this.unselect(id);
-     this.event_updated(ev);
-   }
-
-   this.callEvent("onEventDeleted", [id, ev]);
-};
-scheduler.hideEvent = function(id, silent) { //IMPORTANT DELETE
-   var ev = this._events[id];
-   if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
-      return;
-   if (ev) {
-     //calendars.getDay(scheduler._date).deleteShift(id)
+     ev.type = "old" //append old type
+     calendars.getDay(scheduler._date).deleteShift(id)
 
      delete this._events[id];
      this.unselect(id);
