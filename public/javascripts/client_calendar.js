@@ -254,12 +254,14 @@ ClientCalendar.prototype.goingToChange = function()
   this.changed = true
 }
 
-ClientCalendar.prototype.getDay = function(date) {
+ClientCalendar.prototype.getDay = function(date)
+{
   for(var i=0; i<this.days.length; ++i) {
     if(this.days[i].date == date.toDateString())
       return this.days[i]
   }
-
+  
+  // creates new date if it not found
   var newShifts = []
 
   this.days.push(new Day({
@@ -268,6 +270,19 @@ ClientCalendar.prototype.getDay = function(date) {
   }))
 
   return this.days[this.days.length-1]
+}
+
+ClientCalendar.prototype.getWeek = function(today)
+{
+  var date = new Date(today)
+  var week = []
+ 
+  for(var i=0; i<7; ++i) {
+    week.push(this.getDay(date))
+    date.setDate(date.getDate()+1)
+  }
+
+  return week
 }
 
 ClientCalendar.prototype.writeSomething = function()

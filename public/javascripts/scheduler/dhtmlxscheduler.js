@@ -2143,14 +2143,18 @@ scheduler._click={
          scheduler._close_not_saved();
    },
    dhx_cal_prev_button:function(){
-      //TODO PARSE DAYS SCHEDULE
       scheduler._click.dhx_cal_next_button(0,-1);
    },
    dhx_cal_next_button:function(dummy,step){
       //TODO PARSE DAYS SCHEDULE
       scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
          scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
-      getShifts(scheduler._date)
+
+      if(day_view == true)
+        getShifts(scheduler._date)
+      else 
+        getShiftsForWeek(scheduler._date)
+
       render()
       hideEvents()
    },
