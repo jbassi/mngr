@@ -1,50 +1,3 @@
-<<<<<<< HEAD
-extends home
-block head
-  script.
-      $(document).ready(function() {
-        $('#menu').sidr({
-        name: 'sidr-left',
-        side: 'left',
-        body: '#container',
-        displace: true,
-        resize: true,
-        speed: 100
-        });
-        $('#profile').sidr({
-        name: 'sidr-right',
-        side: 'right',
-        body: '#profile',
-        displace: true,
-        speed: 200     
-        });
-        $(window).resize(function () {
-          $.sidr('close', 'sidr-left');
-          $.sidr('close', 'sidr-right');
-        });
-      });
-block container
-  #header
-      #menu
-        img#menuimage(src='../resources/menulight.png')
-        navtext MENU
-      #profile
-        navtext PROFILE
-        img#loginimage(src='../resources/loginlight.png')
-      a(href='/')
-        img#logo(src='../resources/logosmall.png')
-    #sidr-left
-        ul
-          li.active
-            a(href='/account') ACCOUNT
-          li
-            a(href='/employees') EMPLOYEES
-          li
-            a(href='/schedule') SCHEDULE
-
-  #container
-    #content
-=======
 extends home
 block head
   link(rel='stylesheet', type='text/css', href='/stylesheets/employees.css')
@@ -86,4 +39,3 @@ block container
          
 
 
->>>>>>> d821728e9d6a8f8da3917fc732b073791a36ea66
