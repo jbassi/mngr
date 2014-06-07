@@ -353,6 +353,7 @@ var Worker = Parse.User.extend({
                 "email" : email
               }
 
+              // console.log(JSON.stringify(employeeInfo))
               allEmployees.push(employeeInfo)
             }
             callback(null, allEmployees)
