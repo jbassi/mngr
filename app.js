@@ -79,13 +79,6 @@ io.sockets.on('connection', function(socket)
       } else {
         // Emit user created with response message from databaseProvider
         socket.emit('sign-up-response', null, user)
-        worker = Worker.current()
-        //console.log('im the user ' + JSON.stringify(worker))
-        company = worker.retrieveCompany(function(error, returnedCompany) {
-          //console.log('this is in the retrieve() ' + JSON.stringify(returnedCompany))
-          return returnedCompany 
-        })
-        //console.log('this is after the retrieve() ' + JSON.stringify(company))
       }
     })
 
@@ -104,6 +97,10 @@ io.sockets.on('connection', function(socket)
         socket.emit('login-response', err)
       } else {
         socket.emit('login-response', null, user)
+        worker = Worker.current()
+        company = worker.retrieveCompany(function(error, returnedCompany) {
+          return returnedCompany 
+        })
       }
     }) // end of worker.verifyLogin
 
@@ -114,6 +111,8 @@ io.sockets.on('connection', function(socket)
   socket.on('logout', function(callback)
   {
     worker.logoutCurrentUser()
+    worker = null
+    company = null
     // null value means no error occured
     callback(null)
     
@@ -166,12 +165,12 @@ io.sockets.on('connection', function(socket)
   {
     worker.retrieveAllEmployeesAtCompany(function(err, employees) 
     {
-      if(!err) {
-        // If there is no error, send employees array through callback
-        callback(null, employees)
-      } else {
+      if(err) {
         // If there is an error send the Parse error
         callback(err)
+      } else {
+        // If there is no error, send employees array through callback
+        callback(null, employees)
       }
     })
   })
@@ -181,7 +180,7 @@ io.sockets.on('connection', function(socket)
   socket.on('update-calendar', function(clientCalendars, callback)
   {
     // update calendar in database
-    worker.current().updateCalendar(clientCalendars, function(error) {
+    worker.updateCalendar(clientCalendars, function(error) {
       if(error) { // if there was error while updating calendars
         callback(error)
 

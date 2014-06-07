@@ -225,25 +225,11 @@ var Worker = Parse.User.extend({
     worker.set('email', email)
     worker.set('name', name)
     worker.set('assignedRole', assignedRole)
-
     worker.set('phoneNumber', phoneNumber)
     
     // set up company and save the worker
     if(!isOnSignUp) { // if it is not on sign up
       company = Worker.current().get('company') // get pointer to current manager's company
-        /*
-      company.fetch({ // fetch current manager's company
-        success: function(fetchedCompany)
-        {
-          company = fetchedCompany
-        }, 
-
-        error: function(error)
-        {
-          console.error('No such company can\'t be found')       
-        }
-      }) 
-      */
 
       worker.set('company', company)
 
@@ -304,8 +290,6 @@ var Worker = Parse.User.extend({
         } 
       }) // end of signUp
     }  
-
-    return worker
   }, // end of create()
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
@@ -346,7 +330,6 @@ var Worker = Parse.User.extend({
         console.error('could not find the user to delete'); 
       } // error
     })
-    
   }, // end of delete()
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
@@ -398,19 +381,19 @@ var Worker = Parse.User.extend({
   resetPassword: function(args, callback)
   {
     Parse.User.requestPasswordReset(args.email, {
-        success: function()
-        {
-          // Password reset request was successful
-          console.log('[~] Reset request sent')
-          callback(null)
-        },
+      success: function()
+      {
+        // Password reset request was successful
+        console.log('[~] Reset request sent')
+        callback(null)
+      },
 
-        error: function(err)
-        {
-          // Send error message back to calling function
-          console.error('[~] Reset request failed')
-          callback(err)
-        }
+      error: function(err)
+      {
+        // Send error message back to calling function
+        console.error('[~] Reset request failed')
+        callback(err)
+      }
     })
   } // end of resetPassword()
 }) // end of class definition
