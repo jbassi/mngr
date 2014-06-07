@@ -241,3 +241,12 @@ margin-right:7px;
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
 }
+
+#logo{
+position: absolute;
+left: 0px;
+right: 0px;
+margin: auto;
+height: 5em;
+top: 4px;
+}

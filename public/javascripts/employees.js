@@ -81,7 +81,8 @@ $(document).ready(function() {
      var submit = "#"+id+".submit"
      var cancel = "#"+id+".cancel"
      var edit = "#"+id+".edit"
-     $("input").hide()
+     var form = "#"+id+" input"
+     $(form).hide()
      $(cancel).hide()
      $(submit).hide()
      $(edit).show()
