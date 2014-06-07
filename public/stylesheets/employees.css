@@ -245,3 +245,12 @@ margin-top: 1em;
 float: left;
 margin-left: 3.1em;
 }
+
+#logo{
+position: absolute;
+left: 0px;
+right: 0px;
+margin: auto;
+height: 5em;
+top: 4px;
+}

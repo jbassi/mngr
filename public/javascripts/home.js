@@ -106,20 +106,27 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     //     //sections: { timeline: 2} 
     // });
 
+    // Used to sort username in allEmployees.sort() 
+    function propertyCompare(prop) {
+      return function(a, b) {
+          return a[prop] > b[prop]
+      }
+    }
+
     socket.emit('retrieve-all-employees', function(err, allEmployees)
     {
       if(err) {
         console.error('(-) All employees retrieval failed: ' + err.message)
 
       } else {
-        allEmployees.sort()
+        allEmployees.sort(propertyCompare('username'))
         
         console.log('all employees: ' + JSON.stringify(allEmployees))
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
             "key" : i+1,
-            "label" : allEmployees[i]
+            "label" : allEmployees[i].username
           })
         }
 
@@ -172,21 +179,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
 $(document).ready(function() {
 
-  //logout user
-  $(".n2 a").click(function()
-  {
-    console.log("Made it to on click")
-
-    socket.emit('logout',function(error)
-    {
-      //if(error)
-      //console.log(error)
-      console.log("Made it to logout User")
-      window.location.href = '/'
-    })
-
-  })
-
   $('#menu').sidr({
   name: 'sidr-left',
   side: 'left',
@@ -205,6 +197,29 @@ $(document).ready(function() {
   {
     console.log("next button")
   });
+
+  //show dropdown
+  $("#profile").click(function()
+  {
+    if(document.getElementById("dropdown").style.display == "none" || !document.getElementById("dropdown").style.display)
+      document.getElementById("dropdown").style.display = "block"
+    else
+      document.getElementById("dropdown").style.display = "none"
+  })
+
+  //logout user
+  $("#d2 a").click(function()
+  {
+    console.log("Made it to on click")
+
+    socket.emit('logout',function(error)
+    {
+      //if(error)
+      //console.log(error)
+      console.log("Made it to logout User")
+      window.location.href = '/'
+    })
+  })
 
   //publish button
   $("#publish").click(function()

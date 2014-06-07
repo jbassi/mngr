@@ -29,47 +29,59 @@ $(document).ready(function() {
    })
 
 
+  function propertyCompare(prop) {
+    return function(a, b) {
+        return a[prop] > b[prop]
+    }
+  }
 
-
-    
    //need to grab all current emloyees
-   socket.emit('retrieve-all-employees', function(err,employees)
-   {
+  socket.emit('retrieve-all-employees', function(err, employees)
+  {
+      console.log('Retrieve employees...')
+      //console.log(JSON.stringify(employees))
 
-   for( var i = 0; i < employees.length; ++i){
+      // Sort employees
+      employees.sort(propertyCompare('username'))
+      
+      for( var i = 0; i < employees.length; ++i) {
+        // employeeInfo = { "username" : userName, "phonenumber" : phoneNumber,
+        //                  "role" : role, "email" : email }
+        var id = "id="+i;
+        var name = employees[i].username
+        //var phone = employees[i].phoneNumber
+        var email = employees[i].email
+        var position = employees[i].role
+        console.log(employees.length)
 
-    var id = "id="+i;
-    var name = employees[i]
-      $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
-        </input><div class="email" '+id+' ><h2>'+name+''+"@gmail.com"+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
-        <div class="role" '+id+'><h2>Employee</h2></div><div class="edit" '+id+'>EDIT</div><div class="submit" '+id+' >SUBMIT</div><div class="cancel" '+id+'>CANCEL</div></form>')
-   }
+        $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
+          </input><div class="email" '+id+'><h2>'+email+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
+          <div class="role" '+id+'><h2>'+position+'</h2></div><div class="edit" '+id+'>EDIT</div><div class="submit" '+id+' >SUBMIT</div><div class="cancel" '+id+'>CANCEL</div></form>')
+     }
    
-    //initally hid button divs
-     $(".submit").hide()
-     $(".cancel").hide()
+      //initally hid button divs
+       $(".submit").hide()
+       $(".cancel").hide()
 
-     //hide inputs
-     $("input").hide()
-
-
-   //on edit click
-   $(".edit").click(function()
-   {
-     console.log("Made it")
-     var id = $(this).closest("div").attr("id");
-     
-     var submit = "#"+id+".submit"
-     var cancel = "#"+id+".cancel"
-     var edit = "#"+id+".edit"
-     var form = "#"+id+" input"
-     $(edit).hide()
-     $(form).show()
-     $(submit).show()
-     $(cancel).show()
+       //hide inputs
+       $("input").hide()
 
 
-   })
+     //on edit click
+     $(".edit").click(function()
+     {
+       console.log("Made it")
+       var id = $(this).closest("div").attr("id");
+       
+       var submit = "#"+id+".submit"
+       var cancel = "#"+id+".cancel"
+       var edit = "#"+id+".edit"
+       var form = "#"+id+" input"
+       $(edit).hide()
+       $(form).show()
+       $(submit).show()
+       $(cancel).show()
+     })
 
 
    //on cancel click
@@ -81,7 +93,8 @@ $(document).ready(function() {
      var submit = "#"+id+".submit"
      var cancel = "#"+id+".cancel"
      var edit = "#"+id+".edit"
-     $("input").hide()
+     var form = "#"+id+" input"
+     $(form).hide()
      $(cancel).hide()
      $(submit).hide()
      $(edit).show()

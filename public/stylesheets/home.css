@@ -33,18 +33,9 @@ border-radius:.3em;
 
 }
 
-.navigation a {
-display: block;
-text-decoration: none;
-height: 100%;
-color: #A7A7A7;
-margin-top:13px;
-}
-
-a:hover{color:#777;}
 
 /* NAVIGATION */
-.navigation {
+/*.navigation {
 list-style: none outside none;
 padding: 0px;
 right: 1em;
@@ -147,4 +138,4 @@ margin-right:7px;
   -webkit-transition-delay: 0.8s;
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
-}
+}*/
