@@ -8,19 +8,145 @@ var Worker = Parse.User.extend({
   // ***************** Instance methods ***************** // 
   // ***************** **************** ***************** // 
 
-  // This function retrieves array calendars based off the Company pointer 
-  retrieveCalendar: function(callback)
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // This function retrieves company that the current is related to
+  retrieveCompany: function(callback) 
   {
     var currentUserCompany = this.get('company')
 
     currentUserCompany.fetch({
       success: function(returnedCompany)
       {
-        var returnedCalendar
+        callback(null, returnedCompany)
+      }, // end of success, fetching company
 
+      error: function(error)
+      {
+        console.error('Failed company retrieval in worker.js.')
+        callback(error) // error occurred when getting related company from worker
+      } // end of error()
+    }) // end of company fetch()
+  },
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+  retrieveAllEmployeesAtCompany: function(callback) 
+  {
+    // Array to return
+    var allEmployees = []
+    // Give current user full access for Parse query
+    Parse.Cloud.useMasterKey()
+
+    // Find company of current logged in user
+    this.retrieveCompany(function(error, fetchedCompany) 
+    {
+      if(error) {
+        callback(error) 
+      } else {
+        var userQuery = new Parse.Query(Parse.User)
+        userQuery.equalTo('company', fetchedCompany)
+
+        // Find all Workers that have the same company id
+        userQuery.find({
+          success: function(queredUsers) 
+          {
+         // Loop through returned users and add each name to the array
+              for(var i = 0; i < queredUsers.length; ++i) {
+                var userName = queredUsers[i].get('name')
+                var phoneNumber = queredUsers[i].get('phoneNumber')
+                var role = queredUsers[i].get('assignedRole')
+                var email = queredUsers[i].get('email')
+                var id = queredUsers[i].get('id')
+
+                // Construct JSON object and add to array
+                employeeInfo = {
+                  "id" : id,
+                  "username" : userName,
+                  "phonenumber" : phoneNumber,
+                  "role" : role,
+                  "email" : email
+                }
+
+                // console.log(JSON.stringify(employeeInfo))
+                allEmployees.push(employeeInfo)
+              }
+              callback(null, allEmployees)
+          },
+
+          error: function(err)
+          {
+            console.log('Error getting users: ' + err.message)
+            callback(err)
+          }
+        }) // end of find()
+      }
+    }) // end of retrieveCompany()
+  }, // end of retrieveAllEmployeesAtCompany()
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  initialManagerInformationCreation: function(newUserInformation, callback)
+  {
+    // Retireved JSON:
+    // { "company_info": { "company_name":, "company_phone":}, "employees": }
+    
+    // allow master key if manager logs in
+    if(this.get('assignedRole') === 'Manager') {
+      Parse.Cloud.useMasterKey()
+    } else {
+      callback({
+        "message" : "You are not manager"
+      })
+    }
+
+    // get the company info of the newUserInformation JSON
+    var companyInfo = newUserInformation.companyInfo
+    // get the array of employees from newUserInformation
+    var employeesToAdd = newUserInformation.employees
+    
+    // Loop through the array of employees and create new employees
+    for(var i = 0; i < employeesToAdd.length; ++i) {
+      /* { "name":, "email":, "password":, "assignedRole":, 
+           "phoneNumber":, "isOnSignUp": } */
+      // each employeeToAdd item is a JSON object
+      Worker.create(employeesToAdd[i], function(err) {
+        if(err) {
+          // An error occured adding workers, make the front end display
+          // an error message and stop trying to add users
+          callback(err)
+        }
+      }) // end of Worker.create()
+    }
+
+    // Set the manager company name and company phone number
+    // A filled in company name is checked for on the front end
+    this.retrieveCompany(function(error, fetchedCompany)
+    {
+      if(error) {
+        callback(error)
+      } else {
+        fetchedCompany.update(companyInfo, callback)
+      }
+    })
+
+  }, // end of initialManagerInformationCreation
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  logoutCurrentUser: function()
+  {
+    Parse.User.logOut() // logout current user
+  },
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // This function retrieves calendars based off the Company pointer 
+  // and also retrieves the positions the company has 
+  retrieveCalendar: function(callback)
+  {
+    this.retrieveCompany(function(error, returnedCompany)
+    {
+      if(error) {
+        callback(error) 
+      } else {
         // getting array of pointers to calendars from company
         var calendars = returnedCompany.get('calendars') 
-        console.log('before the calendars fetch')
 
         calendars.fetch({
           success: function(returnedCalendar)
@@ -33,46 +159,20 @@ var Worker = Parse.User.extend({
           {
             callback(error) 
           }
-        })
-        
-        /*
-        // get array of calendars objects from array of calendars pointers
-        getCalendars(calendars, returnedCalendar, function(error)
-        {
-          // send array of calendars to front-end using callback
-          if(error) {
-            callback(error) // error occurred when getting all calendars
-          }
-          else {
-            // get array of positions 
-            var positions = returnedCompany.get('positions')
-            // send all calendars to client and positions to the client
-            callback(null, returnedCalendar, positions)
-          }
-        })
-        */
-      }, // end of success, fetching company
-
-      error: function(error)
-      {
-        console.error('Failed company retrieval in worker.js.')
-        callback(error) // error occurred when getting related company from worker
-      } // end of error()
-
-    }) // end of company fetch()
+        }) // end of calendars fetch()
+      }
+    }) // end of retrieveCompany()
   }, // end of retrieveCalendar()
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function update array calendars to the database
   updateCalendar: function(clientCalendars, callback)
   {
     // retrieve calendar
     this.retrieveCalendar(function(error, companyCalendars)
     {
-      console.log('im here in the retrieve calendar callback')
       if(error) { // if there was error while retrieving calendars
-        console.log('im here in the update calendar error')      
         callback(error) 
-
       } else {
 
         // update the companyCalendars
@@ -92,7 +192,6 @@ var Worker = Parse.User.extend({
             console.error('could not update the calendars')       
             callback(error)
           }
-
         }) // end of save()
       }
     }) // end of retrieveCalendar()
@@ -132,6 +231,7 @@ var Worker = Parse.User.extend({
     // set up company and save the worker
     if(!isOnSignUp) { // if it is not on sign up
       company = Worker.current().get('company') // get pointer to current manager's company
+        /*
       company.fetch({ // fetch current manager's company
         success: function(fetchedCompany)
         {
@@ -143,6 +243,7 @@ var Worker = Parse.User.extend({
           console.error('No such company can\'t be found')       
         }
       }) 
+      */
 
       worker.set('company', company)
 
@@ -165,7 +266,6 @@ var Worker = Parse.User.extend({
       // if the company is set correctly
       // Sign up the worker in parse
       worker.signUp(null, {
-
         success: function(user)
         {
           console.log('[+] Successfully created new user ' + name)
@@ -209,61 +309,10 @@ var Worker = Parse.User.extend({
   }, // end of create()
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // This function checks Parse to see if the (user, password) pair is valid. A 
-  // callback function is also included to alert the caller if the pair is valid
-  // or not
-  verifyLogin: function(loginInfo, callback)
-  {
-    var user = loginInfo.user === '' ? null : loginInfo.user
-    var password = loginInfo.password === '' ? null :  loginInfo.password
-
-    // Check Parse for the given username and password
-    Worker.logIn(user, password, {
-        success: function(user)
-        {
-          console.log('[~] Successful login.')
-
-
-          callback(null, user)
-        },
-
-        error: function(user, err)
-        {
-          console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
-          console.error(err)
-          //callback(err.code, user)
-          callback(err, user)
-        }
-    })
-  }, // end of verifyLogin()
-
-  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // This function attempts to reset a Parse user password with the given email.
-  // A callback with an error from parse is provided.
-  resetPassword: function(args, callback)
-  {
-    Parse.User.requestPasswordReset(args.email, {
-        success: function()
-        {
-          // Password reset request was successful
-          console.log('[~] Reset request sent')
-          callback(null)
-        },
-
-        error: function(err)
-        {
-          // Send error message back to calling function
-          console.error('[~] Reset request failed')
-          callback(err)
-        }
-    })
-  }, // end of resetPassword()
-
-  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   delete: function(username)
   {
     // allow master key if manager logs in
-    if(Worker.current().get('assignedRole') === 'Manager') {
+    if(this.get('assignedRole') === 'Manager') {
       Parse.Cloud.useMasterKey()
     }
 
@@ -316,120 +365,54 @@ var Worker = Parse.User.extend({
       })
   }, // end of login()
 
-  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
-  retrieveAllEmployeesAtCompany: function(callback) 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // This function checks Parse to see if the (user, password) pair is valid. A 
+  // callback function is also included to alert the caller if the pair is valid
+  // or not
+  verifyLogin: function(loginInfo, callback)
   {
-    var currentUser = Worker.current()
-    // Array to return
-    var allEmployees = []
-    // Give current user full access for Parse query
-    Parse.Cloud.useMasterKey()
+    var user = loginInfo.user === '' ? null : loginInfo.user
+    var password = loginInfo.password === '' ? null :  loginInfo.password
 
-    // Find company of current logged in user
-    currentUser.get('company').fetch({
-      success: function(fetchedCompany)
-      {
-        var userQuery = new Parse.Query(Parse.User)
-        userQuery.equalTo('company', fetchedCompany)
-        // Find all Workers that have the same company id
-        userQuery.find({
-          success: function(queredUsers) 
-          {
-            // Loop through returned users and add each name to the array
-            for(var i = 0; i < queredUsers.length; ++i) {
-              var userName = queredUsers[i].get('name')
-              allEmployees.push(userName)
-            }
-            callback(null, allEmployees)
-          },
-          error: function(err)
-          {
-            console.log('Error getting users: ' + err.message)
-            callback(err)
-          }
-        })
-      },
+    // Check Parse for the given username and password
+    Worker.logIn(user, password, {
+        success: function(user)
+        {
+          console.log('[~] Successful login.')
+          callback(null, user)
+        },
 
-      error: function(err)
-      {
-        console.log('Error getting company: ' + err.message)
-        callback(err)
-      }
+        error: function(user, err)
+        {
+          console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
+          console.error(err)
+          //callback(err.code, user)
+          callback(err, user)
+        }
     })
+  }, // end of verifyLogin()
 
-  }, // end of retrieveAllEmployeesAtCompany()
-
-  initialManagerInformationCreation: function(newUserInformation, callback)
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // This function attempts to reset a Parse user password with the given email.
+  // A callback with an error from parse is provided.
+  resetPassword: function(args, callback)
   {
-    // Retireved JSON:
-    // { "company_info": { "company_name":, "company_phone":}, "employees": }
-    
-    var currentUser = Worker.current()
+    Parse.User.requestPasswordReset(args.email, {
+        success: function()
+        {
+          // Password reset request was successful
+          console.log('[~] Reset request sent')
+          callback(null)
+        },
 
-    // allow master key if manager logs in
-    if(currentUser.get('assignedRole') === 'Manager') {
-      Parse.Cloud.useMasterKey()
-    } else {
-      callback({
-        "message" : "You are not manager"
-      })
-    }
-
-    // get the company info of the newUserInformation JSON
-    var companyInfo = newUserInformation.companyInfo
-    // get the array of employees from newUserInformation
-    var employeesToAdd = newUserInformation.employees
-    
-    // Set the manager company name and company phone number
-    // A filled in company name is checked for on the front end
-    currentUser.get('company').fetch({ // fetch current manager's company
-      success: function(fetchedCompany)
-      {
-        fetchedCompany.set('name', companyInfo.name)
-        fetchedCompany.set('phoneNumber', companyInfo.phone)
-        fetchedCompany.save({
-          success: function()
-          {
-            console.log('Company information save successful.')
-            // Loop through the array of employees and create new employees
-            for(var i = 0; i < employeesToAdd.length; ++i) {
-              /* { "name":, "email":, "password":, "assignedRole":, 
-                   "phoneNumber":, "isOnSignUp": } */
-              // each employeeToAdd item is a JSON object
-              Worker.create(employeesToAdd[i], function(err) {
-                if(err) {
-                  // An error occured adding workers, make the front end display
-                  // an error message and stop trying to add users
-                  callback(err)
-                }
-              }) // end of Worker.create()
-            }
-            callback(null)
-          },
-
-          error: function(error)
-          {
-
-            console.error('Company information save failed.')
-            callback(err)
-          }
-        }) // end of fetchedCompany.save()
-      }, 
-
-      error: function(error)
-      {
-        console.error('No such company can\'t be found')       
-      }
-    }) // end of company.fetch()
-  }, // end of initialManagerInformationCreation
-
-  logoutCurrentUser: function()
-  {
-    //logout current user
-    Parse.User.logOut()
-
-
-  }
+        error: function(err)
+        {
+          // Send error message back to calling function
+          console.error('[~] Reset request failed')
+          callback(err)
+        }
+    })
+  } // end of resetPassword()
 }) // end of class definition
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
