@@ -239,4 +239,17 @@ margin-right:7px;
   -webkit-transition-delay: 0.8s;
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
+<<<<<<< HEAD
+}
+
+#logo{
+position: absolute;
+left: 0px;
+right: 0px;
+margin: auto;
+height: 5em;
+top: 4px;
+}
+
 }*/
+

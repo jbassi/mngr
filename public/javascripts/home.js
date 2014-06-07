@@ -348,8 +348,11 @@ $(document).ready(function() {
         this.style.opacity = "1"
 
         day_view = false;
-        //hideEvents()
+  
+        // display schedules
+        getShiftsForWeek(scheduler._date)
         render()
+        //hideEvents()
       }
     }
   });
@@ -367,9 +370,34 @@ function getShifts(today)
   }
 }
 
+function getShiftsForWeek(today) 
+{
+  console.log('im here suckers')
+  var week = calendars.getWeek(today)
+  var ref_week = ref_calendar.getWeek(today)
+
+  console.log('this is week in getshiftsweek' + JSON.stringify(week))
+  
+  shifts = []
+  ref_shifts = []
+
+  for(var i=0; i<6; ++i) {
+    shifts = shifts.concat(week[i].shifts)
+    ref_shifts = ref_shifts.concat(ref_week[i].shifts)
+    if(i==5) {
+      for(var j = 0;j<shifts.length;j++) {
+        shifts[j].start_date = correctDates(shifts[j].start_date)
+        shifts[j].end_date = correctDates(shifts[j].end_date)
+      }
+      console.log('this is shifts in getshiftsweek ' + JSON.stringify(shifts))
+    }
+  }
+}
+
 //function to parse and render
 function render()
 {
+  console.log('this is shifts in render ' + JSON.stringify(shifts))
   //parse events
   scheduler.parse(unavailability,"json")
   scheduler.parse(shifts,"json")
@@ -501,7 +529,7 @@ function loadDay()
   fit_events: false,
   round_position: false,
   })
-  scheduler.init('scheduler',new Date(),"timelineday")
+  scheduler.init('scheduler',scheduler._date,"timelineday")
 }
 
 function loadWeek()
@@ -526,7 +554,7 @@ function loadWeek()
   fit_events: true,
   round_position: true,
   })
-  scheduler.init('scheduler',new Date(),"timelineweek")
+  scheduler.init('scheduler', scheduler._date,"timelineweek")
 }
 
 //function to format the correct date when loading data

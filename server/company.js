@@ -6,7 +6,29 @@ var Company = Parse.Object.extend('Company', {
   // ***************** **************** ***************** // 
   // ***************** Instance methods ***************** // 
   // ***************** **************** ***************** // 
+  
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  update: function(companyInfo, callback)
+  {
+    this.set('name', companyInfo.name)
+    this.set('phoneNumber', companyInfo.phoneNumber) 
+    this.set('positions', companyInfo.positions)
 
+    this.save(null, {
+      success: function(res)
+      {
+        console.log('[+] Company\'s information have been updated')
+        callback(null) // this callback is called by whoever create a new company
+      },
+
+      error: function(res, error)
+      {
+        console.log('[-] Company is not updated. Error: ' + error.message)
+        callback(error) // this callback is called by whoever create a new company
+
+      }
+    }) // end of save()
+  }
 }, {
   // ***************** ************* ***************** // 
   // ***************** Class methods ***************** // 
@@ -49,9 +71,6 @@ var Company = Parse.Object.extend('Company', {
     
     return company 
   } // end of createCompany
-
-  // TODO: add other related methods for company
-
-})
+}) // end of company object definition
 
 module.exports.Company = Company 
