@@ -49,27 +49,27 @@ var Worker = Parse.User.extend({
         userQuery.find({
           success: function(queredUsers) 
           {
-         // Loop through returned users and add each name to the array
-              for(var i = 0; i < queredUsers.length; ++i) {
-                var userName = queredUsers[i].get('name')
-                var phoneNumber = queredUsers[i].get('phoneNumber')
-                var role = queredUsers[i].get('assignedRole')
-                var email = queredUsers[i].get('email')
-                var id = queredUsers[i].id
+            // Loop through returned users and add each name to the array
+            for(var i = 0; i < queredUsers.length; ++i) {
+              var userName = queredUsers[i].get('name')
+              var phoneNumber = queredUsers[i].get('phoneNumber')
+              var role = queredUsers[i].get('assignedRole')
+              var email = queredUsers[i].get('email')
+              var id = queredUsers[i].id
 
-                // Construct JSON object and add to array
-                employeeInfo = {
-                  "id" : id,
-                  "username" : userName,
-                  "phonenumber" : phoneNumber,
-                  "role" : role,
-                  "email" : email
-                }
-
-                // console.log(JSON.stringify(employeeInfo))
-                allEmployees.push(employeeInfo)
+              // Construct JSON object and add to array
+              employeeInfo = {
+                "id" : id,
+                "username" : userName,
+                "phonenumber" : phoneNumber,
+                "role" : role,
+                "email" : email
               }
-              callback(null, allEmployees)
+
+              // console.log(JSON.stringify(employeeInfo))
+              allEmployees.push(employeeInfo)
+            }
+            callback(null, allEmployees)
           },
 
           error: function(err)
