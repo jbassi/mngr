@@ -1,7 +1,7 @@
 var socket = io.connect()
 
 //if forgot password more than 2-3 times will display forgot email link
-var forgotpassword = 0;
+var forgotpassword = 0
 //require index.js for jquery functions
 
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
@@ -19,7 +19,7 @@ socket.on('status', function(data)
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
 // Listens for a login-response, if you dont type anything
 // or dont type a password
-socket.on('login-response', function(error, user)
+socket.on('login-response', function(error, user, isManager)
 {
   // Check if an error message was passed
   if(error) { // if error occurred during login
@@ -38,7 +38,11 @@ socket.on('login-response', function(error, user)
     console.log('(+) User: ' + user.username + ' successfully connected.')
     // TODO: 
     //      1. notifiy the user that the login was successful
-    window.location.href = '/home'
+
+    if(isManager)
+      window.location.href = '/home'
+    else 
+      window.location.href = '/employee'
   } 
 }) // end of login-response
 
@@ -54,6 +58,7 @@ socket.on('sign-up-response', function(error, user)
 
   } else {
     console.log('(+) User: ' + user.username + ' successfully created.')
+    
     // TODO: 
     //      1. Take the user to the next approriate page 
     // Navigate to home page

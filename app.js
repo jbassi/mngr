@@ -80,11 +80,11 @@ io.sockets.on('connection', function(socket)
         // TODO: handle error messages
       } else {
         // Emit user created with response message from databaseProvider
-        socket.emit('sign-up-response', null, user)
         worker = Worker.current()
         company = worker.retrieveCompany(function(error, returnedCompany) {
           return returnedCompany 
         })
+        socket.emit('sign-up-response', null, user)
       }
     })
 
@@ -102,11 +102,11 @@ io.sockets.on('connection', function(socket)
       if(err) {
         socket.emit('login-response', err)
       } else {
-        socket.emit('login-response', null, user)
         worker = Worker.current()
         company = worker.retrieveCompany(function(error, returnedCompany) {
           return returnedCompany 
         })
+        socket.emit('login-response', null, user, worker.isManager())
       }
     }) // end of worker.verifyLogin
 
