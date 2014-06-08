@@ -1,4 +1,4 @@
-.navigation a {
+/*.navigation a {
 display: block;
 text-decoration: none;
 height: 100%;
@@ -8,7 +8,7 @@ margin-top:13px;
 
 a:hover{color:#777;}
 
-/* NAVIGATION */
+/* NAVIGATION 
 .navigation {
 list-style: none outside none;
 padding: 0px;

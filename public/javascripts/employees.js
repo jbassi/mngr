@@ -1,4 +1,16 @@
 $(document).ready(function() {
+  //show dropdown
+  $("#profile").click(function()
+  {
+    if(document.getElementById("dropdown").style.display == "none" || !document.getElementById("dropdown").style.display)
+      document.getElementById("dropdown").style.display = "block"
+    else
+      document.getElementById("dropdown").style.display = "none"
+
+    $(this).mouseleave(function () {
+      document.getElementById("dropdown").style.display = 'none'
+    })
+  })
 
     $('#menu').sidr({
         name: 'sidr-left',
