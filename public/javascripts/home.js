@@ -17,11 +17,11 @@ var day_view = true;
 var initial = true;
 
 var positions=[
-{key:1, label:"Chef", color:"#c85248"},
-{key:2, label:"Server", color:"#d5e15d"},
-{key:3, label:"Bartender", color:"#63b7e6"},
-{key:4, label:"Manager", color:"#95b4af"}
 ]
+// {key:1, label:"Chef", color:"#c85248"},
+// {key:2, label:"Server", color:"#d5e15d"},
+// {key:3, label:"Bartender", color:"#63b7e6"},
+// {key:4, label:"Manager", color:"#95b4af"}
 
 var employees = []
 var shifts  
@@ -70,14 +70,14 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
     socket.emit('retrieve-company-info', function(err, companyInfo)
     {
-      // if(!err) {
-      //   console.log(JSON.stringify(companyInfo))
-      //   day_start = companyInfo.day_start 
-      //   day_end = companyInfo.day_end
-      //   day_length = day_end - day_start - 1
+      if(!err) {
+        console.log("yo" + JSON.stringify(companyInfo))
+        day_start = companyInfo.hours.day_start 
+        day_end = companyInfo.hours.day_end
+        day_length = day_end - day_start - 1
 
-      //   positions = companyInfo.positions
-      // }
+        positions = companyInfo.positions
+      }
     })
 
     socket.emit('retrieve-all-employees', function(err, allEmployees)
