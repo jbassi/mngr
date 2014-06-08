@@ -25,6 +25,10 @@ module.exports = function(app) {
     res.render('home', { title: 'Mngr'})
   })
 
+  app.get('/employee', function(req, res) {
+    res.render('employee', { title: 'Mngr'})
+  })
+
   app.get('/about', function(req, res) {
     res.render('about', { title: 'Mngr'})
   })
