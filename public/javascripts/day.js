@@ -49,6 +49,12 @@ Day.prototype.addShift = function(shiftInfo)
    this.shifts.push(shiftInfo)
 }
 
+Day.prototype.addUnavail = function(unavailInfo)
+{
+   //this.shifts.push(new Shift(shiftInfo))
+   this.unavailabilities.push(unavailInfo)
+}
+
 /*
  * Summary:      editShiftAtIndex edits the Shift at the given shifts array
  *               index with the new JSON info passed into the second parameter.

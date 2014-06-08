@@ -1,4 +1,4 @@
-var is_manager = true;
+//TODO fix week day view fit events, week view resize events
 
 var socket = io.connect()
 var positions = []

@@ -170,10 +170,7 @@ $(document).ready(function() {
     for(var j=0; j<calendars.days.length; ++j) {
 
       //unavail = calendars.days[j].unavailability
-      unavail = [{id:1, start_date: "2014-6-7 6:0", end_date: "2014-6-7 10:0", employee_id:1, color:"#e7e7e7"},
-  {id:2, start_date: "2014-6-7 15:0", end_date: "2014-6-7 22:0", employee_id:2, color:"#e7e7e7"},
-  {id:3, start_date: "2014-6-7 6:0", end_date: "2014-6-7 14:0", employee_id:3, color:"#e7e7e7"},
-  {id:4, start_date: "2014-6-8 6:0", end_date: "2014-6-8 14:0", employee_id:3, color:"#e7e7e7"}]
+      unavail = []
 
       var i = 0
       var length = unavail.length
@@ -350,10 +347,7 @@ $(document).ready(function() {
 function getShifts(today)
 {
   //unavail = calendars.getDay(today).unavailability
-  unavail = [{id:1, start_date: "2014-6-7 6:0", end_date: "2014-6-7 10:0", employee_id:1, color:"#e7e7e7"},
-  {id:2, start_date: "2014-6-7 15:0", end_date: "2014-6-7 22:0", employee_id:2, color:"#e7e7e7"},
-  {id:3, start_date: "2014-6-7 6:0", end_date: "2014-6-7 14:0", employee_id:3, color:"#e7e7e7"},
-  {id:4, start_date: "2014-6-8 6:0", end_date: "2014-6-8 14:0", employee_id:3, color:"#e7e7e7"}]
+  unavail = []
   ref_shifts = ref_calendar.getDay(today).shifts
 
   for(var i = 0;i<unavail.length;i++) {

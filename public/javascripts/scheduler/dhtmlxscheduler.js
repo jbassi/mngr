@@ -2573,11 +2573,10 @@ scheduler._on_mouse_up=function(e){
                         return;
                      }
 
-                        var data = this._lightbox_out(this._lame_copy(this.getEvent(drag_id))); //dataaa
+                     var data = this._lightbox_out(this._lame_copy(this.getEvent(drag_id))); //dataaa
 
-                     //calendars.getDay(scheduler._date).addShift(data);
-
-                     console.log("add this" + this.getEvent(drag_id).text)
+                     calendars.getDay(scheduler._date).addUnavail(data);
+                     console.log("added this" + this.getEvent(drag_id).text)
                   }
                }
                this._drag_pos = true; //set flag to trigger full redraw
