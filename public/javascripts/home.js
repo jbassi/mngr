@@ -68,6 +68,18 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
       }
     }
 
+    socket.emit('retrieve-company-info', function(err, companyInfo)
+    {
+      // if(!err) {
+      //   console.log(JSON.stringify(companyInfo))
+      //   day_start = companyInfo.day_start 
+      //   day_end = companyInfo.day_end
+      //   day_length = day_end - day_start - 1
+
+      //   positions = companyInfo.positions
+      // }
+    })
+
     socket.emit('retrieve-all-employees', function(err, allEmployees)
     {
       if(err) {
