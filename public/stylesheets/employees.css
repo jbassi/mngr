@@ -123,10 +123,16 @@ display: inline-block;
 }
 
 #content{
-overflow:hidden;
+overflow-y:scroll;
 
 }
 
+.extra_css{
+  position: absolute;
+top: 0;
+right: 1em;
+padding-left: 0.5em;
+}
 
 .box{
 width: 95%;
@@ -307,6 +313,7 @@ box-sizing:border-box;
 width: 30em;
 float: right;
 margin-right: 4%;
+margin-bottom:60px;
 }
 
 #add-button{
