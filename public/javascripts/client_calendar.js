@@ -263,10 +263,12 @@ ClientCalendar.prototype.getDay = function(date)
   
   // creates new date if it not found
   var newShifts = []
+  var newUnavailabilities = []
 
   this.days.push(new Day({
     "date" : date.toDateString(),
-    "shifts" : newShifts 
+    "shifts" : newShifts, 
+    "unavailabilities" : newUnavailabilities
   }))
 
   return this.days[this.days.length-1]

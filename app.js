@@ -227,6 +227,8 @@ io.sockets.on('connection', function(socket)
     Worker.updateEmployeeInformation(employees, callback)
   }) // end of update-employee-information
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts update employee and company information from manager's profile
   socket.on('update-employee-company', function(employees, companyInfo, callback)
   {
     console.log('employees in update socket ' + JSON.stringify(employees))
