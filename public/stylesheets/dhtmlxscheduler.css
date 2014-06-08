@@ -1812,7 +1812,7 @@ div.dhx_menu_head, div.dhx_menu_icon {
   text-align: right;
   text-transform:uppercase;
   position: absolute;
-  right:190px;
+  right:60px;
   z-index: -1;
   cursor:default;
 }

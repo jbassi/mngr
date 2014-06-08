@@ -17,11 +17,11 @@ var day_view = true;
 var initial = true;
 
 var positions=[
-{key:1, label:"Chef", color:"#c85248"},
-{key:2, label:"Server", color:"#d5e15d"},
-{key:3, label:"Bartender", color:"#63b7e6"},
-{key:4, label:"Manager", color:"#95b4af"}
 ]
+// {key:1, label:"Chef", color:"#c85248"},
+// {key:2, label:"Server", color:"#d5e15d"},
+// {key:3, label:"Bartender", color:"#63b7e6"},
+// {key:4, label:"Manager", color:"#95b4af"}
 
 var employees = []
 var shifts  
