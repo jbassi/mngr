@@ -1,7 +1,7 @@
-// import client.js for other function calls 
-
-
-/* When document opens go here */
+/*
+ * Summary:      index.js handles all user interaction (clicks, submits) 
+ *               when the user navigates to the index page.
+ */
 $(document).ready(function()
 {
   // help scroll to info once get started has been clicked 

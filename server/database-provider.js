@@ -1,3 +1,7 @@
+/*
+ * Summary:      database-provider.js configures Parse and spins up the server.
+ */
+
 var Parse = require('parse').Parse
 
 // Constructor for a DatabaseProvider object

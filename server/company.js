@@ -1,3 +1,15 @@
+/*
+ * Summary:      Company is a custom Parse object that is used to store and 
+ *               update information.
+ *
+ * Functions:    Instance:
+ *               update()
+ *
+ *               Class:
+ *               create()
+ *
+ */
+
 var Parse = require('parse').Parse
 var Calendar = require('./calendar').Calendar
 
