@@ -160,11 +160,11 @@ io.sockets.on('connection', function(socket)
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempt to send the company calendar object to the frontend
-  socket.on('retrieve-company-info', function(companyInformation, callback)
+  socket.on('retrieve-company-info', function(callback)
   {
     Worker.current().retrieveCompany(function(err, returnedCompany) {
       if(!err) {
-        callback(returnedCompany.get('companyInfo'))
+        callback(null, returnedCompany.get('companyInfo'))
       }
     })
   }) // end of retrieve-calendar
