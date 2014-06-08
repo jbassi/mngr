@@ -369,6 +369,7 @@ function getShifts(today)
   for(var i = 0;i<unavailability.length;i++) {
     unavailability[i].start_date = correctDates(unavailability[i].start_date)
     unavailability[i].end_date = correctDates(unavailability[i].end_date)
+    unavailability[i].text = ""
   }
 }
 
@@ -380,23 +381,16 @@ function getShiftsForWeek(today)
 
   
   shifts = []
-  unavailability = []
   ref_shifts = []
 
   for(var i=0; i<7; ++i) {
     shifts = shifts.concat(week[i].shifts)
-    unavailability = unavailability.concat(week[i].unavailabilities)
     ref_shifts = ref_shifts.concat(ref_week[i].shifts)
 
     if(i==6) {
       for(var j = 0;j<shifts.length;j++) {
         shifts[j].start_date = correctDates(shifts[j].start_date)
         shifts[j].end_date = correctDates(shifts[j].end_date)
-      }
-
-      for(var i = 0;i<unavailability.length;i++) {
-        unavailability[i].start_date = correctDates(unavailability[i].start_date)
-        unavailability[i].end_date = correctDates(unavailability[i].end_date)
       }
     }
   }
@@ -571,7 +565,7 @@ function loadWeek()
 function correctDates(event_date) 
 {
   var date
-  if(typeof event_date == 'string') {
+  if(typeof event_date == 'string' && event_date.length < 16) {
     var dateInfo = event_date.split(' ')
     var dateString = dateInfo[0].split("-")
     date = new Date(dateString[0], dateString[1]-1, dateString[2])

@@ -843,7 +843,14 @@ function set_full_view(mode){
       x_scale.call(this,scheduler._els["dhx_cal_header"][0]);
       y_scale.call(this,scheduler._els["dhx_cal_data"][0]);
       scheduler._min_date = temp;
-      scheduler._els["dhx_cal_date"][0].innerHTML=scheduler.templates[this.name+"_date"](scheduler._min_date, scheduler._max_date);
+      if(unavail_view) {
+         var newdate = scheduler._max_date
+         //console.log("max is " + newdate.setDate(scheduler._max_date.getDate()+6 )
+         scheduler._els["dhx_cal_date"][0].innerHTML=scheduler.templates[this.name+"_date"](scheduler._min_date, scheduler._max_date);
+      }
+      else {
+         scheduler._els["dhx_cal_date"][0].innerHTML=scheduler.templates[this.name+"_date"](scheduler._min_date, scheduler._max_date);
+      }
       if (scheduler._mark_now) {
          scheduler._mark_now();
       }

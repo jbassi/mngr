@@ -357,7 +357,7 @@ var Worker = Parse.User.extend({
   delete: function(username)
   {
     // allow master key if manager logs in
-    if(this.get('assignedRole') === 'Manager') {
+    if(Worker.current().get('assignedRole') === 'Manager') {
       Parse.Cloud.useMasterKey()
     }
 
