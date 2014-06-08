@@ -380,23 +380,16 @@ function getShiftsForWeek(today)
 
   
   shifts = []
-  unavailability = []
   ref_shifts = []
 
   for(var i=0; i<7; ++i) {
     shifts = shifts.concat(week[i].shifts)
-    unavailability = unavailability.concat(week[i].unavailabilities)
     ref_shifts = ref_shifts.concat(ref_week[i].shifts)
 
     if(i==6) {
       for(var j = 0;j<shifts.length;j++) {
         shifts[j].start_date = correctDates(shifts[j].start_date)
         shifts[j].end_date = correctDates(shifts[j].end_date)
-      }
-
-      for(var i = 0;i<unavailability.length;i++) {
-        unavailability[i].start_date = correctDates(unavailability[i].start_date)
-        unavailability[i].end_date = correctDates(unavailability[i].end_date)
       }
     }
   }
