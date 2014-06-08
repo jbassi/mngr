@@ -1,3 +1,29 @@
+/*
+ * Summary:      Worker is a custom Parse object that extends Parse.User
+ *               and handle account creation and updating.
+ *
+ * Functions:    Instance:
+ *               retrieveCompany()
+ *               retrieveCurrentWorker()
+ *               isManager()
+ *               retrieveAllEmployeesAtCompany()
+ *               initialManagerInformationCreation()
+ *               logoutCurrentUser()
+ *               retrieveCalendar()
+ *               updateCalendar()
+ *
+ *               Class:
+ *               create()
+ *               delete()
+ *               login()
+ *               verifyLogin()
+ *               updateEmployeeInformation()
+ *               resetPassword()
+ *               setRole()
+ *               getCalendars()
+ *
+ */
+
 var Parse = require('parse').Parse
 var Company = require('./company').Company
 var Calendar = require('./calendar').Calendar

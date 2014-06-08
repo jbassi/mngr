@@ -1,3 +1,7 @@
+/*
+ * Summary:      employee.js handles all user interaction (clicks, submits) 
+ *               and page loading when the user navigates to the employee page.
+ */
 var is_manager = false;
 
 var currentEmployeeId

@@ -1,3 +1,7 @@
+/*
+ * Summary:      employees.js handles all user interaction (clicks, submits) 
+ *               when the manager attempts to edit multiple users.
+ */
 $(document).ready(function() {
   //show dropdown
   $("#profile").click(function()

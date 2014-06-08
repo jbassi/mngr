@@ -1,3 +1,9 @@
+/*
+ * Summary:      app.js is the starting point of the app. This configures the 
+ *               server and requires all dependencies. Can be thought of as 
+ *               the main function to a program.
+ */
+
 // Require module dependencies and create the app server.
 var express = require('express')
 var app = express()
@@ -198,7 +204,7 @@ io.sockets.on('connection', function(socket)
   })
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // Attempts to reset given Parse user password
+  // Attempts to update calendar
   socket.on('update-calendar', function(clientCalendars, callback)
   {
     // update calendar in database
@@ -213,7 +219,7 @@ io.sockets.on('connection', function(socket)
   }) // end of update-calendar 
   
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // Attempts update company 
+  // Attempts to update company 
   socket.on('update-company', function(companyInfo, callback)
   {
     Worker.current().retrieveCompany(function(error, returnedCompany) {
