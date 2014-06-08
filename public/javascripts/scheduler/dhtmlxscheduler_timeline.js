@@ -844,8 +844,7 @@ function set_full_view(mode){
       y_scale.call(this,scheduler._els["dhx_cal_data"][0]);
       scheduler._min_date = temp;
       if(unavail_view) {
-         var newdate = scheduler._max_date
-         //console.log("max is " + newdate.setDate(scheduler._max_date.getDate()+6 )
+         scheduler._max_date.setDate(scheduler._max_date.getDate()+7)
          scheduler._els["dhx_cal_date"][0].innerHTML=scheduler.templates[this.name+"_date"](scheduler._min_date, scheduler._max_date);
       }
       else {
