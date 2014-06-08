@@ -33,6 +33,7 @@ if (!window.dhtmlx) {
       return dhtmlx; //simple singleton
    };
 }
+
 dhtmlx.extend_api=function(name,map,ext){
    var t = window[name];
    if (!t) return; //component not defined
@@ -2162,11 +2163,9 @@ scheduler._click={
             scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
       }
 
-
-
-      if(day_view == true)
+      if(day_view == true) //parse shifts for day
         getShifts(scheduler._date)
-      else 
+      else //parse shifts for week
         getShiftsForWeek(scheduler._date)
 
       render()
@@ -2562,10 +2561,6 @@ scheduler._on_mouse_up=function(e){
                   if(is_manager) //IMPORTANT EDITED ONLY SHOW LIGHTBOX FOR MANAGER
                      return this.showLightbox(drag_id);
                   else {
-                     console.log("this is the event" + this.getEvent(drag_id))
-                     console.log("this is the start" + this.getEvent(drag_id).start_date)
-                     console.log("this is the end" + this.getEvent(drag_id).end_date)
-
                      if (!drag_id) return;
                      if (!this.callEvent("onBeforeLightbox",[drag_id])) {
                         if (this._new_event)
@@ -2575,8 +2570,11 @@ scheduler._on_mouse_up=function(e){
 
                      var data = this._lightbox_out(this._lame_copy(this.getEvent(drag_id))); //dataaa
 
-                     calendars.getDay(scheduler._date).addUnavail(data);
-                     console.log("added this" + this.getEvent(drag_id).text)
+                     var newDate = new Date(scheduler._date.toDateString()) //add to the correct day within the unavail week
+                     newDate.setDate(scheduler._date.getDate() + data.day_id-1)
+
+                     calendars.getDay(newDate).addUnavail(data);
+                     console.log("added this" + data.text)
                   }
                }
                this._drag_pos = true; //set flag to trigger full redraw

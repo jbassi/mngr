@@ -169,8 +169,7 @@ $(document).ready(function() {
     }
     for(var j=0; j<calendars.days.length; ++j) {
 
-      //unavail = calendars.days[j].unavailability
-      unavail = []
+      unavail = calendars.days[j].unavailabilities
 
       var i = 0
       var length = unavail.length
@@ -257,7 +256,6 @@ $(document).ready(function() {
         console.log("loaded unavail")
 
         //GO TO THE MONDAY OF THE WEEK
-        console.log("super" + scheduler._date.getDay())
         date_step = parseInt(scheduler._date.getDay())-1
         var newdate = scheduler._date
         newdate.setDate(scheduler._date.getDate()-date_step)
@@ -299,6 +297,7 @@ $(document).ready(function() {
         console.log("loaded shifts")
 
         scheduler.init('scheduler',new Date(),"timelineshifts")
+        render()
       }
     }
   });
@@ -346,8 +345,7 @@ $(document).ready(function() {
 //function to get the shifts from database
 function getShifts(today)
 {
-  //unavail = calendars.getDay(today).unavailability
-  unavail = []
+  unavail = calendars.getDay(today).unavailabilities
   ref_shifts = ref_calendar.getDay(today).shifts
 
   for(var i = 0;i<unavail.length;i++) {
@@ -454,7 +452,6 @@ function loadUnavail()
 
 function loadShifts()
 {
-
   unavail_view = false;
   //parse correct date
   for(var i = 0;i<ref_shifts.length;i++) {
