@@ -1,3 +1,9 @@
+/*
+ * Summary:      account.js handles all user interaction (clicks, submits) 
+ *               when the manager or employee wants to edit their account 
+ *               information.
+ */
+
 var FORM_PROFILE_NAME = 0
 var FORM_PROFILE_EMAIL = 1
 var FORM_PROFILE_PHONE = 2

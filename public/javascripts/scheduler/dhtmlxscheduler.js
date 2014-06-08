@@ -6,6 +6,8 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //UNUSED
 //EDITED
 
+// THIS FILE HAS BEEN EDITED UNDER THE GPL LICENSE
+
 var sched_loaded = false;
 var calendars;
 var ref_calendar;
@@ -2167,8 +2169,6 @@ scheduler._click={
         getShiftsForWeek(scheduler._date)
 
       render()
-      console.log("render")
-      //hideEvents()
    },
    dhx_cal_today_button:function(){
       if (scheduler.callEvent("onBeforeTodayDisplayed", [])) {
@@ -2656,7 +2656,6 @@ scheduler.updateView = function(date, mode) {
 scheduler.setCurrentView = function(date, mode) {
    if (!this.callEvent("onBeforeViewChange", [this._mode, this._date, mode || this._mode, date || this._date])) return;
    this.updateView(date, mode);
-   hideEvents() //EDITED HIDE EVENTS
    this.callEvent("onViewChange", [this._mode, this._date]);
 };
 scheduler._render_x_header = function(i,left,d,h){

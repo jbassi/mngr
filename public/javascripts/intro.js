@@ -1,5 +1,7 @@
-
-//when page has loaded
+/*
+ * Summary:      intro.js handles all user interaction (clicks, submits) 
+ *               after the user has signed up initially.
+ */
 $(document).ready(function()
 {
     //set cursor into top field on page load
