@@ -172,7 +172,7 @@ var Worker = Parse.User.extend({
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function retrieves calendars based off the Company pointer 
-  // and also retrieves the positions the company has 
+  // and also retrieves the company information 
   retrieveCalendar: function(callback)
   {
     this.retrieveCompany(function(error, returnedCompany)
@@ -187,7 +187,7 @@ var Worker = Parse.User.extend({
           success: function(returnedCalendar)
           {
             console.log('im here in the success of retrieve calendar')
-            callback(null, returnedCalendar, returnedCompany.get('positions'))
+            callback(null, returnedCalendar, returnedCompany.get('companyInfo'))
           },
 
           error: function(error) 

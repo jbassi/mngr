@@ -28,6 +28,8 @@ var Shift = function(shiftInfo)
   this.employee_id = shiftInfo.employee_id
   this.position_id = shiftInfo.position_id
   this.color = shiftInfo.color
+  if(typeof shiftInfo.day_id !== 'undefined')
+    this.day_id = shiftInfo.day_id
 }
 
 /*

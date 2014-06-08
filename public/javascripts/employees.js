@@ -57,6 +57,9 @@ $(document).ready(function() {
       $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
         </input><div class="email" '+id+'><h2>'+email+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
         <div class="role" '+id+'><h2>'+position+'</h2></div><div class="edit" '+id+'>EDIT</div><div class="cancel" '+id+'>CANCEL</div></form>')
+
+      //hide inputs as they are arriving from array apending form
+      $('#'+i+' input').hide()
     }
 
     $(".box").append('<div class="submit">SUBMIT</div>')
@@ -65,8 +68,7 @@ $(document).ready(function() {
     $(".submit").hide()
     $(".cancel").hide()
 
-    //hide inputs
-    $("input").hide()
+    
 
     //on edit click
     $(".edit").click(function()
