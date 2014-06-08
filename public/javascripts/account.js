@@ -1,9 +1,3 @@
-/*
- * Summary:      account.js handles all user interaction (clicks, submits) 
- *               when the manager or employee wants to edit their account 
- *               information.
- */
-
 var FORM_PROFILE_NAME = 0
 var FORM_PROFILE_EMAIL = 1
 var FORM_PROFILE_PHONE = 2
@@ -13,7 +7,17 @@ var FORM_COMPANY_PHONE = 1
 $(document).ready(function()
 {
 
-  $('#right').remove()
+  socket.emit('retrieve-current-user', function(err, currentUser) 
+  {
+    if(!err) {
+      if(currentUser.role == 'Employee') {
+        $('#right').remove()
+        $('#hi').remove()
+      }
+    } else {
+      console.log('Error retrieving current user.')
+    }
+  })
 
  //object one to insert into our array is for manager
   var profileSettings = { 
