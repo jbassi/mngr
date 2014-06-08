@@ -29,6 +29,41 @@ var Worker = Parse.User.extend({
   },
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+  // This function gets the current Parse user
+  retrieveCurrentWorker: function(callback) 
+  {
+    var userQuery = new Parse.Query(Parse.User)
+    userQuery.equalTo('objectId', this.id)
+
+    userQuery.first({
+      success: function(user) 
+      {
+        var currentUser = {
+          "id" : user.id,
+          "employeeName" : user.get('name'),
+          "email" : user.get('email'),
+          "phoneNumber" : user.get('phoneNumber'),
+          "currentPassword" : "", 
+          "newPassword" : ""
+        }
+        // console.log(JSON.stringify(currentUser))
+        callback(null, currentUser)
+      },
+
+      error: function(err)
+      {
+        callback(err)
+      }
+    })
+  },
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+  // This function decides whether the current worker is manager or not
+  isManager: function() {
+    return this.get('assignedRole') === 'Manager'
+  },
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
   retrieveAllEmployeesAtCompany: function(callback) 
   {
     // Array to return
@@ -49,27 +84,27 @@ var Worker = Parse.User.extend({
         userQuery.find({
           success: function(queredUsers) 
           {
-         // Loop through returned users and add each name to the array
-              for(var i = 0; i < queredUsers.length; ++i) {
-                var userName = queredUsers[i].get('name')
-                var phoneNumber = queredUsers[i].get('phoneNumber')
-                var role = queredUsers[i].get('assignedRole')
-                var email = queredUsers[i].get('email')
-                var id = queredUsers[i].id
+            // Loop through returned users and add each name to the array
+            for(var i = 0; i < queredUsers.length; ++i) {
+              var userName = queredUsers[i].get('name')
+              var phoneNumber = queredUsers[i].get('phoneNumber')
+              var role = queredUsers[i].get('assignedRole')
+              var email = queredUsers[i].get('email')
+              var id = queredUsers[i].id
 
-                // Construct JSON object and add to array
-                employeeInfo = {
-                  "id" : id,
-                  "username" : userName,
-                  "phonenumber" : phoneNumber,
-                  "role" : role,
-                  "email" : email
-                }
-
-                // console.log(JSON.stringify(employeeInfo))
-                allEmployees.push(employeeInfo)
+              // Construct JSON object and add to array
+              employeeInfo = {
+                "id" : id,
+                "username" : userName,
+                "phonenumber" : phoneNumber,
+                "role" : role,
+                "email" : email
               }
-              callback(null, allEmployees)
+
+              // console.log(JSON.stringify(employeeInfo))
+              allEmployees.push(employeeInfo)
+            }
+            callback(null, allEmployees)
           },
 
           error: function(err)
@@ -359,19 +394,21 @@ var Worker = Parse.User.extend({
 
     // Check Parse for the given username and password
     Worker.logIn(user, password, {
-        success: function(user)
-        {
-          console.log('[~] Successful login.')
-          callback(null, user)
-        },
+      success: function(user)
+      {
+        console.log('[~] Successful login.')
+        // allow master key if manager logs in
 
-        error: function(user, err)
-        {
-          console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
-          console.error(err)
-          //callback(err.code, user)
-          callback(err, user)
-        }
+        callback(null, user)
+      },
+
+      error: function(user, err)
+      {
+        console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
+        console.error(err)
+        //callback(err.code, user)
+        callback(err, user)
+      }
     })
   }, // end of verifyLogin()
 
@@ -407,6 +444,7 @@ var Worker = Parse.User.extend({
               }
               // Check if the employee email needs to be changed
               if(employees[i].email !== '') {
+                userList[j].set('username', employees[i].email)
                 userList[j].set('email', employees[i].email)
               }
               // Check if the employee password needs to be changed
@@ -435,6 +473,8 @@ var Worker = Parse.User.extend({
               })
             }
           }
+          if(i == employees.length-1)
+            console.log('im here at the end of the for loop')
         }
       }, 
 
@@ -449,13 +489,13 @@ var Worker = Parse.User.extend({
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function attempts to reset a Parse user password with the given email.
   // A callback with an error from parse is provided.
-  resetPassword: function(args, callback)
+  resetPassword: function(email, callback)
   {
-    Parse.User.requestPasswordReset(args.email, {
+    Parse.User.requestPasswordReset(email, {
       success: function()
       {
         // Password reset request was successful
-        console.log('[~] Reset request sent')
+        console.log('[~] Request sent to: ' + Worker.current().get('username'))
         callback(null)
       },
 

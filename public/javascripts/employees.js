@@ -90,6 +90,8 @@ $(document).ready(function() {
       var employeesToUpdate = []
 
       for(var i = 0; i < employees.length; ++i) {
+        // TODO: Check to make sure form has values
+
         // Loop through all fields and see if there is a value to save
         var nameToChange = $("#"+i).find('input[name="name"]').val()
         var emailToChange = $("#"+i).find('input[name="email"]').val()

@@ -7,6 +7,12 @@ $(document).ready(function()
     //initialize tokenfield
     $('#word-test').tokenField({regex:/^[a-z][\w\-]+$/i});
 
+    //made color array
+    var colors = [ '#c85248',  '#d5e15d', '#84c2eb', '#95b4af', '#fbae5e', '#92be75', '#5c6c9d', '#9b9fb0']
+
+    //set cursor into top field on page load
+    $('#company').focus();
+
     //hide error message
     $("#error_message").hide()
 
