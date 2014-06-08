@@ -6,6 +6,7 @@ var day_start = 6;
 var day_end = 22;
 var day_length = day_end - day_start;
 var year = 2014;
+var date_step
 
 var unavail_view = false;
 var day_view = true;
@@ -129,10 +130,10 @@ $(document).ready(function() {
     $.sidr('close', 'sidr-left');
   });
 
-  $(".dhx_cal_next_button").click(function()
-  {
-    console.log("next button")
-  });
+  // $(".dhx_cal_next_button").click(function()
+  // {
+  //   console.log("next button")
+  // });
 
   //show dropdown
   $("#profile").click(function()
@@ -257,7 +258,15 @@ $(document).ready(function() {
         round_position: false,
         })
         console.log("loaded unavail")
-        scheduler.init('scheduler',scheduler._date,"timelineunavail")
+
+        //GO TO THE MONDAY OF THE WEEK
+        console.log("super" + scheduler._date.getDay())
+        date_step = parseInt(scheduler._date.getDay())-1
+        var newdate = scheduler._date
+        newdate.setDate(scheduler._date.getDate()-date_step)
+        console.log("yo" + newdate)
+
+        scheduler.init('scheduler',newdate,"timelineunavail")
       }
     }
   });
@@ -291,7 +300,8 @@ $(document).ready(function() {
         round_position: false,
         })
         console.log("loaded shifts")
-        scheduler.init('scheduler',scheduler._date,"timelineshifts")
+
+        scheduler.init('scheduler',new Date(),"timelineshifts")
       }
     }
   });
@@ -381,8 +391,6 @@ function render()
   scheduler.parse(unavailability,"json")
   scheduler.parse(unavail,"json")
 
-  console.log("good1")
-
   if(!day_view) {
     //don't show unavailability
     for(i=0;i<unavailability.length;i++){
@@ -390,14 +398,10 @@ function render()
     }
   }
 
-  console.log("good2")
-
   if(!unavail_view)
     loadShifts()
   else
     loadUnavail()
-
-  console.log("good3")
 
   //don't show deleted
   for(var i = 0;i<unavail.length;i++) {
@@ -406,9 +410,6 @@ function render()
       console.log("delete this " + unavail[i].text)
     }
   }
-
-  console.log("good4")
-
 }
 
 //function to load draft view

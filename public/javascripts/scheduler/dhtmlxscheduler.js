@@ -2143,12 +2143,26 @@ scheduler._click={
          scheduler._close_not_saved();
    },
    dhx_cal_prev_button:function(){
-      scheduler._click.dhx_cal_next_button(0,-1);
+      if(unavail_view)
+         scheduler._click.dhx_cal_next_button(0,-7);
+      else
+         scheduler._click.dhx_cal_next_button(0,-1);
    },
    dhx_cal_next_button:function(dummy,step){
       //TODO PARSE DAYS SCHEDULE
-      scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
-         scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      console.log(unavail_view)
+      if(unavail_view) {
+         console.log("yo")
+         scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
+            scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||7),scheduler._mode)); 
+      }
+      else{
+         console.log("yoyo")
+         scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
+            scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      }
+
+
 
       if(day_view == true)
         getShifts(scheduler._date)
