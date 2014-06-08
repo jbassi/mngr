@@ -7,6 +7,11 @@ $(document).ready(function()
       document.getElementById("dropdown").style.display = "block"
     else
       document.getElementById("dropdown").style.display = "none"
+
+     $(this).mouseleave(function () {
+      document.getElementById("dropdown").style.display = 'none'
+    })
+     
   })
 
   //logout user

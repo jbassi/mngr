@@ -13,6 +13,9 @@ $(document).ready(function()
     //gets rid of two scrollbars
     $('html').css('overflow', 'hidden')
 
+    //set cursor into top field on page load
+    $('#company').focus();
+
     //clear top forms
     $("#company").val('')
     $("#phone").val('')
@@ -39,7 +42,9 @@ $(document).ready(function()
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
-
+        
+        //set focus to new emploee pages
+        $('#input'+formCount+' #employee-name').focus();
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
             scrollTop: $('#error_message').offset().top
