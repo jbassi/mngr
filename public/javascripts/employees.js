@@ -174,6 +174,39 @@ $(document).ready(function() {
       $(deleteUser).hide()
       $(edit).show()
     })
+
+    //on add click
+    $(".add_employee").click(function()
+    {
+      var form_id = '#input1'
+	    var employeeInfo = $(form_id).serializeArray()
+    
+      console.log(employeeInfo[0].value + ' ' + employeeInfo[1].value)
+
+
+
+    })
+
+    //on delete click
+    $(".deleteUser").click(function()
+    {
+      var id = $(this).closest("div").attr("id");
+
+      // var submit = "#"+id+".submit"
+      var cancel = "#"+id+" .cancel"
+      var edit = "#"+id+" .edit"
+      var input = "#"+id+" input"
+      var deleteUser = "#"+id+".deleteUser"
+
+      $(input).closest('form').find("input[type=text], textarea").val("");
+
+      var userToDelete = $("#"+id).find('.email').text()
+
+      socket.emit('delete-employee', userToDelete) // delete the user
+      $('form#'+id).remove() // erases the form
+
+
+    })
   })
 })
 
