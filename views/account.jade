@@ -26,19 +26,20 @@ block head
   #container
     #content
       #left
-        h2#account-setting Profile Settings
         form#signup-form
+          h2 Change Name
           input#signup-name(type='text' placeholder='CHANGE NAME' name='name' value='')
+          h2 Chane Email
           input#signup-email(type='text' placeholder='CHANGE EMAIL' name='email' value='')
+          h2 Change Phone
           input#signup-phone(type='text' placeholder='CHANGE PHONE' name='phone' value='')
-          input#signup-pass(type='password' placeholder='ENTER CURRENT PASSWORD' name='cur_password' value='')
-          input#signup-pass(type='password' placeholder='ENTER NEW PASSWORD' name='new_password' value='')
-          input#signup-pass(type='password' placeholder='RE ENTER NEW PASSWORD' name='check_new_password' value='')
         h1#error
         h1#correct 
       #right
-        h2#account-setting Company Settings
         form#signup-form1
+          h2 Change Company Name
           input#signup-name(type='text' placeholder='CHANGE NAME' name='comapny_name' value='')
+          h2 Change Company Phone
           input#signup-phone(type='text' placeholder='CHANGE PHONE' name='company_phone' value='')
       input#change-button.button(type='button', value='SAVE')
+      .add_employee Change Password
