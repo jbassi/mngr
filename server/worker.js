@@ -38,15 +38,19 @@ var Worker = Parse.User.extend({
     userQuery.first({
       success: function(user) 
       {
+        console.log('assigendrole ' + user.get('assignedRole'))
+
         var currentUser = {
           "id" : user.id,
           "employeeName" : user.get('name'),
           "email" : user.get('email'),
           "phoneNumber" : user.get('phoneNumber'),
+          //"role" : user.get('assingedRole'),
           "currentPassword" : "", 
           "newPassword" : ""
         }
-        // console.log(JSON.stringify(currentUser))
+
+        currentUser.role = user.get('assignedRole')
         callback(null, currentUser)
       },
 

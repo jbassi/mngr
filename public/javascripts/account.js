@@ -7,7 +7,16 @@ var FORM_COMPANY_PHONE = 1
 $(document).ready(function()
 {
 
-  $('#right').remove()
+  socket.emit('retrieve-current-user', function(err, currentUser) 
+  {
+    if(!err) {
+      if(currentUser.role == 'Employee') {
+        $('#right').remove()
+      }
+    } else {
+      console.log('Error retrieving current user.')
+    }
+  })
 
  //object one to insert into our array is for manager
   var profileSettings = { 
