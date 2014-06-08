@@ -122,8 +122,13 @@ $(document).ready(function()
 
 function emit_passwordReset()
 {
-  socket.emit('reset-password', {
-    "email" : $('#send-email').val()
+  // Send password reset link
+  socket.emit('reset-password', $('#send-email').val(), function(err) {
+    if(err) {
+      console.log('Error in sending password reset.')
+    } else {
+      console.log('Password reset successful.')
+    }
   })
 }
 

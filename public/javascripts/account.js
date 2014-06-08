@@ -173,4 +173,15 @@ $(document).ready(function()
       }
     })
   })
+
+  $('#change-password').click(function() 
+  {
+    socket.emit('reset-password', null, function(err) {
+    if(err) {
+        console.log('Error in sending password reset.')
+      } else {
+        console.log('Password reset successful.')
+      }
+    })
+  })
 })

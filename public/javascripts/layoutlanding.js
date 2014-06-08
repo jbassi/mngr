@@ -55,12 +55,9 @@ $(document).ready(function()
      //$("#login").show();
      $("#send-email").show()
      $("#send-button").show()   
+
   })
 }) // end document .ready 
-
-
-  
-
 
 
 /* failed login function */
@@ -131,5 +128,6 @@ function failedLogin() {
         'borderWidth': '1px',
         'borderColor': '#a7a7a7'
     }, 100);
+
 }
 

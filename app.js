@@ -115,12 +115,20 @@ io.sockets.on('connection', function(socket)
   // Attempts to reset given Parse user password
   socket.on('reset-password', function(email, callback)
   {
-    if(!email) {
+    console.log('Socket email: ' + email)
+    if(!(email)) {
       email = Worker.current().get('email')
     }
 
     // DatabaseProvider object handles password reset
-    Worker.resetPassword(email, callback)
+    Worker.resetPassword(email, function(err)
+    {
+      if(err) {
+        callback(err)
+      } else {
+        callback(null)
+      }
+    })
 
   }) // end of reset-password
 
