@@ -10,7 +10,7 @@ var sched_loaded = false;
 var calendars;
 var ref_calendar;
 
-var time_format = function(date){
+var format_time = function(date){
    var hour = date.getHours();
    var minutes = date.getMinutes();
    var period = "AM";
@@ -1411,7 +1411,7 @@ dataProcessor.prototype={
    *  @param: rowId - id of row which data to send. If not specified, then all "updated" rows will be send
    *  @type: public
    */
-   sendData:function(rowId){
+   sendData:function(rowId){ //DELETE THIS IS PROBABLY NOT USED
       if (this._waitMode && (this.obj.mytype=="tree" || this.obj._h2)) return;
       if (this.obj.editStop) this.obj.editStop();
    
@@ -2143,12 +2143,26 @@ scheduler._click={
          scheduler._close_not_saved();
    },
    dhx_cal_prev_button:function(){
-      scheduler._click.dhx_cal_next_button(0,-1);
+      if(unavail_view)
+         scheduler._click.dhx_cal_next_button(0,-7);
+      else
+         scheduler._click.dhx_cal_next_button(0,-1);
    },
    dhx_cal_next_button:function(dummy,step){
       //TODO PARSE DAYS SCHEDULE
-      scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
-         scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      console.log(unavail_view)
+      if(unavail_view) {
+         console.log("yo")
+         scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
+            scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||7),scheduler._mode)); 
+      }
+      else{
+         console.log("yoyo")
+         scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
+            scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
+      }
+
+
 
       if(day_view == true)
         getShifts(scheduler._date)
@@ -2394,7 +2408,7 @@ scheduler._on_mouse_move=function(e){ //IMPORTANT drag mode
 
          var ev=this.getEvent(this._drag_id);
 
-         ev.text = (time_format(ev.start_date) + "-" + time_format(ev.end_date)) //EDITED, display the time range
+         ev.text = (format_time(ev.start_date) + "-" + format_time(ev.end_date)) //EDITED, display the time range
 
          if (this._drag_mode=="move"){
             start = this._min_date.valueOf()+(pos.y*this.config.time_step+pos.x*24*60 -(scheduler._move_pos_shift||0) )*60000;
@@ -2545,7 +2559,26 @@ scheduler._on_mouse_up=function(e){
                this._new_event=new Date();//timestamp of creation
                //if selection disabled - force lightbox usage
                if (this._table_view || this.config.details_on_create || !this.config.select) {
-                  return this.showLightbox(drag_id);
+                  if(is_manager) //IMPORTANT EDITED ONLY SHOW LIGHTBOX FOR MANAGER
+                     return this.showLightbox(drag_id);
+                  else {
+                     console.log("this is the event" + this.getEvent(drag_id))
+                     console.log("this is the start" + this.getEvent(drag_id).start_date)
+                     console.log("this is the end" + this.getEvent(drag_id).end_date)
+
+                     if (!drag_id) return;
+                     if (!this.callEvent("onBeforeLightbox",[drag_id])) {
+                        if (this._new_event)
+                           this._new_event = null;
+                        return;
+                     }
+
+                        var data = this._lightbox_out(this._lame_copy(this.getEvent(drag_id))); //dataaa
+
+                     //calendars.getDay(scheduler._date).addShift(data);
+
+                     console.log("add this" + this.getEvent(drag_id).text)
+                  }
                }
                this._drag_pos = true; //set flag to trigger full redraw
                this._select_id = this._edit_id = drag_id;
@@ -3426,10 +3459,12 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) { //IM
    this.event_updated(ev);
    if (!this._loading)
       this.callEvent(is_new ? "onEventAdded" : "onEventChanged", [ev.id, ev]);
-   //console.log('start_date: ' + start_date)
-   //console.log('end_date: ' + end_date)
-   //console.log(ev)
-   //console.log('fuck' + scheduler.getEvent(ev.id))
+   // console.log('start_date: ' + start_date)
+   // console.log('end_date: ' + end_date)
+   // console.log(ev)
+   // console.log('start' + scheduler.getEvent(ev.start_date))
+   // console.log('end' + scheduler.getEvent(ev.end_date))
+
    return ev.id;
 };
 scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
@@ -3448,7 +3483,7 @@ scheduler.deleteEvent = function(id, silent) { //IMPORTANT DELETE
 
    this.callEvent("onEventDeleted", [id, ev]);
 };
-scheduler.hideEvent = function(id, silent) { //IMPORTANT DELETE
+scheduler.hideEvent = function(id, silent) { //IMPORTANT HIDE
    var ev = this._events[id];
    if (!silent && (!this.callEvent("onBeforeEventDelete", [id, ev]) || !this.callEvent("onConfirmedBeforeEventDelete", [id, ev])))
       return;
@@ -4306,7 +4341,7 @@ scheduler.editStop = function(mode, id) {
 scheduler._edit_stop_event = function(ev, mode) {
    if (this._new_event) {
       if (!mode) {
-         if (ev) // in case of custom lightbox user can already delete event
+         if (ev && is_manager) // EDITED in case of custom lightbox user can already delete event
             this.deleteEvent(ev.id, true);
       } else {
          this.callEvent("onEventAdded", [ev.id, ev]);
@@ -4977,7 +5012,6 @@ scheduler.showCover=function(box){ //UNUSED
     this.show_cover();
 };
 scheduler.showLightbox=function(id){
-   //console.log('event: ' + this.getEvent(id))
    if (!id) return;
    if (!this.callEvent("onBeforeLightbox",[id])) {
       if (this._new_event)
@@ -5065,7 +5099,6 @@ scheduler.show_cover=function(){
 };
 scheduler.save_lightbox=function(){ //IMPORTANT SAVE
 
-   //var data = this._lightbox_out({}, this._lame_copy(this.getEvent(this._lightbox_id)));
    var data = this._lightbox_out(this._lame_copy(this.getEvent(this._lightbox_id))); //dataaa
    data.color = scheduler.getColor("position_id", data.position_id);
 
