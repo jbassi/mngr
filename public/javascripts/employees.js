@@ -67,8 +67,8 @@ $(document).ready(function() {
       var email = employees[i].email
       var position = employees[i].role
 
-      $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="'+name+'">\
-        </input><div class="email" '+id+'><h2>'+email+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value="'+email+'"></input>\
+      $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
+        </input><div class="email" '+id+'><h2>'+email+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
         <div class="role" '+id+'><h2>'+position+'</h2></div><div class="edit" '+id+'>EDIT</div><div class="deleteUser" '+id+'>DELETE</div><div class="cancel" '+id+'>CANCEL</div></form>')
 
       //hide inputs as they are arriving from array apending form
@@ -81,7 +81,6 @@ $(document).ready(function() {
     $(".cancel").hide()
     $(".deleteUser").hide()
 
-    
 
     //on edit click
     $(".edit").click(function()
@@ -207,6 +206,38 @@ $(document).ready(function() {
 
 
     })
+  })
+
+  $("#add-employee-button").click(function() 
+  {
+    // construct JSON to pass to employee sign up
+    // var name = userInfo.name === '' ? null : userInfo.name
+    // var email = userInfo.email === '' ? null : userInfo.email
+    // var password = userInfo.password === '' ? null : userInfo.password
+    // var assignedRole = userInfo.assignedRole === '' ? null : userInfo.assignedRole
+    // var phoneNumber = userInfo.phoneNumber === '' ? null : userInfo.phoneNumber
+    // var isOnSignUp = userInfo.isOnSignUp === '' ? null : userInfo.isOnSignUp
+    var userInfo = {
+      "name":$('#employee-name').val(),
+      "email":$('#employee-email').val(),
+      "password":$('#employee-name').val(),
+      "assignedRole":"Employee",
+      "phoneNumber":"",
+      "isOnSignUp":false
+    }
+
+    socket.emit('sign-up', userInfo, function(err) 
+    {
+      if(err) {
+        console.log('Error signing up user')
+      } else {
+        console.log('successful sign up')
+        // Refresh page
+        location.reload()
+      }
+    })
+
+    console.log($('#employee-name').val() + ' ' + $('#employee-email').val())
   })
 })
 

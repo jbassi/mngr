@@ -208,12 +208,6 @@ $(document).ready(function()
            }        
         })
         
-        for(var i=0; i<company.companyInfo.positions.length; ++i) {
-             console.log('position ' + 
-               JSON.stringify(company.companyInfo.positions[i])
-             )
-        }        
-        
         //print all positions in array
         //I starts at one for key (not sure if necessary)
         $.each(m, function(i, field) {

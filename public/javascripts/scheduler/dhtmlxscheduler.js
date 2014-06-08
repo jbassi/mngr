@@ -2567,6 +2567,14 @@ scheduler._on_mouse_up=function(e){
                      }
 
                      var data = this._lightbox_out(this._lame_copy(this.getEvent(drag_id))); //dataaa
+                     data.employee_id = currentEmployeeId
+                     data.color = "#e7e7e7"
+
+                     // var inc_start_date = data.start_date.getDate() + data.day_id - 1
+                     // data.start_date.setDate(inc_start_date)
+
+                     // var inc_end_date = data.end_date.getDate() + data.day_id - 1
+                     // data.end_date.setDate(inc_end_date)
 
                      var newDate = new Date(scheduler._date.toDateString()) //add to the correct day within the unavail week
                      newDate.setDate(scheduler._date.getDate() + data.day_id-1)

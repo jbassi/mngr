@@ -1,5 +1,7 @@
 var is_manager = false;
 
+var currentEmployeeId
+
 var socket = io.connect()
 var positions = []
 var day_start = 6;
@@ -41,6 +43,16 @@ var yaxis=[
 
 function init()
 { //initliaze the calendar
+
+socket.emit('retrieve-current-user', function(err, currentUser) 
+{
+  if(!err) {
+    currentEmployeeId = currentUser.id
+    console.log("this is the id " + currentEmployeeId)
+  } else {
+    console.log('Error retrieving current user.')
+  }
+})
 
 //getshifts and shit
 //get employees
@@ -84,7 +96,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
-            "key" : i+1,
+            "key" : allEmployees[i].id,
             "label" : allEmployees[i].username
           })
         }
@@ -170,6 +182,19 @@ $(document).ready(function() {
     for(var j=0; j<calendars.days.length; ++j) {
 
       unavail = calendars.days[j].unavailabilities
+
+      for(var i = 0;i<unavail.length;i++) {
+
+        var inc_start_date = unavail[i].start_date.getDate() + unavail[i].day_id - 1
+        unavail[i].start_date.setDate(inc_start_date)
+
+        var inc_end_date = unavail[i].end_date.getDate() + unavail[i].day_id - 1
+        unavail[i].end_date.setDate(inc_end_date)
+
+        unavail[i].start_date = correctDates(unavail[i].start_date)
+        unavail[i].end_date = correctDates(unavail[i].end_date)
+        console.log("corrected date")
+      }
 
       var i = 0
       var length = unavail.length
@@ -288,6 +313,9 @@ $(document).ready(function() {
         console.log("yo" + newdate)
 
         scheduler.init('scheduler',newdate,"timelineunavail")
+
+        getShiftsForWeek(scheduler._date)
+        render()
       }
     }
   });
@@ -394,8 +422,8 @@ function getShiftsForWeek(today)
   ref_unavail = []
 
   for(var i=0; i<6; ++i) {
-    unavail = unavail.concat(week[i].unavail)
-    ref_unavail = ref_unavail.concat(ref_week[i].unavail)
+    unavail = unavail.concat(week[i].unavailabilities)
+    ref_unavail = ref_unavail.concat(ref_week[i].unavailabilities)
     if(i==5) {
       for(var j = 0;j<unavail.length;j++) {
         unavail[j].start_date = correctDates(unavail[j].start_date)
@@ -404,6 +432,8 @@ function getShiftsForWeek(today)
     }
   }
 }
+
+
 
 //function to parse and render
 function render()
@@ -442,13 +472,6 @@ function loadUnavail()
   unavail_view = true;
   if(day_view) {
 
-    //make unavailability read only
-    var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-    for(var i = 0;i<un_events.length;i++) {
-      var eventID = scheduler.getEvent(unavailability[i].id)
-      eventID.readonly = true
-    }
-
     //disable click for read only events
     scheduler.attachEvent("onDblClick", function (id, e)
     {
@@ -477,8 +500,15 @@ function loadUnavail()
 
   //show draft shifts but not deleted ones
   for(i=0;i<unavail.length;i++){
-    if(unavail[i].type != "delete")
+    if(unavail[i].type != "delete") {
       scheduler.addEvent(unavail[i])
+
+      var inc_start_date = unavail[i].start_date.getDate() - unavail[i].day_id + 1
+      unavail[i].start_date.setDate(inc_start_date)
+
+      var inc_end_date = unavail[i].end_date.getDate() - unavail[i].day_id + 1
+      unavail[i].end_date.setDate(inc_end_date)
+    }
   }
 }
 

@@ -102,14 +102,14 @@ $(document).ready(function()
   // Even handle when sign-up is clicked
   $('#signup-button').click(function()
   {
-    emit_singUp()
+    emit_signUp()
   })
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Event handle when <CR> was pressed on sign-up
   $('#signup-pass').keydown(function(e) {
     if (e.keyCode == 13) 
-      emit_singUp()
+      emit_signUp()
   })
 
   
@@ -140,7 +140,7 @@ function emit_login()
   })
 }
 
-function emit_singUp()
+function emit_signUp()
 {
   socket.emit('sign-up', {
     "name" : $('#signup-name').val(),
@@ -150,5 +150,12 @@ function emit_singUp()
     "phoneNumber" : $('#telephone-num').val(),
     "companyName" : $('#company-name').val(),
     "isOnSignUp" : true
+  }, function(err) 
+  {
+    if(err) {
+      console.log('Signup unsuccessful.')
+    } else {
+      window.location.href = '/intro'
+    }
   })  
 }

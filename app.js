@@ -63,7 +63,7 @@ io.sockets.on('connection', function(socket)
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to create a new Parse user by passing socket.io args array 
   // data to databaseProvider
-  socket.on('sign-up', function(userInfo)
+  socket.on('sign-up', function(userInfo, callback)
   {
     console.log('[~] Attempting to create user ' + userInfo.name + '.')
 
@@ -72,11 +72,15 @@ io.sockets.on('connection', function(socket)
       // Check if the user was successfully added 
       // err is null if there is not an error 
       if(err) {
-        socket.emit('sign-up-response', err)
+        callback(err)
+        console.log('wtf1')
+        // socket.emit('sign-up-response', err)
         // TODO: handle error messages
       } else {
+        console.log('wtf2')
+        callback(null)
         // Emit user created with response message from databaseProvider
-        socket.emit('sign-up-response', null, user)
+        // socket.emit('sign-up-response', null, user)
       }
     })
 
