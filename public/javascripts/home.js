@@ -565,7 +565,7 @@ function loadWeek()
 function correctDates(event_date) 
 {
   var date
-  if(typeof event_date == 'string') {
+  if(typeof event_date == 'string' && event_date.length < 16) {
     var dateInfo = event_date.split(' ')
     var dateString = dateInfo[0].split("-")
     date = new Date(dateString[0], dateString[1]-1, dateString[2])
