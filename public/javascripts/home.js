@@ -23,12 +23,15 @@ var employees = []
 var shifts  
 var ref_shifts
 
-var unavailability=[
+var unavailability = []
+/*
+[
   {id:1, start_date: "2014-6-7 6:0", end_date: "2014-6-7 10:0", employee_id:1, color:"#e7e7e7"},
   {id:2, start_date: "2014-6-7 15:0", end_date: "2014-6-7 22:0", employee_id:2, color:"#e7e7e7"},
   {id:3, start_date: "2014-6-7 6:0", end_date: "2014-6-7 14:0", employee_id:3, color:"#e7e7e7"},
   {id:4, start_date: "2014-6-8 6:0", end_date: "2014-6-8 14:0", employee_id:3, color:"#e7e7e7"}
 ]
+*/
 
 function init()
 { //initliaze the calendar

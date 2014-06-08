@@ -150,7 +150,11 @@ $(document).ready(function()
         var company = {
 
             "name":"",
-            "phone":""
+            "phoneNumber":"",
+            "companyInfo" : {
+              "hours" : {"day_start" : 6, "day_end" : 22},
+              "positions" : []
+            }
         }
 
         //grab company name and phone number
@@ -163,7 +167,7 @@ $(document).ready(function()
                 company.name = field.value;
 
             if( i === 1)
-                company.phone = field.value;
+                company.phoneNumber = field.value;
             //if i === 2 assign position values
             console.log(field.name + " : " + field.value)
         });
@@ -171,9 +175,6 @@ $(document).ready(function()
         if( company.name == "") {
             incorrect_company_name = true;
         }
-
-        //console.log(company.name)
-        //console.log(company.phone)
 
         //if company name is empty dont move on
         if( incorrect_company_name ) {

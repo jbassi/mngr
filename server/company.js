@@ -8,11 +8,11 @@ var Company = Parse.Object.extend('Company', {
   // ***************** **************** ***************** // 
   
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  update: function(companyInfo, callback)
+  update: function(companyConfig, callback)
   {
-    this.set('name', companyInfo.name)
-    this.set('phoneNumber', companyInfo.phoneNumber) 
-    this.set('positions', companyInfo.positions)
+    this.set('name', companyConfig.name)
+    this.set('phoneNumber', companyConfig.phoneNumber) 
+    this.set('companyInfo', companyConfig.companyInfo)
 
     this.save(null, {
       success: function(res)
@@ -51,8 +51,12 @@ var Company = Parse.Object.extend('Company', {
     company.set('phoneNumber', "")
 
     var calendar = Calendar.create()
+    var companyInfo = {
+      "hours" : {"day_start" : 6, "day_end" : 22},
+      "positions" : []
+    }
     company.set('calendars', calendar)
-    company.set('positions', [])
+    company.set('companyInfo', companyInfo)
 
     company.save(null, {
       success: function(res)
