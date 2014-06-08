@@ -52,13 +52,13 @@ $(document).ready(function()
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
-<<<<<<< Updated upstream
+
         
         //set focus to new emploee pages
-=======
+
 
         //send cursor into the newly added field yo
->>>>>>> Stashed changes
+
         $('#input'+formCount+' #employee-name').focus();
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
