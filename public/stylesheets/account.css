@@ -18,7 +18,7 @@ color:rgba(207, 21, 21, 1)
 #correct{
 color:rgba(31, 173, 113, 1);
 }
-
+a:hover{color:#777;}
 
 #left{
 width:30%;

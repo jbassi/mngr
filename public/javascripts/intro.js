@@ -294,19 +294,7 @@ $(document).ready(function()
         }
 
     }   
-    // while (i--) {
-    //     val = arr[i];
-    //     j = i;
-    //     while (j--) {
-    //         if (arr[j] == val) {
-    //             arr.splice(j, 1);
-    //             console.log('Deleting duplicate value is:'+arr[j]+'')
 
-    //         }
-    //     }
-    // }
-    // return false;
-    // }
 
 });
 
