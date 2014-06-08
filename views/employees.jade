@@ -1,4 +1,4 @@
-extends home
+extends account
 block head
   link(rel='stylesheet', type='text/css', href='/stylesheets/employees.css')
   script(src='javascripts/employees.js')
@@ -36,6 +36,12 @@ block container
               h2 EMAIL
             .role
               h2 STATUS
-         
+      form#input1
+          .submit Update
+          h2 Add Employee
+          input#employee-name(type='text', placeholder='NAME', name='name', value='')
+          input#employee-email(type='text', name='email', value='', placeholder='EMAIL')
+          .add_employee Add
+           
 
 

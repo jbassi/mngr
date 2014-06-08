@@ -18,6 +18,11 @@ $(document).ready(function()
     displace: true,
     speed: 200
   })
+
+  $('#login').click(function()
+  {
+    $('#login-user').focus()
+  })
   
   //set form focus into password field
   $('#login').click(function()
@@ -46,7 +51,6 @@ $(document).ready(function()
   $( "#forgot-password" ).click(function()
   {
      $("#forgot-password").hide()
-     $("#")
      //$("#sidr-right").show();
      //$("#login").show();
      $("#send-email").show()

@@ -4,6 +4,8 @@ block head
   link(rel='stylesheet', href='/stylesheets/token-field.css')
   script(src='javascripts/intro.js')
   script(src='javascripts/jquery.token-field.js')
+  script(type='text/javascript', src='javascripts/jquery.timepicker.js')
+  link(rel='stylesheet', href='/stylesheets/form.css')
 block banner
 
   img#logo-nolink(src='../resources/logocolor.png')
@@ -16,12 +18,16 @@ block banner
       input#company(type='text' ,placeholder='COMPANY NAME', name='company_name' ,value='')
       input#phone(type='text' ,placeholder='PHONE NUMBER', name='company_phone' ,value='')
       input#word-test(type='text', name='words', value='Server')
+      .square_container
+        .short_row
+            input.time.start.small(type='text', name='Time Start' placeholder='START DAY')
+        .short_row_1
+            input.time.end.small(type='text', name='Time End' placeholder='END DAY')
     <br>
     form#input1
       input#employee-name(type='text', placeholder='NAME', name='name', value='')
-      input#employee-email(type='text', name='email', value='', placeholder='EMAIL')
-      
-    img#add-button(src='../resources/add.png')
+      input#employee-email(type='text', name='email', value='', placeholder='EMAIL') 
+      img#add-button(src='../resources/add.png')
 
     //seperate button from form since dynamically adding will mess this up
     input#next-button.button(type='button', value='NEXT')

@@ -2,7 +2,8 @@
 //when page has loaded
 $(document).ready(function()
 {
-   
+    //set cursor into top field on page load
+    $('#company').focus();
 
     //initialize tokenfield
     $('#word-test').tokenField({regex:/^[a-z][\w\-]+$/i});
@@ -25,7 +26,10 @@ $(document).ready(function()
     //clear top forms
     $("#company").val('')
     $("#phone").val('')
-    //$("#tokenfield").val('')
+   
+    //clear start and end time fields
+    $('input.time.end.small').val('')
+    $('input.time.start.small').val('')
 
     //initialize how many forms we have. We start with one initially
     var formCount = 1;
@@ -48,8 +52,13 @@ $(document).ready(function()
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
+
         
         //set focus to new emploee pages
+
+
+        //send cursor into the newly added field yo
+
         $('#input'+formCount+' #employee-name').focus();
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
@@ -156,11 +165,54 @@ $(document).ready(function()
               "positions" : []
             }
         }
-
+         
+        //label and color for position field 
+        //{key:1, label: "chef", color: "#748585"}
+        //ar postion_field ={
+       //     'key' : '1'
+        //    label : "server"
+       //     color: "#567456"
+       // }
+       //1) make array of colors
+       //2) make sure not duplicate
+       //3) assign color to position
+       //4) make sure no duplicate insert of colors
+       //5) store in array of json objects
         //grab company name and phone number
         var m = $("#input0").serializeArray();
 
+        var pos_string = m[2].value
 
+        //create array of positions
+        var pos_array = []
+        //send parsed values to array
+        pos_array = pos_string.split(',')
+
+        //array to hold positions objects
+        var key_label_color = []   
+
+
+        //check if duplicate here(doesnt work. scroll down)
+        hasDuplicate(pos_array, function(noDuplicateArray) 
+        {
+            pos_array = noDuplicateArray
+        })
+        
+
+        //print all positions in array
+        //I starts at one for key (not sure if necessary)
+        
+        for( var j = 0,k =1; j < pos_array.length; ++j, ++k){
+             console.log('im her in the for loop ' + pos_array.length)
+            var tmp_object = {
+                'key': k,
+                'label': pos_array[j],
+                'color': colors[j]
+            }
+
+            key_label_color.push(tmp_object)
+        }        
+        
         $.each(m, function(i, field) {
 
             if( i === 0)
@@ -186,13 +238,7 @@ $(document).ready(function()
   
             $("#error_message").append("Please Enter A Company Name")
             $("#error_message").show()
-            return;
 
-            /* Cant get scroll top to work!!!!
-            $('html,body').animate({
-                scrollTop: $("#company").offset().top
-            }, 500);
-            */
 
         }
         //else we are ready to pass this object
@@ -232,6 +278,36 @@ $(document).ready(function()
         
     });
 
+    function hasDuplicate(arr, callback) {
+        //send string to lowercase as well
+        var sorted_arr = arr.sort()
 
+        var results = [];
+        for (var i = 0; i < arr.length - 1; i++) {
+            if (sorted_arr[i + 1] == sorted_arr[i]) {
+                console.log('im here bc theres duplicate IF')
+                results.push(sorted_arr[i]);
+            }
+            if( i == arr.length-2) {
+                callback(results)
+            }
+        }
+
+    }   
+    // while (i--) {
+    //     val = arr[i];
+    //     j = i;
+    //     while (j--) {
+    //         if (arr[j] == val) {
+    //             arr.splice(j, 1);
+    //             console.log('Deleting duplicate value is:'+arr[j]+'')
+
+    //         }
+    //     }
+    // }
+    // return false;
+    // }
 
 });
+
+

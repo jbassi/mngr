@@ -122,6 +122,12 @@ float: left;
 display: inline-block;
 }
 
+#content{
+overflow:hidden;
+
+}
+
+
 .box{
 width: 95%;
 float: left;
@@ -159,7 +165,7 @@ width:12%;
 .email{
 height:auto;
 text-align:left;
-margin-left: 1em;
+margin-left: 2em;
 float:left;
 width:14%;
 }
@@ -167,7 +173,7 @@ width:14%;
 .role{
 height:auto;
 text-align:left;
-margin-left: 2em;
+margin-left: 7em;
 float:left;
 width:10%;
 }
@@ -186,6 +192,7 @@ font-weight: normal;
 color: #424242;
 float: right;
 margin-top: 0.5em;
+cursor:pointer;
 }
 
 .cancel{
@@ -202,10 +209,10 @@ font-weight: normal;
 color: #424242;
 float: right;
 margin-top: 0.5em;
-
+cursor:pointer;
 }
 
-.submit{
+.submit, .deleteUser{
 background-color: rgba(108, 183, 111, 1);
 width: 4em;
 height: 2em;
@@ -219,6 +226,23 @@ font-weight: normal;
 color: #424242;
 float: right;
 margin-top: 0.5em;
+cursor:pointer;
+}
+.add_employee{
+background-color: rgba(108, 183, 111, 1);
+width: 4em;
+height: 2em;
+position: relative;
+margin-right: 1em;
+border-radius: 0.3em;
+text-align: center;
+padding-top: 0.6em;
+font-family: BrandonBlack,sans-serif;
+font-weight: normal;
+color: #424242;
+float: right;
+margin-top: 2px;
+cursor:pointer;
 }
 
 input{
@@ -256,4 +280,38 @@ top: 4px;
 .edit, .submit, .cancel{
 
 cursor:pointer;
+}
+
+#employee-name {
+display:inline;
+width:40%;
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+
+}
+
+#employee-email {
+margin-left:-1px;
+display:inline;
+width:40%;
+margin-bottom:-1px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+
+}
+
+#input1{
+width: 30em;
+float: right;
+margin-right: 4%;
+}
+
+#add-button{
+float: left;
+width: 5%;
+margin-left: 5px;
+margin-top: 5px;
 }

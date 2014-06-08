@@ -22,7 +22,10 @@ $(document).ready(function()
   var companySettings = {
     "name" : "",
     "phoneNumber" : "",
-    "positions" : ""
+    "companyInfo" : {
+      "hours" : {"day_start" : 6, "day_end" : 22}, 
+      "positions" : []
+    }
   }
 
   socket.emit('retrieve-current-user', function(err, currentUser) 
@@ -153,12 +156,12 @@ $(document).ready(function()
       }
       if(i === FORM_COMPANY_PHONE) {
         // Populate JSON object name field
-        companySettings.phone = companyInformation[i].value
+        companySettings.phoneNumber = companyInformation[i].value
       }
     }
 
     // Pass new profile settings to backend for updating
-    socket.emit('update-employee-company', [profileSettings], companyInformation
+    socket.emit('update-employee-company', [profileSettings], companySettings 
                 , function(err) 
     {
       if(!err) {
