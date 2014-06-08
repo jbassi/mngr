@@ -15,8 +15,6 @@ var Worker = require('./server/worker').Worker
 var Calendar = require('./server/calendar').Calendar
 var Company = require('./server/company').Company
 
-var Parse = require('parse').Parse
-
 // Configure app settings 
 app.configure(function()
 {
