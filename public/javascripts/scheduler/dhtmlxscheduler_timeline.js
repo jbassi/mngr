@@ -6,6 +6,8 @@ to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 //UNUSED
 //EDITED
 
+// THIS FILE HAS BEEN EDITED UNDER THE GPL LICENSE
+
 var rowheight = 0;
 
 (scheduler._temp_matrix_scope = function(){
