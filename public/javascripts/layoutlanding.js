@@ -1,6 +1,7 @@
-
-/* When document is open (.read) go here. Also put all active jquery here
- * like .click. Self written functions go outside */
+/*
+ * Summary:      layoutlanding.js handles all user interaction (clicks, submits) 
+ *               when the user navigates to the landing page.
+ */
 $(document).ready(function()
 {
   // Make left menu open and slide right 

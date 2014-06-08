@@ -1,3 +1,7 @@
+/*
+ * Summary:      home.js handles all user interaction (clicks, submits) 
+ *               and page loading when the user navigates to the manager page.
+ */
 var is_manager = true;
 
 var socket = io.connect()
@@ -24,14 +28,6 @@ var shifts
 var ref_shifts
 
 var unavailability = []
-/*
-[
-  {id:1, start_date: "2014-6-7 6:0", end_date: "2014-6-7 10:0", employee_id:1, color:"#e7e7e7"},
-  {id:2, start_date: "2014-6-7 15:0", end_date: "2014-6-7 22:0", employee_id:2, color:"#e7e7e7"},
-  {id:3, start_date: "2014-6-7 6:0", end_date: "2014-6-7 14:0", employee_id:3, color:"#e7e7e7"},
-  {id:4, start_date: "2014-6-8 6:0", end_date: "2014-6-8 14:0", employee_id:3, color:"#e7e7e7"}
-]
-*/
 
 function init()
 { //initliaze the calendar
@@ -45,35 +41,12 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     console.log('(-) Calendar initialization failed.')
   } 
   else { 
-    // Calendar successfully passed
-    // Loop through companyCalendar and make ClientCalendars 
-    // We want to create ClientCalendars because, 
-    // we can't call methods with Parse objects
-    /*
-    for(var i = 0; i < companyCalendars.length; ++i) {
-      calendars.push(new ClientCalendar(companyCalendars[i]))
-      ref_calendars.push(new ClientCalendar(companyCalendars[i]))
-      // calendar = ClientCalendar(companyCalendar)
-    }
-    */
 
     var today = new Date()
 
     calendars = new ClientCalendar(companyCalendar)
     ref_calendar = new ClientCalendar(companyCalendar)
     
-    /*
-    for(var i=0; i<calendars.length; ++i) {
-      if(calendars[i].year == thisYear) {
-        currentCalendar = calendars[i]
-        ref_calendar = ref_calendars[i]
-
-        currentDay = currentCalendar.getCurrentDayAsIndex()
-        currentCalendar.goingToChange()
-        break;
-      }
-    }
-    */
 
     getShifts(today)
 
@@ -87,14 +60,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     scheduler.config.xml_date="%Y-%m-%d %H:%i"
     scheduler.config.wide_form = false
     scheduler.config.readonly = true
-    //scheduler.config.show_loading = true;
-    // scheduler.addMarkedTimespan({  
-    //     days:  [3], 
-    //     zones: "fullday",
-    //     type:  "dhx_time_block", 
-    //     css:   "gray_section", 
-    //     //sections: { timeline: 2} 
-    // });
 
     // Used to sort username in allEmployees.sort() 
     function propertyCompare(prop) {
@@ -121,18 +86,12 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
         //render the colors
         scheduler.templates.event_class = function (start, end, event) 
         {
-          //event.start_date = correctDates(event.start_date);
-          //event.end_date = correctDates(event.end_date);
+
           if (event.color == "#e7e7e7") {
             //event.text = "UNAVAILABLE";
             return "unavailability"
           }
-          // else if (event.type == "temp") {
-          //   return "temp"
-          // } 
-          // else if (event.type == "old") {
-          //   return "old"
-          // }
+
           else {
             event.color = scheduler.getColor("position_id", event.position_id);
             return "shifts"
@@ -154,10 +113,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
         render()
 
-        // //hide relevant events on window resize
-        // scheduler.attachEvent("onSchedulerResize", function(){
-        //   hideEvents();
-        // });
       }
     }) // end of socket emit for retrieve-all-employees
   }
@@ -478,6 +433,7 @@ function loadDraft()
 
 }
 
+//function to load published view
 function loadPublished()
 {
 
@@ -580,61 +536,4 @@ function correctDates(event_date)
            + date.getDate() + " " + date.getHours() + ":" 
            + date.getMinutes()
 
-}
-
-//function to hide certain events based on published or draft view
-function hideEvents()
-{
-  // if(draft_view) {
-  //   //show unavailable
-  //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  //   for(var i = 0;i<un_events.length;i++) {
-  //     un_events[i].style.display="block"
-  //   }
-
-  //   //show newly added events
-  //   var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
-  //   for(var i = 0;i<temp_events.length;i++) {
-  //     temp_events[i].style.display="block"
-  //     temp_events[i].style.cursor="pointer"
-  //   }
-
-  //   //hide old events
-  //   var old_events = document.getElementsByClassName("dhx_cal_event_line old")
-  //   for(var i = 0;i<old_events.length;i++) {
-  //     old_events[i].style.display="none"
-  //     console.log("hide old")
-  //   }
-
-  //   //change cursor for shifts
-  //   var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
-  //   for(var i = 0;i<shift_events.length;i++) {
-  //     shift_events[i].style.cursor="pointer"
-  //   }
-  // }
-  // else {
-
-  //   //console.log("show published")
-  //   //hide unavailable
-  //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  //   for(var i = 0;i<un_events.length;i++) {
-  //     un_events[i].style.display="none"
-  //   }
-
-  //   //hide newly added events
-  //   var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
-  //   for(var i = 0;i<temp_events.length;i++) {
-  //     temp_events[i].style.display="none"
-  //   }
-
-  //   //show old events and change cursor
-  //   var old_events = document.getElementsByClassName("dhx_cal_event_line old")
-  //   for(var i = 0;i<old_events.length;i++) {
-  //     old_events[i].style.display="block"
-  //     old_events[i].style.cursor="default"
-  //     console.log("show old")
-  //   }
-
-
-  // }
 }

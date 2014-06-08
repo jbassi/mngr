@@ -1,3 +1,7 @@
+/*
+ * Summary:      employee.js handles all user interaction (clicks, submits) 
+ *               and page loading when the user navigates to the employee page.
+ */
 var is_manager = false;
 
 var currentEmployeeId
@@ -100,15 +104,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
             "label" : allEmployees[i].username
           })
         }
-
-        // //render the colors
-        // scheduler.templates.event_class = function (start, end, event) 
-        // {
-        //   if (event.color == "#e7e7e7") {
-        //     //event.text = "UNAVAILABLE";
-        //     return "unavailability"
-        //   }
-        // }
 
         loadDay() //create timeline day
 
@@ -433,8 +428,6 @@ function getShiftsForWeek(today)
   }
 }
 
-
-
 //function to parse and render
 function render()
 {
@@ -547,7 +540,6 @@ function loadShifts()
   }
 }
 
-
 //function to load day view
 function loadDay()
 {
@@ -601,61 +593,4 @@ function correctDates(event_date)
   return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
            + date.getDate() + " " + date.getHours() + ":" 
            + date.getMinutes()
-}
-
-//function to hide certain events based on published or draft view
-function hideEvents()
-{
-  // if(unavail_view) {
-  //   //show unavailable
-  //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  //   for(var i = 0;i<un_events.length;i++) {
-  //     un_events[i].style.display="block"
-  //   }
-
-  //   //show newly added events
-  //   var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
-  //   for(var i = 0;i<temp_events.length;i++) {
-  //     temp_events[i].style.display="block"
-  //     temp_events[i].style.cursor="pointer"
-  //   }
-
-  //   //hide old events
-  //   var old_events = document.getElementsByClassName("dhx_cal_event_line old")
-  //   for(var i = 0;i<old_events.length;i++) {
-  //     old_events[i].style.display="none"
-  //     console.log("hide old")
-  //   }
-
-  //   //change cursor for shifts
-  //   var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
-  //   for(var i = 0;i<shift_events.length;i++) {
-  //     shift_events[i].style.cursor="pointer"
-  //   }
-  // }
-  // else {
-
-  //   //console.log("show published")
-  //   //hide unavailable
-  //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
-  //   for(var i = 0;i<un_events.length;i++) {
-  //     un_events[i].style.display="none"
-  //   }
-
-  //   //hide newly added events
-  //   var temp_events = document.getElementsByClassName("dhx_cal_event_line temp")
-  //   for(var i = 0;i<temp_events.length;i++) {
-  //     temp_events[i].style.display="none"
-  //   }
-
-  //   //show old events and change cursor
-  //   var old_events = document.getElementsByClassName("dhx_cal_event_line old")
-  //   for(var i = 0;i<old_events.length;i++) {
-  //     old_events[i].style.display="block"
-  //     old_events[i].style.cursor="default"
-  //     console.log("show old")
-  //   }
-
-
-  // }
 }

@@ -1,3 +1,8 @@
+/*
+ * Summary:      client.js handles socket emits to pass information from the 
+ *               front and back end. Can be thought of as the controller of
+ *               front end.
+ */
 var socket = io.connect()
 
 //if forgot password more than 2-3 times will display forgot email link
