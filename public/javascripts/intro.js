@@ -7,11 +7,20 @@ $(document).ready(function()
     //initialize tokenfield
     $('#word-test').tokenField({regex:/^[a-z][\w\-]+$/i});
 
+    //made color array
+    var colors = [ '#c85248',  '#d5e15d', '#84c2eb', '#95b4af', '#fbae5e', '#92be75', '#5c6c9d', '#9b9fb0']
+
+    //set cursor into top field on page load
+    $('#company').focus();
+
     //hide error message
     $("#error_message").hide()
 
     //gets rid of two scrollbars
     $('html').css('overflow', 'hidden')
+
+    //set cursor into top field on page load
+    $('#company').focus();
 
     //clear top forms
     $("#company").val('')
@@ -39,7 +48,9 @@ $(document).ready(function()
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
-
+        
+        //set focus to new emploee pages
+        $('#input'+formCount+' #employee-name').focus();
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
             scrollTop: $('#error_message').offset().top

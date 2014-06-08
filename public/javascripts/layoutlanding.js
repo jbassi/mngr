@@ -19,6 +19,13 @@ $(document).ready(function()
     speed: 200
   })
   
+  //set form focus into password field
+  $('#login').click(function()
+  {
+    $('#login-user').focus()
+  })
+
+
   /* clear forms upon page reload */
   $("#login-pass").val('')
   $("#login-user").val('')

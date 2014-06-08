@@ -222,7 +222,7 @@ margin-top: 0.5em;
 }
 
 input{
-height: 4em;
+height: 3em;
 padding: 0em 0.5em;
 border: 1px solid #A7A7A7;
 width: 10%;
@@ -230,8 +230,6 @@ float: left;
 border-radius:.3em;
 display:inline;
 clear:none;
-margin-top: 5px;
-margin-bottom: 5px;
 }
 
 #employees{
@@ -253,4 +251,9 @@ right: 0px;
 margin: auto;
 height: 5em;
 top: 4px;
+}
+
+.edit, .submit, .cancel{
+
+cursor:pointer;
 }

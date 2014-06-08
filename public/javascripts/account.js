@@ -1,5 +1,49 @@
+var FORM_PROFILE_NAME = 0
+var FORM_PROFILE_EMAIL = 1
+var FORM_PROFILE_PHONE = 2
+var FORM_COMPANY_NAME = 0
+var FORM_COMPANY_PHONE = 1
+
 $(document).ready(function()
 {
+
+
+ //object one to insert into our array is for manager
+  var profileSettings = { 
+    "id" : "",
+    "employeeName" : "",
+    "email" : "",
+    "phoneNumber" : "",
+    "currentPassword" : "", 
+    "newPassword" : ""
+  }
+
+  //company object
+  var companySettings = {
+    "name" : "",
+    "phoneNumber" : "",
+    "positions" : ""
+  }
+
+  socket.emit('retrieve-current-user', function(err, currentUser) 
+  {
+    if(!err) {
+      $('#signup-name').val(currentUser.employeeName)
+      $('#signup-email').val(currentUser.email)
+      $('#signup-phone').val(currentUser.phoneNumber)
+      profileSettings.id = currentUser.id
+      console.log(JSON.stringify(profileSettings))
+    } else {
+      console.log('Error retrieving current user.')
+      $('#signup-name').val('')
+      $('#signup-email').val('')
+      $('#signup-phone').val('')
+    }
+  })
+
+  //reset all field values but not the button
+  $('#signup-pass').val('')
+
   //show dropdown
   $("#profile").click(function()
   {
@@ -7,6 +51,10 @@ $(document).ready(function()
       document.getElementById("dropdown").style.display = "block"
     else
       document.getElementById("dropdown").style.display = "none"
+
+    $(this).mouseleave(function () {
+      document.getElementById("dropdown").style.display = 'none'
+    })
   })
 
   //logout user
@@ -27,9 +75,6 @@ $(document).ready(function()
     $("#error").hide()
     $("#correct").hide()
 
-    //reset all field values but not the button
-    $('#signup-name,#signup-email,#signup-phone,#sginup-pass').val('')
-
     //menu slider
     $('#menu').sidr({
 	    name: 'sidr-left',
@@ -48,142 +93,81 @@ $(document).ready(function()
 	//if clicked save information users entered to change
 	$("#change-button").click(function()
   {
-        //hide error message
-        $("#error").hide()
+    //hide error message
+    $("#error").hide()
 
-        //then empty error message
-        $("#error").empty()
+    //then empty error message
+    $("#error").empty()
 
-        //hide message div
-        $("#correct").hide()
+    //hide message div
+    $("#correct").hide()
 
-        //clear message div
-        $("#correct").empty()
+    //clear message div
+    $("#correct").empty()
 
-        //array of objects for backend to recieve
-        var new_info = [];
-        
-        //tmp array to get input values
-        var tmp = [];
+    // Get all profile information field values
+    var profileInformation = $("#signup-form").serializeArray()
 
-        //object one to insert into our array is for manager
-        var Employee = {
+  	//get company information
+  	var companyInformation = $("#signup-form1").serializeArray()
 
-            "name":"",
-            "email":"",
-            "password":"",
-            "assignedRole": "Employee",
-            "phoneNumber": "",
-            "isOnSignUp": false
+    /*
+      var FORM_PROFILE_NAME = 0
+      var FORM_PROFILE_EMAIL = 1
+      var FORM_PROFILE_PHONE = 2
+    */
 
-         };
+    /*
+    employeeInfo = { "id": , employeeName" : , 
+                     "email" : emailToChange, 
+                     "phoneNumber" : phoneNumber, "currentPassword" : "", 
+                     "newPassword" : "" }
+    */
 
-        //company object
-        var company = {
+    // Loop through form information and populate JSON
+    for(var i = 0; i < profileInformation.length; ++i) {
+      if(i === FORM_PROFILE_NAME) {
+        // Populate JSON object name field
+        profileSettings.employeeName = profileInformation[i].value
+      }
+      if(i === FORM_PROFILE_EMAIL) {
+        // Populate JSON object name field
+        profileSettings.email = profileInformation[i].value
+      }
+      if(i === FORM_PROFILE_PHONE) {
+        // Populate JSON object name field
+        profileSettings.phoneNumber = profileInformation[i].value
+      }
+    }
 
-            "name":"",
-            "phone":""
-        };
+    /*
+      var FORM_COMPANY_NAME = 0
+      var FORM_COMPANY_PHONE = 1
+    */
 
+    // Loop through company information and populate JSON
+    for(var i = 0; i < companyInformation.length; ++i) {
+      if(i === FORM_COMPANY_NAME) {
+        // Populate JSON object name field
+        companySettings.name = companyInformation[i].value
+      }
+      if(i === FORM_COMPANY_PHONE) {
+        // Populate JSON object name field
+        companySettings.phone = companyInformation[i].value
+      }
+    }
 
-        //get all profile information
-	    var x = $("#signup-form").serializeArray()
-
-        //loop variable
-        var k = 0;
-
-        //loop to check fields
-        $.each(x, function(i, field) {
-
-            tmp[k] = field.name;
-            tmp[++k] = field.value;  
-            ++k;    
-
-    	});
-
-    	//get company information
-    	var y = $("#signup-form1").serializeArray()
-
-        //loop to check fields
-        $.each(y, function(i, field) {
-          
-          if( i === 0)
-            company.name = field.value;
-          if( i === 1)
-          	company.phone = field.value;
-
-    	});
-
-      //validation checks in form
-    	for( var j = 1; j < tmp.length; j=j+2){
-
-    		if(j === 1)
-    	      Employee.name = tmp[j]
-
-    		if(j === 3)
-    		  Employee.email = tmp[j]
-
-    		if(j === 5)
-    		  Employee.phoneNumber = tmp[j]
-
-    		if(j === 7)	{
-    		  var current = tmp[j]
-    		  if( current === "")
-    		  	var empty_pass = false
-
-    		  var validate = false
-        }
-
-            if(j === 9)
-              var new_password = tmp[j]
-
-            if(j === 11){
-
-              var change_password = tmp[j]
-
-              if( validate ){
-                
-                if( new_password === change_password && new_password != "")
-                  Employee.password = change_password
-                else{
-                  $("#error").append('Password Does Not Match')
-                  $("#error").show()
-                } //set value to ''
-                  //highlight field?
-              } 
-              else{
-              	if( empty_pass){
-                  $("#error").append('Invalid Current Password')
-                  $("#error").show()
-                  //set value to ''
-                  //highlight field?
-                }
-              }
-            }
-
-            //return;
-  		
-  		}
-       
-        if( company.name === ""){
-        	if( company.phone === "")
-            if( Employee.name === "" )
-              if( Employee.email ==="" ){
-              //if employee fields are empty as well
-              $("#error").append('No Information Entered')
-              $("#error").show()
-        	}
-        }
-        //pass to backend and check to see nothing went wrong
-        //$("#correct").append('Successfully Changed')
-        //$("#correct").show()
-    
-    // TODO: socket emit for updating employee settings 
-    // TODO: socket emit for updating company info and positions
-  });
-
-});
-
-
-
-
+    // Pass new profile settings to backend for updating
+    socket.emit('update-employee-company', [profileSettings], companyInformation
+                , function(err) 
+    {
+      if(!err) {
+        $("#correct").append('Successfully Changed')
+        $("#correct").show()
+      } else {
+        console.log('Unsuccessful update!!!!!!!')
+        // TODO: Display unsuccessful error to the user
+      }
+    })
+  })
+})
