@@ -369,6 +369,7 @@ function getShifts(today)
   for(var i = 0;i<unavailability.length;i++) {
     unavailability[i].start_date = correctDates(unavailability[i].start_date)
     unavailability[i].end_date = correctDates(unavailability[i].end_date)
+    unavailability[i].text = ""
   }
 }
 
