@@ -2153,12 +2153,10 @@ scheduler._click={
       //TODO PARSE DAYS SCHEDULE
       console.log(unavail_view)
       if(unavail_view) {
-         console.log("yo")
          scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
             scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||7),scheduler._mode)); 
       }
       else{
-         console.log("yoyo")
          scheduler.setCurrentView(scheduler.date.add( //next line changes scheduler._date , but seems it has not side-effects
             scheduler.date[scheduler._mode+"_start"](scheduler._date),(step||1),scheduler._mode));
       }

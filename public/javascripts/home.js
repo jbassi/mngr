@@ -4,7 +4,7 @@ var socket = io.connect()
 var positions = []
 var day_start = 6;
 var day_end = 22;
-var day_length = day_end - day_start;
+var day_length = day_end - day_start - 1;
 var year = 2014;
 
 var unavail_view = false;
@@ -154,10 +154,10 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
         render()
 
-        //hide relevant events on window resize
-        scheduler.attachEvent("onSchedulerResize", function(){
-          hideEvents();
-        });
+        // //hide relevant events on window resize
+        // scheduler.attachEvent("onSchedulerResize", function(){
+        //   hideEvents();
+        // });
       }
     }) // end of socket emit for retrieve-all-employees
   }
@@ -358,11 +358,14 @@ function getShifts(today)
 {
   shifts = calendars.getDay(today).shifts 
   ref_shifts = ref_calendar.getDay(today).shifts 
+  console.log("shifts are " + shifts[0].start_date)
 
   for(var i = 0;i<shifts.length;i++) {
     shifts[i].start_date = correctDates(shifts[i].start_date)
     shifts[i].end_date = correctDates(shifts[i].end_date)
   }
+
+  console.log("shifts are now " + shifts[0].start_date)
 }
 
 function getShiftsForWeek(today) 
@@ -392,6 +395,7 @@ function render()
 {
   //parse events
   scheduler.parse(unavailability,"json")
+  console.log("shifts are still " + shifts[0].start_date)
   scheduler.parse(shifts,"json")
 
   if(!day_view) {
@@ -413,6 +417,8 @@ function render()
       console.log("delete this " + shifts[i].text)
     }
   }
+
+  console.log("rendered")
 
 }
 
@@ -522,6 +528,7 @@ function loadDay()
   round_position: false,
   })
   scheduler.init('scheduler',scheduler._date,"timelineday")
+  console.log("day loaded")
 }
 
 function loadWeek()
@@ -552,10 +559,32 @@ function loadWeek()
 //function to format the correct date when loading data
 function correctDates(event_date) 
 {
-  var date = new Date(event_date) 
+
+  var date
+
+  if(typeof event_date == 'string') {
+    var dateInfo = event_date.split(' ')
+    var dateString = dateInfo[0].split("-")
+
+    date = new Date(dateString[0], dateString[1]-1, dateString[2])
+
+    var time = dateInfo[1].split(':')
+    date.setHours(time[0])
+    date.setMinutes(time[1])
+
+  } else {
+    date = new Date(event_date) 
+  }
+// var date = "2012-12-31".split("-");
+// var dateInfo = event_date.split(' ')
+
+  // console.log("this is now date " + date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
+  //          + date.getDate() + " " + date.getHours() + ":" 
+  //          + date.getMinutes())
   return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
            + date.getDate() + " " + date.getHours() + ":" 
            + date.getMinutes()
+
 }
 
 //function to hide certain events based on published or draft view
