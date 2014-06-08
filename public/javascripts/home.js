@@ -267,6 +267,7 @@ $(document).ready(function() {
     draft_view = false
     initial = true
     //hideEvents()
+    render()
 
     if(document.getElementById("publish") != null)
     document.getElementById("publish").style.display = "none"
