@@ -5,7 +5,7 @@ block head
   script(src='javascripts/scheduler/dhtmlxscheduler.js', type='text/javascript', charset='utf-8')
   script(src='javascripts/scheduler/dhtmlxscheduler_limit.js', type='text/javascript', charset='utf-8')
   script(src='javascripts/scheduler/dhtmlxscheduler_timeline.js', type='text/javascript', charset='utf-8')
-  script(src='javascripts/home.js', type='text/javascript', charset='utf-8')
+  script(src='javascripts/employee.js', type='text/javascript', charset='utf-8')
   link(rel='stylesheet', type='text/css', href='/stylesheets/dhtmlxscheduler.css')
   link(rel='stylesheet', type='text/css', href='/stylesheets/home.css')
 block container
@@ -25,19 +25,8 @@ block container
     #sidr-left
         ul
           li
-            #publish PUBLISH
-          li
-            .color#chef
-            #text Chef
-          li
-            .color#waiter
-            #text Server
-          li
-            .color#bartender
-            #text Bartender
-          li
-            .color#manager
-            #text Manager
+            #publish UPDATE
+
   #container
     a(href='/home')
       img#logo(src='../resources/logosmall.png')
@@ -47,17 +36,15 @@ block container
         .dhx_cal_navline
           .tab#published
             img#tab-left(src='../resources/tableft.png')
-            #tab-mid PUBLISHED
+            #tab-mid SHIFTS
             img#tab-right(src='../resources/tabright.png')
           .tab#draft
             img#tab-left(src='../resources/tableft.png')
-            #tab-mid DRAFT
+            #tab-mid UNAVAILABLE
             img#tab-right(src='../resources/tabright.png')
           .dhx_cal_prev_button  
           .dhx_cal_next_button  
           //.dhx_cal_today_button
-          a#day DAY
-          a#week WEEK
           .dhx_cal_date
           //- .dhx_cal_tab(name='day_tab', style='right: 204px;')
           //- .dhx_cal_tab(name='week_tab', style='right: 140px;')

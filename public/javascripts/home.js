@@ -106,8 +106,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
       } else {
         allEmployees.sort(propertyCompare('username'))
-        
-        console.log('all employees: ' + JSON.stringify(allEmployees))
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
@@ -210,7 +208,6 @@ $(document).ready(function() {
   //publish button
   $("#publish").click(function()
   {
-    //$('.dhx_cal_event_line old').remove() //remove old events div
     $.sidr('close', 'sidr-left')
 
     while(ref_shifts.length > 0) { //clear ref_shifts
@@ -235,16 +232,7 @@ $(document).ready(function() {
           console.log("dont delete this one " + shifts[i].text)
           i++
         }
-        //ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
       }
-
-      /*  
-      for(var i = 0;i<ref_shifts.length;i++) {
-        ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
-        ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
-        ref_shifts[i].type = "old"
-      }
-      */ 
     }
 
     ref_calendar = new ClientCalendar({
@@ -275,6 +263,9 @@ $(document).ready(function() {
     draft_view = false
     initial = true
     //hideEvents()
+
+    if(document.getElementById("publish") != null)
+    document.getElementById("publish").style.display = "none"
 
   }) //end of publish function
 
@@ -376,7 +367,6 @@ function getShiftsForWeek(today)
   var week = calendars.getWeek(today)
   var ref_week = ref_calendar.getWeek(today)
 
-  console.log('this is week in getshiftsweek' + JSON.stringify(week))
   
   shifts = []
   ref_shifts = []
@@ -389,7 +379,6 @@ function getShiftsForWeek(today)
         shifts[j].start_date = correctDates(shifts[j].start_date)
         shifts[j].end_date = correctDates(shifts[j].end_date)
       }
-      console.log('this is shifts in getshiftsweek ' + JSON.stringify(shifts))
     }
   }
 }
@@ -397,7 +386,6 @@ function getShiftsForWeek(today)
 //function to parse and render
 function render()
 {
-  console.log('this is shifts in render ' + JSON.stringify(shifts))
   //parse events
   scheduler.parse(unavailability,"json")
   scheduler.parse(shifts,"json")

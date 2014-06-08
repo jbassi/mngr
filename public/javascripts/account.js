@@ -6,7 +6,6 @@ var FORM_COMPANY_PHONE = 1
 
 $(document).ready(function()
 {
-
  //object one to insert into our array is for manager
   var profileSettings = { 
     "id" : "",
