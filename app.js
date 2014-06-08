@@ -9,10 +9,6 @@ var Worker = require('./server/worker').Worker
 var Calendar = require('./server/calendar').Calendar
 var Company = require('./server/company').Company
 
-// variables that hold instances of the current worker and the worker's company
-var worker
-var company
-
 var Parse = require('parse').Parse
 
 // Configure app settings 
@@ -80,10 +76,6 @@ io.sockets.on('connection', function(socket)
         // TODO: handle error messages
       } else {
         // Emit user created with response message from databaseProvider
-        worker = Worker.current()
-        company = worker.retrieveCompany(function(error, returnedCompany) {
-          return returnedCompany 
-        })
         socket.emit('sign-up-response', null, user)
       }
     })
@@ -102,10 +94,7 @@ io.sockets.on('connection', function(socket)
       if(err) {
         socket.emit('login-response', err)
       } else {
-        worker = Worker.current()
-        company = worker.retrieveCompany(function(error, returnedCompany) {
-          return returnedCompany 
-        })
+        var worker = Worker.current()
         socket.emit('login-response', null, user, worker.isManager())
       }
     }) // end of worker.verifyLogin
@@ -116,9 +105,7 @@ io.sockets.on('connection', function(socket)
   // Log out current Parse user
   socket.on('logout', function(callback)
   {
-    worker.logoutCurrentUser()
-    worker = null
-    company = null
+     Worker.current().logoutCurrentUser()
     // null value means no error occured
     callback(null)
     
@@ -129,7 +116,7 @@ io.sockets.on('connection', function(socket)
   socket.on('reset-password', function(email, callback)
   {
     if(!email) {
-      email = worker.get('email')
+      email = Worker.current().get('email')
     }
 
     // DatabaseProvider object handles password reset
@@ -142,7 +129,7 @@ io.sockets.on('connection', function(socket)
   socket.on('retrieve-calendar', function(sendCalendarToClient)
   {
     // Emit result of password reset, err is null if no error exists
-    worker.retrieveCalendar(function(error, companyCalendar, companyInfo)
+    Worker.current().retrieveCalendar(function(error, companyCalendar, companyInfo)
     {
       if(error) { // if there was error while retrieving calendars
         sendCalendarToClient(error) 
@@ -158,7 +145,7 @@ io.sockets.on('connection', function(socket)
   // and add the workers company name and phone number
   socket.on('intro-manager-info-add', function(newUserInformation, callback)
   {
-    worker.initialManagerInformationCreation(newUserInformation, function(err) 
+    Worker.current().initialManagerInformationCreation(newUserInformation, function(err) 
     {
       // Send null (no error) or the error message back to the front end
       callback(err)
@@ -170,7 +157,7 @@ io.sockets.on('connection', function(socket)
   socket.on('retrieve-current-user', function(callback)
   {
     console.log('In retrieve current user.')
-    worker.retrieveCurrentWorker(function(err, user) 
+    Worker.current().retrieveCurrentWorker(function(err, user) 
     {
       if(err) {
         // If there is an error send the Parse error
@@ -186,7 +173,7 @@ io.sockets.on('connection', function(socket)
   // Attempt to retrieve all employees at the current signed in users company
   socket.on('retrieve-all-employees', function(callback)
   {
-    worker.retrieveAllEmployeesAtCompany(function(err, employees) 
+    Worker.current().retrieveAllEmployeesAtCompany(function(err, employees) 
     {
       if(err) {
         // If there is an error send the Parse error
@@ -203,7 +190,7 @@ io.sockets.on('connection', function(socket)
   socket.on('update-calendar', function(clientCalendars, callback)
   {
     // update calendar in database
-    worker.updateCalendar(clientCalendars, function(error) {
+    Worker.current().updateCalendar(clientCalendars, function(error) {
       if(error) { // if there was error while updating calendars
         callback(error)
 
@@ -217,7 +204,15 @@ io.sockets.on('connection', function(socket)
   // Attempts update company 
   socket.on('update-company', function(companyInfo, callback)
   {
-    company.update(companyInfo, callback)
+    Worker.current().retrieveCompany(function(error, returnedCompany) {
+      returnedCompany.update(companyInfo, function(err) {
+        if(err) {
+          callback(err) 
+        } else {
+          callback(null) 
+        }
+      })
+    })
   }) // end of update-calendar 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
@@ -241,32 +236,28 @@ io.sockets.on('connection', function(socket)
       workerFinished = true
       if(err) {
         console.log('im here in error of update employee')
-        errorOccured = err
+        callback(err)
       } else {
         console.log('im here in update company')
-      }
-    })
-
-    company.update(companyInfo, function(err) {
-      companyFinished = true
-      if(err) {
-        console.log('im here in error of update company')
-        errorOccured = err
-      } else {
-        console.log('im here in update company successful')
-      }
-    })
-
-    while(true) {
-      if(workerFinished && companyFinished) {
-        if(errorOccured) {
-          callback(errorOccured)
-        } else {
+        if(companyFinished)
           callback(null)
-        }
-        break
       }
-    }
+    }) // end of updateemployeeinformation()
+
+    Worker.current().retrieveCompany(function(error, returnedCompany) {
+      returnedCompany.update(companyInfo, function(err) {
+        companyFinished = true
+        if(err) {
+          console.log('im here in error of update company')
+          callback(err)
+        } else {
+          console.log('im here in update company successful')
+          if(workerFinished)
+            callback(null)
+        }
+      }) // end of update()
+    })
+
   })
 
 }) // end of io.socket.on
