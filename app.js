@@ -142,12 +142,12 @@ io.sockets.on('connection', function(socket)
   socket.on('retrieve-calendar', function(sendCalendarToClient)
   {
     // Emit result of password reset, err is null if no error exists
-    worker.retrieveCalendar(function(error, companyCalendar, positions)
+    worker.retrieveCalendar(function(error, companyCalendar, companyInfo)
     {
       if(error) { // if there was error while retrieving calendars
         sendCalendarToClient(error) 
       } else { // send array of calendar objects
-        sendCalendarToClient(null, companyCalendar, positions)
+        sendCalendarToClient(null, companyCalendar, companyInfo)
       }
     })
 
