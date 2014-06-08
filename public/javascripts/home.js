@@ -113,7 +113,7 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
 
         for(var i=0; i<allEmployees.length; ++i) {
           employees.push({
-            "key" : i+1,
+            "key" : allEmployees[i].id,
             "label" : allEmployees[i].username
           })
         }
@@ -357,15 +357,18 @@ $(document).ready(function() {
 function getShifts(today)
 {
   shifts = calendars.getDay(today).shifts 
+  unavailability = calendars.getDay(today).unavailabilities
   ref_shifts = ref_calendar.getDay(today).shifts 
-  console.log("shifts are " + shifts[0].start_date)
 
   for(var i = 0;i<shifts.length;i++) {
     shifts[i].start_date = correctDates(shifts[i].start_date)
     shifts[i].end_date = correctDates(shifts[i].end_date)
   }
 
-  console.log("shifts are now " + shifts[0].start_date)
+  for(var i = 0;i<unavailability.length;i++) {
+    unavailability[i].start_date = correctDates(unavailability[i].start_date)
+    unavailability[i].end_date = correctDates(unavailability[i].end_date)
+  }
 }
 
 function getShiftsForWeek(today) 
@@ -376,15 +379,23 @@ function getShiftsForWeek(today)
 
   
   shifts = []
+  unavailability = []
   ref_shifts = []
 
-  for(var i=0; i<6; ++i) {
+  for(var i=0; i<7; ++i) {
     shifts = shifts.concat(week[i].shifts)
+    unavailability = unavailability.concat(week[i].unavailabilities)
     ref_shifts = ref_shifts.concat(ref_week[i].shifts)
-    if(i==5) {
+
+    if(i==6) {
       for(var j = 0;j<shifts.length;j++) {
         shifts[j].start_date = correctDates(shifts[j].start_date)
         shifts[j].end_date = correctDates(shifts[j].end_date)
+      }
+
+      for(var i = 0;i<unavailability.length;i++) {
+        unavailability[i].start_date = correctDates(unavailability[i].start_date)
+        unavailability[i].end_date = correctDates(unavailability[i].end_date)
       }
     }
   }
@@ -395,7 +406,6 @@ function render()
 {
   //parse events
   scheduler.parse(unavailability,"json")
-  console.log("shifts are still " + shifts[0].start_date)
   scheduler.parse(shifts,"json")
 
   if(!day_view) {
@@ -559,15 +569,11 @@ function loadWeek()
 //function to format the correct date when loading data
 function correctDates(event_date) 
 {
-
   var date
-
   if(typeof event_date == 'string') {
     var dateInfo = event_date.split(' ')
     var dateString = dateInfo[0].split("-")
-
     date = new Date(dateString[0], dateString[1]-1, dateString[2])
-
     var time = dateInfo[1].split(':')
     date.setHours(time[0])
     date.setMinutes(time[1])
@@ -575,12 +581,6 @@ function correctDates(event_date)
   } else {
     date = new Date(event_date) 
   }
-// var date = "2012-12-31".split("-");
-// var dateInfo = event_date.split(' ')
-
-  // console.log("this is now date " + date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
-  //          + date.getDate() + " " + date.getHours() + ":" 
-  //          + date.getMinutes())
   return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
            + date.getDate() + " " + date.getHours() + ":" 
            + date.getMinutes()
