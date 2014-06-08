@@ -20,6 +20,7 @@ var Day = function(day)
 {
  this.date = '' 
  this.shifts = []  
+ this.unavailabilities = []
 
  if(day !== null && typeof day !== 'undefined') {
     this.date = day.date
@@ -29,6 +30,12 @@ var Day = function(day)
     for(var i=0; i<day.shifts.length; ++i) {
       if(day.shifts[i] !== null) {
         this.shifts.push(new Shift(day.shifts[i])) 
+      }
+    }
+
+    for(var i=0; i<day.unavailabilities.length; ++i) {
+      if(day.unavailabilities[i] !== null) {
+        this.unavailabilities.push(new Shift(day.unavailabilities[i])) 
       }
     }
   }
@@ -49,6 +56,12 @@ Day.prototype.addShift = function(shiftInfo)
    this.shifts.push(shiftInfo)
 }
 
+Day.prototype.addUnavail = function(unavailInfo)
+{
+   //this.shifts.push(new Shift(shiftInfo))
+   this.unavailabilities.push(unavailInfo)
+}
+
 /*
  * Summary:      editShiftAtIndex edits the Shift at the given shifts array
  *               index with the new JSON info passed into the second parameter.
@@ -60,6 +73,7 @@ Day.prototype.addShift = function(shiftInfo)
  *
  * Return:       None.
  */
+/*
 Day.prototype.editShiftAtIndex = function(shiftIndex, newInfo)
 {
   var shiftToEdit = this.shifts[shiftIndex]
@@ -81,7 +95,7 @@ Day.prototype.editShiftAtIndex = function(shiftIndex, newInfo)
     shiftToEdit.setBreakTime(newInfo.break_time)
   }
 }
-
+*/
 /*
  * Summary:      deleteShift deletes a Shift passed id
  *
@@ -115,10 +129,12 @@ Day.prototype.deleteShift = function(id)
  *
  * Return:       An array of Shift objects.
  */
+/*
 Day.prototype.getAllShiftsAtDay = function()
 {
   return this.shifts
 }
+*/
 
 if (typeof module !== 'undefined') { // only exports Day if module is defined
   module.exports.Day = Day

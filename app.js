@@ -80,11 +80,11 @@ io.sockets.on('connection', function(socket)
         // TODO: handle error messages
       } else {
         // Emit user created with response message from databaseProvider
-        socket.emit('sign-up-response', null, user)
         worker = Worker.current()
         company = worker.retrieveCompany(function(error, returnedCompany) {
           return returnedCompany 
         })
+        socket.emit('sign-up-response', null, user)
       }
     })
 
@@ -102,12 +102,11 @@ io.sockets.on('connection', function(socket)
       if(err) {
         socket.emit('login-response', err)
       } else {
-        socket.emit('login-response', null, user)
         worker = Worker.current()
         company = worker.retrieveCompany(function(error, returnedCompany) {
-          console.log(returnedCompany)
           return returnedCompany 
         })
+        socket.emit('login-response', null, user, worker.isManager())
       }
     }) // end of worker.verifyLogin
 
@@ -143,12 +142,12 @@ io.sockets.on('connection', function(socket)
   socket.on('retrieve-calendar', function(sendCalendarToClient)
   {
     // Emit result of password reset, err is null if no error exists
-    worker.retrieveCalendar(function(error, companyCalendar, positions)
+    worker.retrieveCalendar(function(error, companyCalendar, companyInfo)
     {
       if(error) { // if there was error while retrieving calendars
         sendCalendarToClient(error) 
       } else { // send array of calendar objects
-        sendCalendarToClient(null, companyCalendar, positions)
+        sendCalendarToClient(null, companyCalendar, companyInfo)
       }
     })
 
@@ -228,6 +227,8 @@ io.sockets.on('connection', function(socket)
     Worker.updateEmployeeInformation(employees, callback)
   }) // end of update-employee-information
 
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts update employee and company information from manager's profile
   socket.on('update-employee-company', function(employees, companyInfo, callback)
   {
     console.log('employees in update socket ' + JSON.stringify(employees))

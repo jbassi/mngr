@@ -58,6 +58,12 @@ var Worker = Parse.User.extend({
   },
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+  // This function decides whether the current worker is manager or not
+  isManager: function() {
+    return this.get('assignedRole') === 'Manager'
+  },
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
   retrieveAllEmployeesAtCompany: function(callback) 
   {
     // Array to return
@@ -166,7 +172,7 @@ var Worker = Parse.User.extend({
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // This function retrieves calendars based off the Company pointer 
-  // and also retrieves the positions the company has 
+  // and also retrieves the company information 
   retrieveCalendar: function(callback)
   {
     this.retrieveCompany(function(error, returnedCompany)
@@ -181,7 +187,7 @@ var Worker = Parse.User.extend({
           success: function(returnedCalendar)
           {
             console.log('im here in the success of retrieve calendar')
-            callback(null, returnedCalendar, returnedCompany.get('positions'))
+            callback(null, returnedCalendar, returnedCompany.get('companyInfo'))
           },
 
           error: function(error) 
@@ -388,19 +394,21 @@ var Worker = Parse.User.extend({
 
     // Check Parse for the given username and password
     Worker.logIn(user, password, {
-        success: function(user)
-        {
-          console.log('[~] Successful login.')
-          callback(null, user)
-        },
+      success: function(user)
+      {
+        console.log('[~] Successful login.')
+        // allow master key if manager logs in
 
-        error: function(user, err)
-        {
-          console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
-          console.error(err)
-          //callback(err.code, user)
-          callback(err, user)
-        }
+        callback(null, user)
+      },
+
+      error: function(user, err)
+      {
+        console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
+        console.error(err)
+        //callback(err.code, user)
+        callback(err, user)
+      }
     })
   }, // end of verifyLogin()
 
