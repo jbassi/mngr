@@ -8,14 +8,13 @@ block container
         img#menuimage(src='../resources/menulight.png')
         navtext MENU
       #profile
-        ul.navigation
-          a.main(href='#url')
           navtext#nav_profile PROFILE
           img#loginimage(src='../resources/loginlight.png')
-          li.n1
-            a(href='/home') HOME
-          li.n2
-            a(href='#') LOGOUT
+          ul#dropdown
+            li#d1
+              a(href='/home') HOME
+            li#d2
+              a(href='#') LOGOUT
     #sidr-left
         ul
           li
