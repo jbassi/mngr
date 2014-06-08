@@ -235,6 +235,13 @@ io.sockets.on('connection', function(socket)
   }) // end of update-employee-information
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts delete employee information
+  socket.on('delete-employee', function(employee)
+  {
+    Worker.delete(employee)
+  }) // end of update-employee-information
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts update employee and company information from manager's profile
   socket.on('update-employee-company', function(employees, companyInfo, callback)
   {

@@ -7,6 +7,7 @@ var FORM_COMPANY_PHONE = 1
 $(document).ready(function()
 {
 
+  $('#right').remove()
 
  //object one to insert into our array is for manager
   var profileSettings = { 
@@ -170,17 +171,6 @@ $(document).ready(function()
       } else {
         console.log('Unsuccessful update!!!!!!!')
         // TODO: Display unsuccessful error to the user
-      }
-    })
-  })
-
-  $('#change-password').click(function() 
-  {
-    socket.emit('reset-password', null, function(err) {
-    if(err) {
-        console.log('Error in sending password reset.')
-      } else {
-        console.log('Password reset successful.')
       }
     })
   })

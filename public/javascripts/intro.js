@@ -191,43 +191,46 @@ $(document).ready(function()
         //check if duplicate here(doesnt work. scroll down)
         hasDuplicate(pos_array, function(noDuplicateArray) 
         {
-            pos_array = noDuplicateArray
+          pos_array = noDuplicateArray
+          for( var j = 0,k =1; j < pos_array.length; ++j, ++k){
+                console.log('im here')
+              var tmp_object = {
+                  'key': k,
+                  'label': pos_array[j],
+                  'color': colors[j]
+              }
+
+              key_label_color.push(tmp_object)
+              if(j == pos_array.length-1) {
+                console.log('im here')
+                company.companyInfo.positions = key_label_color
+              }
+           }        
         })
         
-
         //print all positions in array
         //I starts at one for key (not sure if necessary)
-        
-        for( var j = 0,k =1; j < pos_array.length; ++j, ++k){
-             console.log('im her in the for loop ' + pos_array.length)
-            var tmp_object = {
-                'key': k,
-                'label': pos_array[j],
-                'color': colors[j]
-            }
-
-            key_label_color.push(tmp_object)
-
-            if(j === pos_array.length-1) {
-                company.companyInfo.positions = key_label_color
-                console.log(company.companyInfo.positions)
-            }
-        }        
-        
         $.each(m, function(i, field) {
-
             if( i === 0)
                 company.name = field.value;
 
             if( i === 1)
                 company.phoneNumber = field.value;
-            //if i === 2 assign position values
-            console.log(field.name + " : " + field.value)
         });
 
         if( company.name == "") {
             incorrect_company_name = true;
         }
+
+        changeTime(m[3].value, function(time)
+        {
+          company.companyInfo.hours.day_start = time
+        })
+
+        changeTime(m[4].value, function(time)
+        {
+          company.companyInfo.hours.day_end = time
+        })
 
         //if company name is empty dont move on
         if( incorrect_company_name ) {
@@ -253,49 +256,50 @@ $(document).ready(function()
 
             }
             
-        
             //push to back end
-            socket.emit('intro-manager-info-add', company_employee, function(error){
+            socket.emit('intro-manager-info-add', company_employee, function(error) 
+            {
                 
-                //will return error message as a string
-                if(error){
-                    console.log(error.message)
-                    $('#error_message').append(error.message)
-                    $("#error_message").show();
-                    
-                }
-                else{
-                    console.log("We did it!!! Ready to go to manager page")
-                    window.location.href = '/home'
+              //will return error message as a string
+              if(error){
+                  console.log(error.message)
+                  $('#error_message').append(error.message)
+                  $("#error_message").show();
+                  
+              }
+              else{
+                  console.log("We did it!!! Ready to go to manager page")
+                  window.location.href = '/home'
 
-                    
                 }
-                
             });
-                
-        
-        }
-
-        
+          }
     });
 
     function hasDuplicate(arr, callback) {
         //send string to lowercase as well
         var sorted_arr = arr.sort()
 
-        var results = [];
-        for (var i = 0; i < arr.length - 1; i++) {
+        for (var i = 0; i < sorted_arr.length - 1; i++) {
             if (sorted_arr[i + 1] == sorted_arr[i]) {
-                console.log('im here bc theres duplicate IF')
-                results.push(sorted_arr[i]);
+              sorted_arr.splice(i, 1)
             }
             if( i == arr.length-2) {
-                callback(results)
+                callback(sorted_arr)
             }
         }
-
     }   
+    
+    function changeTime(time, callback) {
+      var splitTime = time.split(':')
+      var hours = parseInt(splitTime[0])
+      var day = splitTime[1].substring(2)
 
+      if(day == 'pm')
+        hours += 12
+
+      callback(hours)
+    }
 
 });
 
