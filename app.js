@@ -105,7 +105,6 @@ io.sockets.on('connection', function(socket)
         socket.emit('login-response', null, user)
         worker = Worker.current()
         company = worker.retrieveCompany(function(error, returnedCompany) {
-          console.log(returnedCompany)
           return returnedCompany 
         })
       }
