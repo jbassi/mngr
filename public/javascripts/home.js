@@ -4,9 +4,10 @@ var socket = io.connect()
 var positions = []
 var day_start = 6;
 var day_end = 22;
-var day_length = day_end - day_start;
+var day_length = day_end - day_start - 1;
 var year = 2014;
 
+var unavail_view = false;
 var draft_view = false;
 var day_view = true;
 var initial = true;
