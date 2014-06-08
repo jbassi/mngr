@@ -105,6 +105,7 @@ io.sockets.on('connection', function(socket)
         socket.emit('login-response', null, user)
         worker = Worker.current()
         company = worker.retrieveCompany(function(error, returnedCompany) {
+          console.log(returnedCompany)
           return returnedCompany 
         })
       }
@@ -126,14 +127,14 @@ io.sockets.on('connection', function(socket)
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempts to reset given Parse user password
-  socket.on('reset-password', function(args)
+  socket.on('reset-password', function(email, callback)
   {
+    if(!email) {
+      email = worker.get('email')
+    }
+
     // DatabaseProvider object handles password reset
-    worker.resetPassword(args, function(err)
-    {
-      // Emit result of password reset, err is null if no error exists
-      socket.emit('reset-password-response', err)
-    }) 
+    Worker.resetPassword(email, callback)
 
   }) // end of reset-password
 
@@ -164,6 +165,23 @@ io.sockets.on('connection', function(socket)
       callback(err)
     })
   }) // end of intro-manager-info-add
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts to retrieve current Parse user
+  socket.on('retrieve-current-user', function(callback)
+  {
+    console.log('In retrieve current user.')
+    worker.retrieveCurrentWorker(function(err, user) 
+    {
+      if(err) {
+        // If there is an error send the Parse error
+        callback(err)
+      } else {
+        // If there is no error, send employees array through callback
+        callback(null, user)
+      }
+    })
+  }) // end of update-calendar 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Attempt to retrieve all employees at the current signed in users company
@@ -197,16 +215,57 @@ io.sockets.on('connection', function(socket)
   }) // end of update-calendar 
   
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // Attempts to reset given Parse user password
+  // Attempts update company 
   socket.on('update-company', function(companyInfo, callback)
   {
     company.update(companyInfo, callback)
   }) // end of update-calendar 
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
-  // Attempts to reset given Parse user password
+  // Attempts update employee information
   socket.on('update-employee-information', function(employees, callback)
   {
     Worker.updateEmployeeInformation(employees, callback)
-  }) // end of update-calendar 
+  }) // end of update-employee-information
+
+  socket.on('update-employee-company', function(employees, companyInfo, callback)
+  {
+    console.log('employees in update socket ' + JSON.stringify(employees))
+
+    var errorOccured = null
+    var workerFinished = false
+    var companyFinished = false
+
+    Worker.updateEmployeeInformation(employees, function(err) {
+      workerFinished = true
+      if(err) {
+        console.log('im here in error of update employee')
+        errorOccured = err
+      } else {
+        console.log('im here in update company')
+      }
+    })
+
+    company.update(companyInfo, function(err) {
+      companyFinished = true
+      if(err) {
+        console.log('im here in error of update company')
+        errorOccured = err
+      } else {
+        console.log('im here in update company successful')
+      }
+    })
+
+    while(true) {
+      if(workerFinished && companyFinished) {
+        if(errorOccured) {
+          callback(errorOccured)
+        } else {
+          callback(null)
+        }
+        break
+      }
+    }
+  })
+
 }) // end of io.socket.on
