@@ -1,9 +1,3 @@
-/*
- * Summary:      account.js handles all user interaction (clicks, submits) 
- *               when the manager or employee wants to edit their account 
- *               information.
- */
-
 var FORM_PROFILE_NAME = 0
 var FORM_PROFILE_EMAIL = 1
 var FORM_PROFILE_PHONE = 2
@@ -18,6 +12,7 @@ $(document).ready(function()
     if(!err) {
       if(currentUser.role == 'Employee') {
         $('#right').remove()
+        $('#hi').remove()
       }
     } else {
       console.log('Error retrieving current user.')
