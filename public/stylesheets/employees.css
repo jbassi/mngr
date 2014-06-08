@@ -165,7 +165,7 @@ width:12%;
 .email{
 height:auto;
 text-align:left;
-margin-left: 1em;
+margin-left: 2em;
 float:left;
 width:14%;
 }
@@ -173,7 +173,7 @@ width:14%;
 .role{
 height:auto;
 text-align:left;
-margin-left: 2em;
+margin-left: 7em;
 float:left;
 width:10%;
 }
@@ -192,6 +192,7 @@ font-weight: normal;
 color: #424242;
 float: right;
 margin-top: 0.5em;
+cursor:pointer;
 }
 
 .cancel{
@@ -208,10 +209,10 @@ font-weight: normal;
 color: #424242;
 float: right;
 margin-top: 0.5em;
-
+cursor:pointer;
 }
 
-.submit{
+.submit, .deleteUser{
 background-color: rgba(108, 183, 111, 1);
 width: 4em;
 height: 2em;
@@ -225,6 +226,7 @@ font-weight: normal;
 color: #424242;
 float: right;
 margin-top: 0.5em;
+cursor:pointer;
 }
 .add_employee{
 background-color: rgba(108, 183, 111, 1);
@@ -239,7 +241,7 @@ font-family: BrandonBlack,sans-serif;
 font-weight: normal;
 color: #424242;
 float: right;
-margin-top: 0.5em;
+margin-top: 2px;
 cursor:pointer;
 }
 

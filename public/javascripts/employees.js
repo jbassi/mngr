@@ -28,7 +28,7 @@ $(document).ready(function() {
 
    })
 
-
+  //does something
   function propertyCompare(prop) {
     return function(a, b) {
         return a[prop] > b[prop]
@@ -38,6 +38,7 @@ $(document).ready(function() {
    //need to grab all current emloyees
   socket.emit('retrieve-all-employees', function(err, employees)
   {
+
     var totalEditButtonsActive = 0
     console.log('Retrieve employees...')
     //console.log(JSON.stringify(employees))
@@ -54,35 +55,42 @@ $(document).ready(function() {
       var email = employees[i].email
       var position = employees[i].role
 
-      $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="">\
-        </input><div class="email" '+id+'><h2>'+email+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value=""></input>\
-        <div class="role" '+id+'><h2>'+position+'</h2></div><div class="edit" '+id+'>EDIT</div><div class="cancel" '+id+'>CANCEL</div></form>')
+      $(".box").append( '<form '+id+'><div class="name" '+id+'><h2>'+name+'</h2></div><input type="text", placeholder="CHANGENAME", name="name" value="'+name+'">\
+        </input><div class="email" '+id+'><h2>'+email+'</h2></div><input type="text", placeholder="NEW EMAIL", name="email" value="'+email+'"></input>\
+        <div class="role" '+id+'><h2>'+position+'</h2></div><div class="edit" '+id+'>EDIT</div><div class="deleteUser" '+id+'>DELETE</div><div class="cancel" '+id+'>CANCEL</div></form>')
 
       //hide inputs as they are arriving from array apending form
       $('#'+i+' input').hide()
     }
 
-    $(".box").append('<div class="submit">SUBMIT</div>')
- 
+    
     //initally hid button divs
     $(".submit").hide()
     $(".cancel").hide()
+    $(".deleteUser").hide()
 
     
 
     //on edit click
     $(".edit").click(function()
     {
-      $(".submit").css('display', 'block').show()
+      $(".submit").show()
       ++totalEditButtonsActive
-      var id = $(this).closest("div").attr("id");
-
+      var id = $(this).closest("div").attr("id")
+      /*var one = $(this).find('h2').hide()
+      var two = $(this).find('h2').text(''+email+'')
+      var three = $(this).find('h2').text(''+position+'')
+      console.log(one)
+      console.log(two)
+      console.log(three)*/
       var cancel = "#"+id+".cancel"
       var edit = "#"+id+".edit"
       var form = "#"+id+" input"
+      var deleteUser = "#"+id+".deleteUser"
       $(edit).hide()
       $(form).show()
       $(cancel).show()
+      $(deleteUser).show()
     })
 
     // Update specific user information to Parse
@@ -145,13 +153,16 @@ $(document).ready(function() {
       var cancel = "#"+id+" .cancel"
       var edit = "#"+id+" .edit"
       var input = "#"+id+" input"
+      var deleteUser = "#"+id+".deleteUser"
 
       $(input).closest('form').find("input[type=text], textarea").val("");
 
       $(input).hide()
       $(cancel).hide()
-      // $(submit).hide()
+      $(deleteUser).hide()
       $(edit).show()
     })
   })
 })
+
+ 

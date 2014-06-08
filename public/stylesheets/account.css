@@ -104,7 +104,7 @@ border-radius:.3em;
 .add_employee{
 background-color: rgba(108, 183, 111, 1);
 width: 10em;
-height: 2em;
+height: 2.2em;
 position: relative;
 margin-right: 1em;
 border-radius: 0.3em;
@@ -114,7 +114,7 @@ font-family: BrandonBlack,sans-serif;
 font-weight: normal;
 color: #424242;
 float: right;
-margin-top: 0.5em;
+margin-top: 17px;
 cursor:pointer;
 }
 
