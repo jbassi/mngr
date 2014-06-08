@@ -81,7 +81,6 @@ $(document).ready(function() {
     $(".cancel").hide()
     $(".deleteUser").hide()
 
-    
 
     //on edit click
     $(".edit").click(function()
@@ -174,6 +173,38 @@ $(document).ready(function() {
       $(deleteUser).hide()
       $(edit).show()
     })
+  })
+
+  $("#add-employee-button").click(function() 
+  {
+    // construct JSON to pass to employee sign up
+    // var name = userInfo.name === '' ? null : userInfo.name
+    // var email = userInfo.email === '' ? null : userInfo.email
+    // var password = userInfo.password === '' ? null : userInfo.password
+    // var assignedRole = userInfo.assignedRole === '' ? null : userInfo.assignedRole
+    // var phoneNumber = userInfo.phoneNumber === '' ? null : userInfo.phoneNumber
+    // var isOnSignUp = userInfo.isOnSignUp === '' ? null : userInfo.isOnSignUp
+    var userInfo = {
+      "name":$('#employee-name').val(),
+      "email":$('#employee-email').val(),
+      "password":$('#employee-name').val(),
+      "assignedRole":"Employee",
+      "phoneNumber":"",
+      "isOnSignUp":false
+    }
+
+    socket.emit('sign-up', userInfo, function(err) 
+    {
+      if(err) {
+        console.log('Error signing up user')
+      } else {
+        console.log('successful sign up')
+        // Refresh page
+        location.reload()
+      }
+    })
+
+    console.log($('#employee-name').val() + ' ' + $('#employee-email').val())
   })
 })
 

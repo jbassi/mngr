@@ -207,6 +207,11 @@ $(document).ready(function()
             }
 
             key_label_color.push(tmp_object)
+
+            if(j === pos_array.length-1) {
+                company.companyInfo.positions = key_label_color
+                console.log(company.companyInfo.positions)
+            }
         }        
         
         $.each(m, function(i, field) {
