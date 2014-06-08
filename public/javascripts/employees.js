@@ -3,6 +3,9 @@
  *               when the manager attempts to edit multiple users.
  */
 $(document).ready(function() {
+
+  $.sidr('open', 'sidr-left');
+  
   //show dropdown
   $("#profile").click(function()
   {
