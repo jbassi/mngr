@@ -102,14 +102,14 @@ $(document).ready(function()
   // Even handle when sign-up is clicked
   $('#signup-button').click(function()
   {
-    emit_singUp()
+    emit_signUp()
   })
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Event handle when <CR> was pressed on sign-up
   $('#signup-pass').keydown(function(e) {
     if (e.keyCode == 13) 
-      emit_singUp()
+      emit_signUp()
   })
 
   
@@ -122,8 +122,13 @@ $(document).ready(function()
 
 function emit_passwordReset()
 {
-  socket.emit('reset-password', {
-    "email" : $('#send-email').val()
+  // Send password reset link
+  socket.emit('reset-password', $('#send-email').val(), function(err) {
+    if(err) {
+      console.log('Error in sending password reset.')
+    } else {
+      console.log('Password reset successful.')
+    }
   })
 }
 
@@ -135,7 +140,7 @@ function emit_login()
   })
 }
 
-function emit_singUp()
+function emit_signUp()
 {
   socket.emit('sign-up', {
     "name" : $('#signup-name').val(),
@@ -145,5 +150,12 @@ function emit_singUp()
     "phoneNumber" : $('#telephone-num').val(),
     "companyName" : $('#company-name').val(),
     "isOnSignUp" : true
+  }, function(err) 
+  {
+    if(err) {
+      console.log('Signup unsuccessful.')
+    } else {
+      window.location.href = '/intro'
+    }
   })  
 }

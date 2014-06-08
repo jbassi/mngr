@@ -52,13 +52,9 @@ $(document).ready(function()
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
-
         
         //set focus to new emploee pages
-
-
         //send cursor into the newly added field yo
-
         $('#input'+formCount+' #employee-name').focus();
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
@@ -211,6 +207,11 @@ $(document).ready(function()
             }
 
             key_label_color.push(tmp_object)
+
+            if(j === pos_array.length-1) {
+                company.companyInfo.positions = key_label_color
+                console.log(company.companyInfo.positions)
+            }
         }        
         
         $.each(m, function(i, field) {
@@ -294,19 +295,7 @@ $(document).ready(function()
         }
 
     }   
-    // while (i--) {
-    //     val = arr[i];
-    //     j = i;
-    //     while (j--) {
-    //         if (arr[j] == val) {
-    //             arr.splice(j, 1);
-    //             console.log('Deleting duplicate value is:'+arr[j]+'')
 
-    //         }
-    //     }
-    // }
-    // return false;
-    // }
 
 });
 

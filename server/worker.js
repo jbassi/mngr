@@ -492,11 +492,12 @@ var Worker = Parse.User.extend({
   // A callback with an error from parse is provided.
   resetPassword: function(email, callback)
   {
+    // console.log('resetPassword: ' + JSON.stringify(email))
     Parse.User.requestPasswordReset(email, {
       success: function()
       {
         // Password reset request was successful
-        console.log('[~] Request sent to: ' + Worker.current().get('username'))
+        console.log('[~] Request sent to: ' + email)
         callback(null)
       },
 
@@ -504,6 +505,7 @@ var Worker = Parse.User.extend({
       {
         // Send error message back to calling function
         console.error('[~] Reset request failed')
+        console.error(err.message)
         callback(err)
       }
     })
