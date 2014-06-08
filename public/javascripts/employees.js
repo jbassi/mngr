@@ -62,8 +62,7 @@ $(document).ready(function() {
       $('#'+i+' input').hide()
     }
 
-    $(".box").append('<div class="submit">SUBMIT</div>')
- 
+    
     //initally hid button divs
     $(".submit").hide()
     $(".cancel").hide()
@@ -73,7 +72,7 @@ $(document).ready(function() {
     //on edit click
     $(".edit").click(function()
     {
-      $(".submit").css('display', 'block').show()
+      $(".submit").show()
       ++totalEditButtonsActive
       var id = $(this).closest("div").attr("id");
 
