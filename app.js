@@ -7,6 +7,13 @@ var server = http.createServer(app)
 var io = require('socket.io').listen(server)
 var Worker = require('./server/worker').Worker
 var Calendar = require('./server/calendar').Calendar
+var Company = require('./server/company').Company
+
+// variables that hold instances of the current worker and the worker's company
+var worker
+var company
+
+var Parse = require('parse').Parse
 
 // Configure app settings 
 app.configure(function()
@@ -53,6 +60,7 @@ require('./server/database-provider')(app, server, function(err)
 // Configure socket.io server emits and on messages
 io.sockets.on('connection', function(socket)
 {
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   // Emit a successful connection message if socket.io connects
   socket.emit('status', {msg:'connection established'})
 
@@ -73,6 +81,10 @@ io.sockets.on('connection', function(socket)
       } else {
         // Emit user created with response message from databaseProvider
         socket.emit('sign-up-response', null, user)
+        worker = Worker.current()
+        company = worker.retrieveCompany(function(error, returnedCompany) {
+          return returnedCompany 
+        })
       }
     })
 
@@ -91,6 +103,10 @@ io.sockets.on('connection', function(socket)
         socket.emit('login-response', err)
       } else {
         socket.emit('login-response', null, user)
+        worker = Worker.current()
+        company = worker.retrieveCompany(function(error, returnedCompany) {
+          return returnedCompany 
+        })
       }
     }) // end of worker.verifyLogin
 
@@ -100,8 +116,9 @@ io.sockets.on('connection', function(socket)
   // Log out current Parse user
   socket.on('logout', function(callback)
   {
-
-    Worker.logoutCurrentUser()
+    worker.logoutCurrentUser()
+    worker = null
+    company = null
     // null value means no error occured
     callback(null)
     
@@ -112,7 +129,7 @@ io.sockets.on('connection', function(socket)
   socket.on('reset-password', function(args)
   {
     // DatabaseProvider object handles password reset
-    Worker.resetPassword(args, function(err)
+    worker.resetPassword(args, function(err)
     {
       // Emit result of password reset, err is null if no error exists
       socket.emit('reset-password-response', err)
@@ -125,9 +142,7 @@ io.sockets.on('connection', function(socket)
   socket.on('retrieve-calendar', function(sendCalendarToClient)
   {
     // Emit result of password reset, err is null if no error exists
-    var currentUser = Worker.current()
-
-    currentUser.retrieveCalendar(function(error, companyCalendar, positions)
+    worker.retrieveCalendar(function(error, companyCalendar, positions)
     {
       if(error) { // if there was error while retrieving calendars
         sendCalendarToClient(error) 
@@ -143,7 +158,7 @@ io.sockets.on('connection', function(socket)
   // and add the workers company name and phone number
   socket.on('intro-manager-info-add', function(newUserInformation, callback)
   {
-    Worker.initialManagerInformationCreation(newUserInformation, function(err) 
+    worker.initialManagerInformationCreation(newUserInformation, function(err) 
     {
       // Send null (no error) or the error message back to the front end
       callback(err)
@@ -154,14 +169,14 @@ io.sockets.on('connection', function(socket)
   // Attempt to retrieve all employees at the current signed in users company
   socket.on('retrieve-all-employees', function(callback)
   {
-    Worker.retrieveAllEmployeesAtCompany(function(err, employees) 
+    worker.retrieveAllEmployeesAtCompany(function(err, employees) 
     {
-      if(!err) {
-        // If there is no error, send employees array through callback
-        callback(null, employees)
-      } else {
+      if(err) {
         // If there is an error send the Parse error
         callback(err)
+      } else {
+        // If there is no error, send employees array through callback
+        callback(null, employees)
       }
     })
   })
@@ -171,7 +186,7 @@ io.sockets.on('connection', function(socket)
   socket.on('update-calendar', function(clientCalendars, callback)
   {
     // update calendar in database
-    Worker.current().updateCalendar(clientCalendars, function(error) {
+    worker.updateCalendar(clientCalendars, function(error) {
       if(error) { // if there was error while updating calendars
         callback(error)
 
@@ -179,5 +194,19 @@ io.sockets.on('connection', function(socket)
         callback(null)
       }
     })
+  }) // end of update-calendar 
+  
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts to reset given Parse user password
+  socket.on('update-company', function(companyInfo, callback)
+  {
+    company.update(companyInfo, callback)
+  }) // end of update-calendar 
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
+  // Attempts to reset given Parse user password
+  socket.on('update-employee-information', function(employees, callback)
+  {
+    Worker.updateEmployeeInformation(employees, callback)
   }) // end of update-calendar 
 }) // end of io.socket.on

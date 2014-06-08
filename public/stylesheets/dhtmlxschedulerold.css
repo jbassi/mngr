@@ -1691,20 +1691,24 @@ div.dhx_menu_head, div.dhx_menu_icon {
   cursor: default;
 }
 
-.dhx_cal_event_line.shifts{
-  z-index:2;
-  cursor: pointer;
+.dhx_cal_event_line.unavailability{
+
 }
-/*
-.dhx_cal_event_line.temp{
+
+.dhx_cal_event_line.shifts{ /* edited */
   z-index:2;
   cursor: pointer;
 }
 
-.dhx_cal_event_line.old{
+.dhx_cal_event_line.temp{ /* edited */
+  z-index:2;
+  cursor: pointer;
+}
+
+.dhx_cal_event_line.old{ /* edited */
   display: none;
 }
-*/
+
 .dhx_cal_event_line_start {
   -webkit-border-top-left-radius: 9px;
   -webkit-border-bottom-left-radius: 9px;

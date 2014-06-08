@@ -47,8 +47,7 @@ $(document).ready(function()
 
 	//if clicked save information users entered to change
 	$("#change-button").click(function()
-    {
-        
+  {
         //hide error message
         $("#error").hide()
 
@@ -115,8 +114,7 @@ $(document).ready(function()
 
     	});
 
-
-        //validation checks in form
+      //validation checks in form
     	for( var j = 1; j < tmp.length; j=j+2){
 
     		if(j === 1)
@@ -176,15 +174,13 @@ $(document).ready(function()
               $("#error").show()
         	}
         }
-    	
-          
         //pass to backend and check to see nothing went wrong
         //$("#correct").append('Successfully Changed')
         //$("#correct").show()
-        
-
-
-    });
+    
+    // TODO: socket emit for updating employee settings 
+    // TODO: socket emit for updating company info and positions
+  });
 
 });
 
