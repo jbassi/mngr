@@ -1,4 +1,4 @@
-//TODO fix week day view fit events, week view resize events
+var is_manager = false;
 
 var socket = io.connect()
 var positions = []
@@ -6,10 +6,10 @@ var day_start = 6;
 var day_end = 22;
 var day_length = day_end - day_start;
 var year = 2014;
+var date_step
 
-var draft_view = false;
+var unavail_view = false;
 var day_view = true;
-var initial = true;
 
 var positions=[
 {key:1, label:"Chef", color:"#c85248"},
@@ -19,7 +19,7 @@ var positions=[
 ]
 
 var employees = []
-var shifts  
+var unavail
 var ref_shifts
 
 var unavailability=[
@@ -51,40 +51,13 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     console.log('(-) Calendar initialization failed.')
   } 
   else { 
-    // Calendar successfully passed
-    // Loop through companyCalendar and make ClientCalendars 
-    // We want to create ClientCalendars because, 
-    // we can't call methods with Parse objects
-    /*
-    for(var i = 0; i < companyCalendars.length; ++i) {
-      calendars.push(new ClientCalendar(companyCalendars[i]))
-      ref_calendars.push(new ClientCalendar(companyCalendars[i]))
-      // calendar = ClientCalendar(companyCalendar)
-    }
-    */
 
     var today = new Date()
 
     calendars = new ClientCalendar(companyCalendar)
     ref_calendar = new ClientCalendar(companyCalendar)
-    
-    /*
-    for(var i=0; i<calendars.length; ++i) {
-      if(calendars[i].year == thisYear) {
-        currentCalendar = calendars[i]
-        ref_calendar = ref_calendars[i]
 
-        currentDay = currentCalendar.getCurrentDayAsIndex()
-        currentCalendar.goingToChange()
-        break;
-      }
-    }
-    */
-
-    getShifts(today)
-
-    // Set the passed in company positions to the global array
-    // positions = companyPositions
+    getShifts(today) //parse the shifts for today
 
     scheduler.locale.labels.timeline_tab = "Timeline"
     scheduler.locale.labels.section_custom="Position"
@@ -93,14 +66,6 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
     scheduler.config.xml_date="%Y-%m-%d %H:%i"
     scheduler.config.wide_form = false
     scheduler.config.readonly = true
-    //scheduler.config.show_loading = true;
-    // scheduler.addMarkedTimespan({  
-    //     days:  [3], 
-    //     zones: "fullday",
-    //     type:  "dhx_time_block", 
-    //     css:   "gray_section", 
-    //     //sections: { timeline: 2} 
-    // });
 
     // Used to sort username in allEmployees.sort() 
     function propertyCompare(prop) {
@@ -124,46 +89,24 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
           })
         }
 
-        //render the colors
-        scheduler.templates.event_class = function (start, end, event) 
-        {
-          //event.start_date = correctDates(event.start_date);
-          //event.end_date = correctDates(event.end_date);
-          if (event.color == "#e7e7e7") {
-            //event.text = "UNAVAILABLE";
-            return "unavailability"
-          }
-          // else if (event.type == "temp") {
-          //   return "temp"
-          // } 
-          // else if (event.type == "old") {
-          //   return "old"
-          // }
-          else {
-            event.color = scheduler.getColor("position_id", event.position_id);
-            return "shifts"
-          }
-        }
+        // //render the colors
+        // scheduler.templates.event_class = function (start, end, event) 
+        // {
+        //   if (event.color == "#e7e7e7") {
+        //     //event.text = "UNAVAILABLE";
+        //     return "unavailability"
+        //   }
+        // }
 
         loadDay() //create timeline day
 
         //lightbox
         scheduler.config.lightbox.sections=[
-        //{name:"description", height:50, map_to:"text", type:"textarea" , focus:true}, //POSTIT NOTE FEATURE?
-        {name:"custom", height:23, type:"select", options:positions, map_to:"position_id" },
-        //{name:"custom", height:200, options:positions, map_to:"position_id", type:"radio", vertical:true },
-        //{name:"time", height:72, type:"time", map_to:"auto"}
         ]
           
         scheduler.init('scheduler', today,"timelineshifts") //init the calendar
-        //loadWeek()
 
-        render()
-
-        //hide relevant events on window resize
-        scheduler.attachEvent("onSchedulerResize", function(){
-          hideEvents();
-        });
+        render() //render and display the calendar
       }
     }) // end of socket emit for retrieve-all-employees
   }
@@ -187,10 +130,10 @@ $(document).ready(function() {
     $.sidr('close', 'sidr-left');
   });
 
-  $(".dhx_cal_next_button").click(function()
-  {
-    console.log("next button")
-  });
+  // $(".dhx_cal_next_button").click(function()
+  // {
+  //   console.log("next button")
+  // });
 
   //show dropdown
   $("#profile").click(function()
@@ -215,8 +158,8 @@ $(document).ready(function() {
     })
   })
 
-  //publish button
-  $("#publish").click(function()
+  //update button
+  $("#update").click(function()
   {
     //$('.dhx_cal_event_line old').remove() //remove old events div
     $.sidr('close', 'sidr-left')
@@ -226,33 +169,24 @@ $(document).ready(function() {
     }
     for(var j=0; j<calendars.days.length; ++j) {
 
-      shifts = calendars.days[j].shifts
+      unavail = calendars.days[j].unavailabilities
 
       var i = 0
-      var length = shifts.length
+      var length = unavail.length
       while(i<length) {
         console.log(i + " " + length)
-        if(shifts[i].type == "delete") {
-          console.log("delete this one " + shifts[i].text)
-          shifts.splice(i,1)
+        if(unavail[i].type == "delete") {
+          console.log("delete this one " + unavail[i].text)
+          unavail.splice(i,1)
           length--
         }
         else {
-          console.log("now at " + shifts[i].text + "at " + i)
-          delete shifts[i].type //delete temp
-          console.log("dont delete this one " + shifts[i].text)
+          console.log("now at " + unavail[i].text + "at " + i)
+          //delete shifts[i].type //delete temp
+          console.log("dont delete this one " + unavail[i].text)
           i++
         }
-        //ref_shifts[i] = jQuery.extend(true, {}, shifts[i]); //deep copy shifts to new ref
       }
-
-      /*  
-      for(var i = 0;i<ref_shifts.length;i++) {
-        ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
-        ref_shifts[i].end_date = correctDates(ref_shifts[i].end_date)
-        ref_shifts[i].type = "old"
-      }
-      */ 
     }
 
     ref_calendar = new ClientCalendar({
@@ -277,63 +211,105 @@ $(document).ready(function() {
     //load published view
     scheduler.parse(ref_shifts,"json")
     scheduler.config.readonly = true
-    document.getElementById("draft").style.opacity = ".25"
-    document.getElementById("published").style.opacity = "1"
+    document.getElementById("tabunavail").style.opacity = ".25"
+    document.getElementById("tabshifts").style.opacity = "1"
 
-    draft_view = false
-    initial = true
-    //hideEvents()
-
+    unavail_view = false
   }) //end of publish function
 
   //load draft view
-  $("#draft").click(function()
+  $("#tabunavail").click(function()
   {
     if(sched_loaded) {
       if(this.style.opacity == 0.25 || !this.style.opacity) {
-        if(initial) {
-          $.sidr('open', 'sidr-left');
-          initial = false;
+        $.sidr('open', 'sidr-left');
+
+        if(document.getElementById("update") != null)
+          document.getElementById("update").style.display = "block"
+        for(var i = 0;i<unavail.length;i++) {
+          unavail[i].start_date = correctDates(unavail[i].start_date)
+          unavail[i].end_date = correctDates(unavail[i].end_date)
         }
-        if(document.getElementById("publish") != null)
-          document.getElementById("publish").style.display = "block"
-        for(var i = 0;i<shifts.length;i++) {
-          shifts[i].start_date = correctDates(shifts[i].start_date)
-          shifts[i].end_date = correctDates(shifts[i].end_date)
-        }
-        scheduler.parse(shifts,"json")
+        scheduler.parse(unavail,"json")
         if(day_view)
           scheduler.config.readonly = false
-        document.getElementById("published").style.opacity = ".25"
+        document.getElementById("tabshifts").style.opacity = ".25"
         this.style.opacity = "1"
-        loadDraft()
+        loadUnavail()
+
+        console.log("load unavail")
+        scheduler.createTimelineView({
+        name: "timelineunavail",
+        x_unit:  "minute",
+        x_date:  "%g %A", //24hr "%H:%i"
+        x_step:  60,
+        x_size: day_length+1,
+        x_start: day_start,
+        x_length: 24,
+        y_unit:  yaxis,
+        y_property: "day_id",
+        render:"bar",
+        resize_events: false,
+        fit_events: false,
+        round_position: false,
+        })
+        console.log("loaded unavail")
+
+        //GO TO THE MONDAY OF THE WEEK
+        date_step = parseInt(scheduler._date.getDay())-1
+        var newdate = scheduler._date
+        newdate.setDate(scheduler._date.getDate()-date_step)
+        console.log("yo" + newdate)
+
+        scheduler.init('scheduler',newdate,"timelineunavail")
       }
     }
   });
 
-  $("#published").click(function()
+  $("#tabshifts").click(function()
   {
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
-        if(document.getElementById("publish") != null)
-          document.getElementById("publish").style.display="none"
-          document.getElementById("draft").style.opacity=".25"
-          this.style.opacity = "1"
-          loadPublished()
+        $.sidr('close', 'sidr-left');
+
+        if(document.getElementById("update") != null)
+          document.getElementById("update").style.display="none"
+        document.getElementById("tabunavail").style.opacity=".25"
+        this.style.opacity = "1"
+        loadShifts()
+
+        console.log("load shifts")
+        scheduler.createTimelineView({
+        name: "timelineshifts",
+        x_unit:  "minute",
+        x_date:  "%g %A", //24hr "%H:%i"
+        x_step:  60,
+        x_size: day_length+1,
+        x_start: day_start,
+        x_length: 24,
+        y_unit:  employees,
+        y_property: "employee_id",
+        render:"bar",
+        resize_events: false,
+        fit_events: false,
+        round_position: false,
+        })
+        console.log("loaded shifts")
+
+        scheduler.init('scheduler',new Date(),"timelineshifts")
+        render()
       }
     }
   });
 
   $("#day").click(function()
   {
-    //redisplay the unavailability
-    scheduler.parse(unavailability,"json")
 
     if(sched_loaded) {
       if(this.style.opacity == 0.25) {
 
         loadDay()
-        if(draft_view)
+        if(unavail_view)
           scheduler.config.readonly = false
         document.getElementById("week").style.opacity = ".25"
         this.style.opacity = "1"
@@ -369,12 +345,12 @@ $(document).ready(function() {
 //function to get the shifts from database
 function getShifts(today)
 {
-  shifts = calendars.getDay(today).shifts 
-  ref_shifts = ref_calendar.getDay(today).shifts 
+  unavail = calendars.getDay(today).unavailabilities
+  ref_shifts = ref_calendar.getDay(today).shifts
 
-  for(var i = 0;i<shifts.length;i++) {
-    shifts[i].start_date = correctDates(shifts[i].start_date)
-    shifts[i].end_date = correctDates(shifts[i].end_date)
+  for(var i = 0;i<unavail.length;i++) {
+    unavail[i].start_date = correctDates(unavail[i].start_date)
+    unavail[i].end_date = correctDates(unavail[i].end_date)
   }
 }
 
@@ -385,16 +361,16 @@ function getShiftsForWeek(today)
   var ref_week = ref_calendar.getWeek(today)
 
   
-  shifts = []
+  unavail = []
   ref_shifts = []
 
   for(var i=0; i<6; ++i) {
-    shifts = shifts.concat(week[i].shifts)
-    ref_shifts = ref_shifts.concat(ref_week[i].shifts)
+    unavail = unavail.concat(week[i].unavail)
+    ref_unavail = ref_unavail.concat(ref_week[i].unavail)
     if(i==5) {
-      for(var j = 0;j<shifts.length;j++) {
-        shifts[j].start_date = correctDates(shifts[j].start_date)
-        shifts[j].end_date = correctDates(shifts[j].end_date)
+      for(var j = 0;j<unavail.length;j++) {
+        unavail[j].start_date = correctDates(unavail[j].start_date)
+        unavail[j].end_date = correctDates(unavail[j].end_date)
       }
     }
   }
@@ -405,7 +381,7 @@ function render()
 {
   //parse events
   scheduler.parse(unavailability,"json")
-  scheduler.parse(shifts,"json")
+  scheduler.parse(unavail,"json")
 
   if(!day_view) {
     //don't show unavailability
@@ -414,30 +390,25 @@ function render()
     }
   }
 
-  if(!draft_view)
-    loadPublished()
+  if(!unavail_view)
+    loadShifts()
   else
-    loadDraft()
+    loadUnavail()
 
   //don't show deleted
-  for(var i = 0;i<shifts.length;i++) {
-    if(shifts[i].type == "delete") {
-      scheduler.hideEvent(shifts[i].id, true)
-      console.log("delete this " + shifts[i].text)
+  for(var i = 0;i<unavail.length;i++) {
+    if(unavail[i].type == "delete") {
+      scheduler.hideEvent(unavail[i].id, true)
+      console.log("delete this " + unavail[i].text)
     }
   }
-
 }
 
 //function to load draft view
-function loadDraft()
+function loadUnavail()
 {
-  draft_view = true;
+  unavail_view = true;
   if(day_view) {
-    //show unavailability
-    for(i=0;i<unavailability.length;i++){
-      scheduler.addEvent(unavailability[i])
-    }
 
     //make unavailability read only
     var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
@@ -473,35 +444,15 @@ function loadDraft()
   }
 
   //show draft shifts but not deleted ones
-  for(i=0;i<shifts.length;i++){
-    if(shifts[i].type != "delete")
-      scheduler.addEvent(shifts[i])
+  for(i=0;i<unavail.length;i++){
+    if(unavail[i].type != "delete")
+      scheduler.addEvent(unavail[i])
   }
-  console.log("load shifts")
-  scheduler.createTimelineView({
-  name: "timelineshifts",
-  x_unit:  "minute",
-  x_date:  "%g %A", //24hr "%H:%i"
-  x_step:  60,
-  x_size: day_length+1,
-  x_start: day_start,
-  x_length: 24,
-  y_unit:  yaxis,
-  y_property: "day_id",
-  render:"bar",
-  resize_events: false,
-  fit_events: false,
-  round_position: false,
-  })
-  console.log("shifts loaded")
-  scheduler.init('scheduler',scheduler._date,"timelineshifts")
-
 }
 
-function loadPublished()
+function loadShifts()
 {
-
-  draft_view = false;
+  unavail_view = false;
   //parse correct date
   for(var i = 0;i<ref_shifts.length;i++) {
     ref_shifts[i].start_date = correctDates(ref_shifts[i].start_date)
@@ -517,33 +468,14 @@ function loadPublished()
   }
 
   //don't show draft shifts
-  for(i=0;i<shifts.length;i++){
-    scheduler.hideEvent(shifts[i].id, true)
+  for(i=0;i<unavail.length;i++){
+    scheduler.hideEvent(unavail[i].id, true)
   }
 
   //show published shifts
   for(i=0;i<ref_shifts.length;i++){
     scheduler.addEvent(ref_shifts[i])
   }
-
-  console.log("load unavail")
-  scheduler.createTimelineView({
-  name: "timelineunavail",
-  x_unit:  "minute",
-  x_date:  "%g %A", //24hr "%H:%i"
-  x_step:  60,
-  x_size: day_length+1,
-  x_start: day_start,
-  x_length: 24,
-  y_unit:  employees,
-  y_property: "employee_id",
-  render:"bar",
-  resize_events: false,
-  fit_events: false,
-  round_position: false,
-  })
-  console.log("load unavail")
-  scheduler.init('scheduler',scheduler._date,"timelineunavail")
 
   //correct shifts pointer for initial published view
   var shift_events = document.getElementsByClassName("dhx_cal_event_line shifts")
@@ -611,7 +543,7 @@ function correctDates(event_date)
 //function to hide certain events based on published or draft view
 function hideEvents()
 {
-  // if(draft_view) {
+  // if(unavail_view) {
   //   //show unavailable
   //   var un_events = document.getElementsByClassName("dhx_cal_event_line unavailability")
   //   for(var i = 0;i<un_events.length;i++) {

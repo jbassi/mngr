@@ -58,6 +58,12 @@ var Worker = Parse.User.extend({
   },
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
+  // This function decides whether the current worker is manager or not
+  isManager: function() {
+    return this.get('assignedRole') === 'Manager'
+  },
+
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ //
   retrieveAllEmployeesAtCompany: function(callback) 
   {
     // Array to return
@@ -388,19 +394,21 @@ var Worker = Parse.User.extend({
 
     // Check Parse for the given username and password
     Worker.logIn(user, password, {
-        success: function(user)
-        {
-          console.log('[~] Successful login.')
-          callback(null, user)
-        },
+      success: function(user)
+      {
+        console.log('[~] Successful login.')
+        // allow master key if manager logs in
 
-        error: function(user, err)
-        {
-          console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
-          console.error(err)
-          //callback(err.code, user)
-          callback(err, user)
-        }
+        callback(null, user)
+      },
+
+      error: function(user, err)
+      {
+        console.error('[~] Unsuccessful login. Error: ' + JSON.stringify(err))
+        console.error(err)
+        //callback(err.code, user)
+        callback(err, user)
+      }
     })
   }, // end of verifyLogin()
 

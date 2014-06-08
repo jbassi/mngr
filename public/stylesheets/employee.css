@@ -22,7 +22,7 @@ vertical-align:middle;
 color:#6b6b6c;
 }
 
-#publish {
+#update {
   text-align: center;
   margin-left:20px;
   margin-top:40px;
@@ -110,14 +110,14 @@ color:#6b6b6c;
   display: inline;
 }
 
-#published {
+#tabshifts {
   position: relative;
   display:inline;
   left:50px;
   opacity: 1;
 }
 
-#draft {
+#tabunavail {
   position: relative;
   display:inline;
   left:25px;

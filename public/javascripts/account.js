@@ -6,6 +6,8 @@ var FORM_COMPANY_PHONE = 1
 
 $(document).ready(function()
 {
+
+
  //object one to insert into our array is for manager
   var profileSettings = { 
     "id" : "",
@@ -49,6 +51,10 @@ $(document).ready(function()
       document.getElementById("dropdown").style.display = "block"
     else
       document.getElementById("dropdown").style.display = "none"
+
+    $(this).mouseleave(function () {
+      document.getElementById("dropdown").style.display = 'none'
+    })
   })
 
   //logout user
