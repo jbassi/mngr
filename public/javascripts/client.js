@@ -38,13 +38,6 @@ socket.on('login-response', function(error, user)
     console.log('(+) User: ' + user.username + ' successfully connected.')
     // TODO: 
     //      1. notifiy the user that the login was successful
-    //      2. take the user to approriate page
-
-    // %%%%%% FOR REFERENCE: 
-    //        still not sure if we want to retrieve calendar on login
-    //        may retrieve calendar when getting onto schedule page 
-    // Get users calendar
-    // Retrieve calendar with company name
     window.location.href = '/home'
   } 
 }) // end of login-response
