@@ -425,12 +425,13 @@ var Worker = Parse.User.extend({
 
     // console.log('Hello: ' + JSON.stringify(employees[i]))
     var userQuery = new Parse.Query(Parse.User)
+
     userQuery.equalTo('company', Worker.current().get('company'))
-    // console.log(JSON.stringify(Worker.current().get('company').get('name')))
 
     userQuery.find({
       success: function(userList)
       {
+        console.log('im here')
         for(var i = 0; i < employees.length; ++i) {
 
           for(var j = 0; j < userList.length; ++j) {
