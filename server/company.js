@@ -22,9 +22,14 @@ var Company = Parse.Object.extend('Company', {
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ // 
   update: function(companyConfig, callback)
   {
-    this.set('name', companyConfig.name)
-    this.set('phoneNumber', companyConfig.phoneNumber) 
-    this.set('companyInfo', companyConfig.companyInfo)
+    if(companyConfig.name !== null)
+     this.set('name', companyConfig.name)
+
+    if(companyConfig.phoneNumber !== null)
+      this.set('phoneNumber', companyConfig.phoneNumber) 
+
+    if(typeof companyConfig.companyInfo !== 'undefined' && companyConfig.companyInfo !== null)
+      this.set('companyInfo', companyConfig.companyInfo)
 
     this.save(null, {
       success: function(res)

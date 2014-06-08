@@ -32,11 +32,13 @@ $(document).ready(function()
   //company object
   var companySettings = {
     "name" : "",
-    "phoneNumber" : "",
+    "phoneNumber" : ""
+      /*
     "companyInfo" : {
       "hours" : {"day_start" : 6, "day_end" : 22}, 
       "positions" : []
     }
+    */
   }
 
   socket.emit('retrieve-current-user', function(err, currentUser) 
