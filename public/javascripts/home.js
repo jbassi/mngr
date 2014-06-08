@@ -358,14 +358,12 @@ function getShifts(today)
 {
   shifts = calendars.getDay(today).shifts 
   ref_shifts = ref_calendar.getDay(today).shifts 
-  console.log("shifts are " + shifts[0].start_date)
 
   for(var i = 0;i<shifts.length;i++) {
     shifts[i].start_date = correctDates(shifts[i].start_date)
     shifts[i].end_date = correctDates(shifts[i].end_date)
   }
 
-  console.log("shifts are now " + shifts[0].start_date)
 }
 
 function getShiftsForWeek(today) 
