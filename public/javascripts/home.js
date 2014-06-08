@@ -76,7 +76,14 @@ socket.emit('retrieve-calendar', function(err, companyCalendar,
         day_end = companyInfo.hours.day_end
         day_length = day_end - day_start - 1
 
+
         positions = companyInfo.positions
+        for( var i = 0; i < positions.length;++i){
+        
+          $("#sidr-left ul").append('<li><div class="color" id="'+positions[i].label+'""></div><div id="text">'+positions[i].label+'</div></li>')
+          document.getElementById(positions[i].label).style.backgroundColor = positions[i].color
+        }
+
       }
     })
 
