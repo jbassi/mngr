@@ -2,7 +2,8 @@
 //when page has loaded
 $(document).ready(function()
 {
-   
+    //set cursor into top field on page load
+    $('#company').focus();
 
     //initialize tokenfield
     $('#word-test').tokenField({regex:/^[a-z][\w\-]+$/i});
@@ -51,8 +52,13 @@ $(document).ready(function()
     
     	//apend puts object at bottom of appending div
     	$("#input1").append(end);
+<<<<<<< Updated upstream
         
         //set focus to new emploee pages
+=======
+
+        //send cursor into the newly added field yo
+>>>>>>> Stashed changes
         $('#input'+formCount+' #employee-name').focus();
         //scroll down a little bit to give our user better usability
         /*$('html,body').animate({
@@ -159,7 +165,19 @@ $(document).ready(function()
               "positions" : []
             }
         }
-
+         
+        //label and color for position field 
+        //{key:1, label: "chef", color: "#748585"}
+        //ar postion_field ={
+       //     'key' : '1'
+        //    label : "server"
+       //     color: "#567456"
+       // }
+       //1) make array of colors
+       //2) make sure not duplicate
+       //3) assign color to position
+       //4) make sure no duplicate insert of colors
+       //5) store in array of json objects
         //grab company name and phone number
         var m = $("#input0").serializeArray();
 
